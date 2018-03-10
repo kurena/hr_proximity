@@ -7,3 +7,9 @@
 
 // Bootstrap
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
+
+a {
+	.navbar-header {
+		background: url("images/navbar-header.png");
+	}	
+}

@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Proximity') }}</title>
+    <title>HR Proximity</title>
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -29,8 +29,12 @@
 
                     <!-- Branding Image -->
                     <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Proximity') }}
                     </a>
+
+                    @if(Auth::check())
+                      <div>Bienvenido a HR Proximity!</div>  
+                      <div>{{$empleado->nombre}} {{$empleado->apellidos}}</div>
+                    @endif
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">

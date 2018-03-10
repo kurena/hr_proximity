@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Proximity'),
+    'name' => env('APP_NAME', 'HR Proximity'),
 
     /*
     |--------------------------------------------------------------------------
