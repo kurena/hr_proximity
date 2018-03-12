@@ -14,6 +14,7 @@ class MainController extends Controller
             $empleado = DB::select('select * from empleado where cedula = ?', [$idEmp]);
         } else {
             $empleado = [0 => ''];
+            return redirect()->route('login');
         }
     	return view('main', ['empleado' => $empleado[0]]);
     }

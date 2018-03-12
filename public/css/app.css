@@ -17,3 +17,17 @@ a.navbar-brand {
 .navbar-static-top {
 	background-color: #274350 !important;
 }
+
+#app .navbar.navbar-default {
+	padding: 1em;
+}
+
+.logged-user {
+	color: #fff;
+}
+
+.navbar-center {
+	color: #fff;
+	width: 74%;
+  text-align: center;
+}
