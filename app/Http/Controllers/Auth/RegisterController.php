@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Usuario;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
@@ -36,7 +38,6 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
     }
 
     /**
@@ -67,5 +68,12 @@ class RegisterController extends Controller
             'id_empleado' => $data['cedula'],
             'contrasena' => bcrypt($data['contrasena']),
         ]);
+    }
+
+    protected function showRegistrationForm() {
+        $idEmp = Auth::user()->id_empleado;
+        $empleado = DB::select('select * from empleado where cedula = ?', [$idEmp]);
+        $emps = DB::select('select * from empleado');
+        return view('auth.register', ['emps' => $emps, 'empleado' => $empleado[0]]);
     }
 }

@@ -44,7 +44,6 @@
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
                         @guest
-                            <li><a href="{{ route('register') }}">Register</a></li>
                         @else
                             @if(Auth::check())
                             <div class="logged-user">{{$empleado->nombre}} {{$empleado->apellidos}}</div>

@@ -31,3 +31,7 @@ a.navbar-brand {
 	width: 74%;
   text-align: center;
 }
+
+span.required {
+	color: red;
+}

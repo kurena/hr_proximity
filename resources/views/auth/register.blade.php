@@ -12,11 +12,14 @@
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('cedula') ? ' has-error' : '' }}">
-                            <label for="cedula" class="col-md-4 control-label">Cédula</label>
+                            <label for="cedula" class="col-md-4 control-label">Empleado</label>
 
                             <div class="col-md-6">
-                                <input id="cedula" type="text" class="form-control" name="cedula" value="{{ old('cedula') }}" required autofocus>
-
+                                <select class="form-control" name="cedula">
+                                    @foreach ($emps as $emp)
+                                    <option value="{{$emp->cedula}}">{{ $emp->nombre }} {{ $emp->apellidos }}</option>
+                                    @endforeach
+                                </select>
                                 @if ($errors->has('cedula'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('cedula') }}</strong>

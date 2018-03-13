@@ -16,7 +16,7 @@
                                 <li><a href="#">Consultar</a></li>
                                 <li><a href="/empleado/registrar">Registrar</a></li>
                                 <li role="separator" class="divider"></li>
-                                <li><a href="">Registrar usuario</a></li>
+                                <li><a href="/register">Registrar usuario</a></li>
                             </ul>
                         </div>
                         @endif
