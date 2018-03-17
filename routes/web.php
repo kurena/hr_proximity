@@ -16,5 +16,6 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 //Empleados
-Route::get('/empleado/registrar', 'EmployeeController@show');
+Route::get('/empleado/registrar', 'EmployeeController@showForm');
+Route::get('/empleado/consultar', 'EmployeeController@showTable');
 Route::post('/empleado/registrar', 'EmployeeController@store');

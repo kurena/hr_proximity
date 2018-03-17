@@ -13,7 +13,7 @@
                                 Empleados <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Consultar</a></li>
+                                <li><a href="/empleado/consultar">Consultar</a></li>
                                 <li><a href="/empleado/registrar">Registrar</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li><a href="/register">Registrar usuario</a></li>
