@@ -19,3 +19,4 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/empleado/registrar', 'EmployeeController@showForm');
 Route::get('/empleado/consultar', 'EmployeeController@showTable');
 Route::post('/empleado/registrar', 'EmployeeController@store');
+Route::delete('/empleado/eliminar/{id}', 'EmployeeController@delete');

@@ -2,6 +2,10 @@
 
 @section('content')
 <div class="container">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">Principal</a></li>
+      <li class="breadcrumb-item active">Registrar Empleado</li>
+    </ol>
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <h4>Ingrese los datos del empleado:</h4>

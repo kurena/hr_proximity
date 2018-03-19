@@ -48,12 +48,12 @@ class EmployeeController extends Controller
         $validator = Validator::make($request->all(), [
             'nombre' => 'required|string|max:255',
             'apellidos' => 'required|string|max:255',
-            'cedula' => 'required|numeric|max:9|min:9|unique:empleado,cedula',
-            'celular' => 'required|numeric|max:8|min:8',
+            'cedula' => 'required|numeric|unique:empleado,cedula',
+            'celular' => 'required|numeric',
             'email' => 'required|email|max:255',
             'direccion' => 'required|string|max:255',
             'puesto' => 'required|string|max:255',
-            'salario' => 'required|numeric|max:11',
+            'salario' => 'required|numeric',
             'fecha_ingreso' => 'required|date',
             'fecha_nacimiento' => 'required|date'
         ]);
@@ -78,5 +78,12 @@ class EmployeeController extends Controller
         $employee->id_manager = $request->selectManager;
 
         $employee->save();
+        return redirect('/')->with('status', 'Empleado registrado!');
+    }
+
+    public function delete(Request $request) {
+        $emp = Employee::find($request->id);
+        $emp->delete();
+        return redirect('empleado/consultar')->with('status', 'Empleado eliminado!');
     }
 }

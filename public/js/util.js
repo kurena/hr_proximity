@@ -1,5 +1,9 @@
 setTimeout(() => {
   $(document).ready( function () {
-    $('#example').DataTable();
+    $('#employeeData').DataTable( {
+      "language": {
+        "url": "/json/dataTables.spanish.lang"
+      }
+    });
   });  
 }, 100);
