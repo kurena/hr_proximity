@@ -4,7 +4,12 @@
 <div class="container">
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="/">Principal</a></li>
+      @if ($editView)
+      <li class="breadcrumb-item"><a href="/empleado/consultar">Consultar Empleados</a></li>
+      <li class="breadcrumb-item active">Editar Empleado</li>
+      @else
       <li class="breadcrumb-item active">Registrar Empleado</li>
+      @endif
     </ol>
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
@@ -15,7 +20,7 @@
               <div class="form-row">
                 <div class="form-group col-md-6">
                   <label for="nombre">Nombre<span class="required">*</span></label>
-                  <input type="text" class="form-control" name="nombre" placeholder="" required>
+                  <input type="text" class="form-control" name="nombre" placeholder="" required value="{{$editView ? $empleado->nombre: ''}}">
                   @if ($errors->has('nombre'))
                     <span class="help-block">
                         <strong>{{ $errors->first('nombre') }}</strong>
@@ -24,7 +29,7 @@
                 </div>
                 <div class="form-group col-md-6">
                   <label for="apellidos">Apellidos<span class="required">*</span></label>
-                  <input type="text" class="form-control" name="apellidos" placeholder="" required>
+                  <input type="text" class="form-control" name="apellidos" placeholder="" required value="{{$editView ? $empleado->apellidos : ''}}">
                   @if ($errors->has('apellidos'))
                     <span class="help-block">
                         <strong>{{ $errors->first('apellidos') }}</strong>
@@ -35,7 +40,7 @@
               <div class="form-row">
                 <div class="form-group col-md-6">
                   <label for="email">Email<span class="required">*</span></label>
-                  <input type="email" class="form-control" name="email" placeholder="user.test@proximitycr.com" required>
+                  <input type="email" class="form-control" name="email" placeholder="user.test@proximitycr.com" required value="{{$editView ? $empleado->email : ''}}">
                   @if ($errors->has('email'))
                     <span class="help-block">
                         <strong>{{ $errors->first('email') }}</strong>
@@ -44,7 +49,7 @@
                 </div>
                 <div class="form-group col-md-6">
                   <label for="cedula">Cedula<span class="required">*</span></label>
-                  <input type="text" class="form-control" name="cedula" placeholder="123456789" required>
+                  <input type="text" class="form-control" name="cedula" placeholder="123456789" required value="{{$editView ? $empleado->cedula : ''}}">
                   @if ($errors->has('cedula'))
                     <span class="help-block">
                         <strong>{{ $errors->first('cedula') }}</strong>
@@ -55,7 +60,7 @@
               <div class="form-row">
                 <div class="form-group col-md-6">
                   <label for="direccion">Direccion<span class="required">*</span></label>
-                  <input type="text" class="form-control" name="direccion" placeholder="" required>
+                  <input type="text" class="form-control" name="direccion" placeholder="" required value="{{$editView ? $empleado->direccion : ''}}">
                   @if ($errors->has('direccion'))
                     <span class="help-block">
                         <strong>{{ $errors->first('direccion') }}</strong>
@@ -64,7 +69,7 @@
                 </div>
                 <div class="form-group col-md-6">
                   <label for="celular">Celular<span class="required">*</span></label>
-                  <input type="text" class="form-control" name="celular" placeholder="12345678" required>
+                  <input type="text" class="form-control" name="celular" placeholder="12345678" required value="{{$editView ? $empleado->celular : ''}}">
                   @if ($errors->has('celular'))
                     <span class="help-block">
                         <strong>{{ $errors->first('celular') }}</strong>
@@ -75,7 +80,7 @@
               <div class="form-row">
                 <div class="form-group col-md-6">
                   <label for="puesto">Puesto<span class="required">*</span></label>
-                  <input type="text" class="form-control" name="puesto" placeholder="" required>
+                  <input type="text" class="form-control" name="puesto" placeholder="" required value="{{$editView ? $empleado->puesto : ''}}">
                   @if ($errors->has('puesto'))
                     <span class="help-block">
                         <strong>{{ $errors->first('puesto') }}</strong>
@@ -84,7 +89,7 @@
                 </div>
                 <div class="form-group col-md-6">
                   <label for="salario">Salario<span class="required">*</span></label>
-                  <input type="number" class="form-control" name="salario" placeholder="" required>
+                  <input type="number" class="form-control" name="salario" placeholder="" required value="{{$editView ? $empleado->salario : ''}}">
                   @if ($errors->has('salario'))
                     <span class="help-block">
                         <strong>{{ $errors->first('salario') }}</strong>
@@ -95,7 +100,7 @@
               <div class="form-row">
                 <div class="form-group col-md-6">
                   <label for="fecha_ingreso">Fecha Ingreso<span class="required">*</span></label>
-                  <input type="text" class="form-control" name="fecha_ingreso" placeholder="yyyy/mm/dd" required>
+                  <input type="text" class="form-control" name="fecha_ingreso" placeholder="yyyy/mm/dd" required value="{{$editView ? $empleado->fecha_ingreso : ''}}">
                   @if ($errors->has('fecha_ingreso'))
                     <span class="help-block">
                         <strong>{{ $errors->first('fecha_ingreso') }}</strong>
@@ -104,7 +109,7 @@
                 </div>
                 <div class="form-group col-md-6">
                   <label for="fecha_nacimiento">Fecha Nacimiento<span class="required">*</span></label>
-                  <input type="text" class="form-control" name="fecha_nacimiento" placeholder="yyyy/mm/dd" required>
+                  <input type="text" class="form-control" name="fecha_nacimiento" placeholder="yyyy/mm/dd" required value="{{$editView ? $empleado->fecha_nacimiento : ''}}">
                   @if ($errors->has('fecha_nacimiento'))
                     <span class="help-block">
                         <strong>{{ $errors->first('fecha_nacimiento') }}</strong>
@@ -116,22 +121,22 @@
                 <div class="form-group col-md-6">
                   <label for="selectRol">Rol</label>
                   <select class="form-control" name="selectRol">
-                    <option value="administrador">Administrador</option>
-                    <option value="empleado">Empleado</option>
+                    <option value="administrador" {{$editView && $empleado->rol=='administrador' ? 'selected' : ''}}>Administrador</option>
+                    <option value="empleado" {{$editView && $empleado->rol=='empleado' ? 'selected' : ''}}>Empleado</option>
                   </select>
                 </div>
                 <div class="form-group col-md-6">
                   <label for="selectManager">Manager</label>
                   <select class="form-control" name="selectManager">
                   @foreach ($admins as $admin)
-                    <option value="{{$admin->cedula}}">{{ $admin->nombre }} {{ $admin->apellidos }}</option>
+                    <option value="{{$admin->cedula}}" {{$editView && $admin->cedula == $empleado->id_manager ? 'selected' : ''}}>{{ $admin->nombre }} {{ $admin->apellidos }}</option>
                   @endforeach
                   </select>
                 </div>
               </div>
               <div class="form-row">
               <div class="form-group col-md-20">
-                <button type="submit" class="btn btn-primary">Registrar</button>
+                <button type="submit" class="btn btn-primary">{{$editView ? 'Actualizar' : 'Registrar'}}</button>
               </div>
               </div
             </form>

@@ -7,38 +7,50 @@
     <li class="breadcrumb-item active">Consultar Empleados</li>
   </ol>
   <h3>Consulta de empleados:</h3>
-  <table id="employeeData" class="display">
+  <table id="employeeData" class="display nowrap">
     <thead>
         <tr>
+            <th>Acciones</th>
             <th>Cédula</th>
             <th>Empleado</th>
             <th>Email</th>
             <th>Fecha Ingreso</th>
             <th>Puesto</th>
+            <th>Manager</th>
             <th>Rol</th>
             <th>Salario</th>
-            <th>Manager</th>
-            <th>Acciones</th>
+            <th>Direccion</th>
+            <th>Fecha Nacimiento</th>
+            <th>Celular</th>
         </tr>
     </thead>
     <tbody>
         @foreach ($empleados as $emp)
         <tr>
+            <td>
+              <form action="/empleado/eliminar/{{$emp->cedula}}" method="post">
+                {{ csrf_field() }}
+                <input type="hidden" name="_method" value="DELETE" >
+                <button type="submit" class="btn btn-primary">Eliminar</button>
+              </form>
+              <br>
+              <form action="/empleado/editar/{{$emp->cedula}}" method="post">
+                {{ csrf_field() }}
+                <input type="hidden" name="_method" value="GET" >
+                <button type="submit" class="btn btn-primary">Editar</button>
+              </form>
+            </td>
             <td>{{$emp->cedula}}</td>
             <td>{{$emp->nombre}} {{$emp->apellidos}}</td>
             <td>{{$emp->email}}</td>
             <td>{{$emp->fecha_ingreso}}</td>
             <td>{{$emp->puesto}}</td>
+            <td>{{$emp->admin_nombre}} {{$emp->admin_apellidos}}</td>
             <td>{{$emp->rol}}</td>
             <td>{{$emp->salario}}</td>
-            <td>{{$emp->admin_nombre}} {{$emp->admin_apellidos}}</td>
-            <td>
-            <form action="/empleado/eliminar/{{$emp->cedula}}" method="post">
-              {{ csrf_field() }}
-              <input type="hidden" name="_method" value="DELETE" >
-              <button type="submit" class="btn btn-primary">Eliminar</button>
-            </form>
-            </td>
+            <td>{{$emp->direccion}}</td>
+            <td>{{$emp->fecha_nacimiento}}</td>
+            <td>{{$emp->celular}}</td>
         </tr>
         @endforeach
     </tbody>

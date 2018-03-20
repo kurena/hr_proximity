@@ -25,13 +25,13 @@ class EmployeeController extends Controller
             $admins = [0 => ''];
             return redirect()->route('login');
         }
-    	return view('employeeRegister', ['empleado' => $empleado[0], 'admins' => $admins]);
+    	return view('employeeRegister', ['empleado' => $empleado[0], 'admins' => $admins, 'editView' => true]);
     }
 
     public function showTable() {
         if (Auth::user()) {
             $empleado = $this->getAuthUser();
-            $empleados = DB::select('select e.cedula,e.nombre,e.apellidos,e.email,e.puesto,e.fecha_ingreso,e.rol,e.salario, a.nombre as admin_nombre, a.apellidos as admin_apellidos from empleado e inner join empleado a ON e.id_manager=a.cedula');
+            $empleados = DB::select('select e.cedula,e.nombre,e.apellidos,e.email,e.puesto,e.fecha_ingreso,e.rol,e.salario,e.direccion,e.celular,e.fecha_nacimiento, a.nombre as admin_nombre, a.apellidos as admin_apellidos from empleado e inner join empleado a ON e.id_manager=a.cedula');
         } else {
             $empleado = [0 => ''];
             $empleados = [0 => ''];
@@ -40,7 +40,17 @@ class EmployeeController extends Controller
         return view('employeeShow', ['empleado' => $empleado[0], 'empleados' => $empleados ]);
     }
 
-
+    public function showEdit(Request $request) {
+        if (Auth::user()) {
+            $empleado = DB::select('select * from empleado where cedula = ?', [$request->id]);;
+            $admins = DB::select('select * from empleado where rol = ?', ['administrador']);
+        } else {
+            $empleado = [0 => ''];
+            $admins = [0 => ''];
+            return redirect()->route('login');
+        }
+    	return view('employeeRegister', ['empleado' => $empleado[0], 'admins' => $admins, 'editView' => true]);    
+    }
 
     public function store(Request $request) {
         $employee = new Employee;

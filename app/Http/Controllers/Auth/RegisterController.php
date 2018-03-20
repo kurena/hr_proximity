@@ -76,4 +76,9 @@ class RegisterController extends Controller
         $emps = DB::select('select * from empleado');
         return view('auth.register', ['emps' => $emps, 'empleado' => $empleado[0]]);
     }
+
+    public function registered($request,$user)
+    {
+        return redirect('/')->with('status', 'Usuario registrado!');
+    }
 }
