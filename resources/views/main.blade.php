@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
-            <div class="panel panel-success">
+            <div class="panel panel-primary">
                 <div class="panel-heading">Elija la opción que desea realizar</div>
                     @if(Auth::check())
                         @if($empleado->rol == 'administrador')
@@ -21,9 +21,18 @@
                         </div>
                         @endif
                         @if($empleado->rol == 'empleado')
-                            <button>Consulta de datos</button>
-                            <button>Vacaciones</button>
-                            <button>Permisos</button>
+                        <div class="row">
+                            <div class="btn-group-vertical col-md-4 col-md-offset-4" role="group">
+                                <br>
+                                <button type="button" class="btn-lg btn btn-primary" onclick="location.href = '/empleado/consultar/{{$empleado->cedula}}';">Consulta de datos</button>
+                                <br>
+                                <button type="button" class="btn-lg btn btn-primary">Vacaciones</button>
+                                <br>
+                                <button type="button" class="btn-lg btn btn-primary">Permisos</button>
+                                <br>
+                            </div>
+                        </div>
+                        
                         @endif
                     @endif
                 </div>
@@ -35,6 +44,11 @@
     @if (session('status'))
         <div class="alert alert-success">
             {{ session('status') }}
+        </div>
+    @endif
+    @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
         </div>
     @endif
 </div>

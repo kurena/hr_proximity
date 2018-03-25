@@ -18,6 +18,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 //Empleados
 Route::get('/empleado/registrar', 'EmployeeController@showForm');
 Route::get('/empleado/consultar', 'EmployeeController@showTable');
+Route::get('/empleado/consultar/{id}', 'EmployeeController@showEmployee');
 Route::get('/empleado/editar/{id}', 'EmployeeController@showEdit');
 Route::post('/empleado/registrar', 'EmployeeController@store');
+Route::post('/empleado/editar/{id}', 'EmployeeController@update');
 Route::delete('/empleado/eliminar/{id}', 'EmployeeController@delete');
