@@ -26,7 +26,7 @@
                                 <br>
                                 <button type="button" class="btn-lg btn btn-primary" onclick="location.href = '/empleado/consultar/{{$empleado->cedula}}';">Consulta de datos</button>
                                 <br>
-                                <button type="button" class="btn-lg btn btn-primary">Vacaciones</button>
+                                <button type="button" class="btn-lg btn btn-primary" onclick="location.href = '/vacaciones'">Vacaciones</button>
                                 <br>
                                 <button type="button" class="btn-lg btn btn-primary">Permisos</button>
                                 <br>

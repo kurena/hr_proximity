@@ -23,3 +23,6 @@ Route::get('/empleado/editar/{id}', 'EmployeeController@showEdit');
 Route::post('/empleado/registrar', 'EmployeeController@store');
 Route::post('/empleado/editar/{id}', 'EmployeeController@update');
 Route::delete('/empleado/eliminar/{id}', 'EmployeeController@delete');
+
+//Vacaciones
+Route::get('/vacaciones', 'VacationsController@showView');
