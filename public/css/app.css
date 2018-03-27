@@ -35,3 +35,34 @@ a.navbar-brand {
 span.required {
 	color: red;
 }
+
+div.vacations-requested {
+	width: 30%;
+	margin-top: 70px;
+	max-height: 400px;
+	overflow: auto;
+	float:left;
+}
+
+div.vacations-requested h4 {
+	text-align: center;
+}
+
+div.vacations-request {
+	width: 60%;
+	margin-top: 110px;
+	float: left;
+	margin-left: 70px;
+}
+
+div.vacations-request form{
+	padding-left: 20px
+}
+
+div.vacations-request .form-row {
+	margin-top: 20px;
+}
+
+.datepicker {
+	z-index: 9999999 !important;
+}

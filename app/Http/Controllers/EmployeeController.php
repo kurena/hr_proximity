@@ -79,7 +79,7 @@ class EmployeeController extends Controller
             'nombre' => 'required|string|max:255',
             'apellidos' => 'required|string|max:255',
             'cedula' => 'required|numeric|digits:9|unique:empleado,cedula',
-            'celular' => 'required|digits',
+            'celular' => 'required|digits:8',
             'email' => 'required|email|max:255',
             'direccion' => 'required|string|max:255',
             'puesto' => 'required|string|max:255',

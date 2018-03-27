@@ -15,6 +15,10 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="//cdn.datatables.net/responsive/2.2.1/css/responsive.dataTables.min.css" rel="stylesheet">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.min.css" rel="stylesheet">
+
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}"></script>
 </head>
 <body>
     <div id="app">
@@ -70,7 +74,7 @@
     </div>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
     <script type="text/javascript" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script> 
     <script type="text/javascript" src="//cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script> 
     <script type="text/javascript" src="//cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
