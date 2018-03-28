@@ -36,33 +36,51 @@ span.required {
 	color: red;
 }
 
-div.vacations-requested {
-	width: 30%;
-	margin-top: 70px;
+div.vacations-requested, div.permissions-requested {
+	width: 50%;
+	margin-top: 40px;
 	max-height: 400px;
 	overflow: auto;
 	float:left;
 }
 
-div.vacations-requested h4 {
+div.vacations-requested h4, div.permissions-requested h4 {
 	text-align: center;
 }
 
-div.vacations-request {
-	width: 60%;
-	margin-top: 110px;
+div.vacations-request, div.permissions-request {
+	width: 40%;
+	margin-top: 60px;
 	float: left;
 	margin-left: 70px;
 }
 
-div.vacations-request form{
-	padding-left: 20px
+div.vacations-request form, div.permissions-request form{
+	padding: 0 0 20px 20px
 }
 
-div.vacations-request .form-row {
+div.vacations-request .form-row, div.permissions-request .form-row {
 	margin-top: 20px;
 }
 
 .datepicker {
 	z-index: 9999999 !important;
+}
+
+.form-row textarea {
+	resize: none;
+	height:100px;
+}
+
+.form-row .formatted {
+	left: 185px;
+	width: 200px;
+}
+
+.form-row label {
+	width: 180px;
+}
+
+.panel-primary .btn-group-vertical {
+	padding: 20px;
 }

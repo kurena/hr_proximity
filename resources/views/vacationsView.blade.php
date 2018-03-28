@@ -1,6 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
+@if (session('status'))
+    <div class="alert alert-success">
+        {{ session('status') }}
+    </div>
+@endif
+@if (session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
 <div class="container">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="/">Principal</a></li>
@@ -34,14 +44,20 @@
   </div>
   <div class="panel panel-info vacations-request">
     <div class="panel-heading">Solicitar vacaciones</div>
-    <form>
+    <form action="/vacaciones/solicitar" method="POST">
+      {{ csrf_field() }}
       <div class="form-row">
         <label for="dias">Día(s) a solicitar:<span class="required">*</span></label>
-        <input class="datepicker" data-date-format="mm/dd/yyyy">
+        <input onkeydown="return false" class="datepicker" data-date-format="dd-mm-yyyy" name="dias">
+        @if ($errors->has('dias'))
+          <span class="label label-danger">
+              <strong>{{ $errors->first('dias') }}</strong>
+          </span>
+        @endif
       </div>  
       <div class="form-row">
         <label for="manager">Manager:</label>
-        <label name="manager">{{$empleado->admin_nombre}} {{$empleado->admin_apellidos}}</label>
+        <label name="manager" >{{$empleado->admin_nombre}} {{$empleado->admin_apellidos}}</label>
       </div>
       <div class="form-row">
         <label for="copia">Enviar copia a:</label>
@@ -49,7 +65,7 @@
           @if($admin->cedula != $empleado->id_manager)
           <div class="checkbox">
             <label>
-              <input class="form-check-input" type="checkbox" value="{{$admin->cedula}}">{{$admin->nombre}} {{$admin->apellidos}}</input>
+              <input name="copy" class="form-check-input" type="checkbox" value="{{$admin->cedula}}">{{$admin->nombre}} {{$admin->apellidos}}</input>
             </label>
           </div>
           @endif
@@ -58,6 +74,11 @@
       <div class="form-row">
         <button type="submit" class="btn btn-primary">Solicitar</button>
       </div>
+      <input name="empleado" type="hidden" value="{{$empleado->cedula}}">
+      <input name="adminName" type="hidden" value="{{$empleado->admin_nombre}} {{$empleado->admin_apellidos}}">
+      <input name="adminEmail" type="hidden" value="{{$empleado->admin_email}}">
+      <input name="employeeEmail" type="hidden" value="{{$empleado->email}}">
+      <input name="employeeName" type="hidden" value="{{$empleado->nombre}} {{$empleado->apellidos}}">
     </form>
   <div>
 </div> 
@@ -65,8 +86,9 @@
   setTimeout(() => {
     $(document).ready(function () {
       $('.datepicker').datepicker({
-        startDate: '+0d',
-        multidate: true
+        startDate: '+1d',
+        multidate: true,
+        daysOfWeekDisabled: [0,6]
       });
     });
   }, 100);
