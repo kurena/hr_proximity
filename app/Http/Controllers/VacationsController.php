@@ -38,6 +38,18 @@ class VacationsController extends Controller
     	return view('vacationsView', ['empleado' => $empleado, 'availableDays' => $availableDays, 'requestedDays' => $requestedDays, 'admins' => $admins]);
     }
 
+    public function showApprovalView () {
+        if (Auth::user()) {
+            $empleado = $this->getAuthUser()[0];
+            $requestedDays = DB::select("select date_format(v.fecha, '%d-%m-%Y') as fecha, v.estado, v.id, e.nombre, e.apellidos from vacaciones v inner join empleado e on  e.cedula=v.id_empleado inner join empleado a on a.cedula = e.id_manager where e.id_manager=? and v.estado=?", [$empleado->cedula, 'pendiente']);
+            $approvedDays = DB::select("select date_format(v.fecha, '%d-%m-%Y') as fecha, v.estado, v.id, e.nombre, e.apellidos from vacaciones v inner join empleado e on  e.cedula=v.id_empleado inner join empleado a on a.cedula = e.id_manager where e.id_manager=? and v.estado in (?,?) ", [$empleado->cedula, 'aprobado', 'no aprobado']);
+        } else {
+            $empleado = [0 => ''];
+            return redirect()->route('login');
+        }
+    	return view('vacationsApproval', ['empleado' => $empleado, 'requestedDays' => $requestedDays, 'approvedDays' =>$approvedDays]);    
+    }
+
     public function request_email(String $adminName, String $adminEmail, String $empName, String $date){
         $data = array('adminName'=>$adminName, 'employeeName' => $empName, 'day' => $date);
      
@@ -70,5 +82,16 @@ class VacationsController extends Controller
         return redirect('/vacaciones')->with('status', 'Vacaciones solicitadas!');
              
     }
+
+    public function updateStatus (Request $request) {
+        $days = $request->id;
+        foreach ($days as $day) {
+            $vacation = Vacations::find($day);
+            $status = $request['group'.$day];
+            $vacation->estado = $status;
+            $vacation->save();    
+        }
+        return redirect('vacaciones/aprobar')->with('status', 'Estado de vacaciones actualizado!');
+    } 
 
 }

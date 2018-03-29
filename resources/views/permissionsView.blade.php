@@ -55,7 +55,7 @@
       </div>
       <div class="form-row">
         <label for="dia">Día a solicitar:<span class="required">*</span></label>
-        <input class="formatted" onkeydown="return false" class="datepicker" data-date-format="dd-mm-yyyy" name="dia">
+        <input class="formatted datepicker" onkeydown="return false" data-date-format="dd-mm-yyyy" name="dia">
         @if ($errors->has('dia'))
           <span class="label label-danger">
               <strong>{{ $errors->first('dia') }}</strong>

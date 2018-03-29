@@ -26,8 +26,12 @@ Route::delete('/empleado/eliminar/{id}', 'EmployeeController@delete');
 
 //Vacaciones
 Route::get('/vacaciones', 'VacationsController@showView');
+Route::get('/vacaciones/aprobar', 'VacationsController@showApprovalView');
+Route::post('/vacaciones/actualizarestado', 'VacationsController@updateStatus');
 Route::post('/vacaciones/solicitar', 'VacationsController@store');
 
 //Permisos
 Route::get('/permisos', 'PermissionsController@showView');
+Route::get('/permisos/aprobar', 'PermissionsController@showApprovalView');
+Route::post('/permisos/actualizarestado', 'PermissionsController@updateStatus');
 Route::post('/permisos/solicitar', 'PermissionsController@store');

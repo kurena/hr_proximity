@@ -3,11 +3,13 @@
 @section('content')
 @if (session('status'))
     <div class="alert alert-success">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
         {{ session('status') }}
     </div>
 @endif
 @if (session('error'))
     <div class="alert alert-danger">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
         {{ session('error') }}
     </div>
 @endif
@@ -36,7 +38,7 @@
                                         Vacaciones <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li><a href="">Aprobar</a></li>
+                                        <li><a href="/vacaciones/aprobar">Aprobar</a></li>
                                         <li><a href="/vacaciones">Solicitar</a></li>
                                     </ul>
                                 </div>
@@ -45,7 +47,7 @@
                                         Permisos <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li><a href="">Aprobar</a></li>
+                                        <li><a href="/permisos/aprobar">Aprobar</a></li>
                                         <li><a href="/permisos">Solicitar</a></li>
                                     </ul>
                                 </div>
@@ -74,7 +76,25 @@
                                     </ul>
                                 </div>
                             </div> 
-                        </div>   
+                        </div>
+                        <div class="admin-alerts alert alert-warning">
+                            <h5>Alertas</h5>
+                            @if ($vacaciones > 0) 
+                                @if ($vacaciones == 1)
+                                    <a href="/vacaciones/aprobar">1 solicitud de vacaciones pendiente de aprobación</a>
+                                @else
+                                <a href="/vacaciones/aprobar">{{ $vacaciones }} solicitudes de vacaciones pendientes de aprobación</a>
+                                @endif
+                            @elseif ($permisos > 0) 
+                                @if ($permisos == 1)
+                                    <a href="/permisos/aprobar">1 solicitud de permiso pendiente de aprobación</a>
+                                @else
+                                <a href="/permisos/aprobar">{{ $vacaciones }} solicitudes de permiso pendientes de aprobación</a>
+                                @endif    
+                            @else
+                                No existen alertas por el momento.    
+                            @endif
+                        </div>
                         @endif
                         @if($empleado->rol == 'empleado')
                         <div class="row">

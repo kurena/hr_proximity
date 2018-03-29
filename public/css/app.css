@@ -44,15 +44,19 @@ div.vacations-requested, div.permissions-requested {
 	float:left;
 }
 
-div.vacations-requested h4, div.permissions-requested h4 {
+div.vacations-requested h4, div.permissions-requested h4, div.vacations-approved h4, div.permissions-approved h4 {
 	text-align: center;
 }
 
-div.vacations-request, div.permissions-request {
+div.vacations-request, div.permissions-request, div.vacations-approved, div.permissions-approved {
 	width: 40%;
 	margin-top: 60px;
 	float: left;
 	margin-left: 70px;
+}
+
+div.vacations-approved, div.permissions-approved {
+	margin-top: 40px !important;
 }
 
 div.vacations-request form, div.permissions-request form{
@@ -83,4 +87,14 @@ div.vacations-request .form-row, div.permissions-request .form-row {
 
 .panel-primary .btn-group-vertical {
 	padding: 20px;
+}
+
+.admin-alerts {
+	width: 70%;
+	position: relative;
+	margin-left: 30%;
+}
+
+.admin-alerts h5 {
+	text-align: center;
 }

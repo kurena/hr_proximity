@@ -29,6 +29,18 @@ class PermissionsController extends Controller
     	return view('permissionsView', ['empleado' => $empleado, 'requestedDays' => $requestedDays]);
     }
 
+    public function showApprovalView () {
+        if (Auth::user()) {
+            $empleado = $this->getAuthUser()[0];
+            $requestedDays = DB::select("select date_format(a.fecha, '%d-%m-%Y') as fecha, a.estado, a.id, e.nombre, e.apellidos, a.cant_horas, a.comentarios from ausencias a inner join empleado e on  e.cedula=a.id_empleado inner join empleado ad on ad.cedula = e.id_manager where e.id_manager=? and a.estado=?", [$empleado->cedula, 'pendiente']);
+            $approvedDays = DB::select("select date_format(a.fecha, '%d-%m-%Y') as fecha, a.estado, a.id, e.nombre, e.apellidos, a.cant_horas, a.comentarios from ausencias a inner join empleado e on  e.cedula=a.id_empleado inner join empleado ad on ad.cedula = e.id_manager where e.id_manager=? and a.estado in (?,?) ", [$empleado->cedula, 'aprobado', 'no aprobado']);
+        } else {
+            $empleado = [0 => ''];
+            return redirect()->route('login');
+        }
+    	return view('permissionsApproval', ['empleado' => $empleado, 'requestedDays' => $requestedDays, 'approvedDays' =>$approvedDays]);    
+    }
+
     public function store (Request $request) {
         $validator = Validator::make($request->all(), [
             'dia' => 'required',
@@ -50,6 +62,17 @@ class PermissionsController extends Controller
         $permission->save();  
         return redirect('/permisos')->with('status', 'Permiso de ausencia solicitado!');
              
+    }
+
+    public function updateStatus (Request $request) {
+        $days = $request->id;
+        foreach ($days as $day) {
+            $permission = Permissions::find($day);
+            $status = $request['group'.$day];
+            $permission->estado = $status;
+            $permission->save();    
+        }
+        return redirect('permisos/aprobar')->with('status', 'Estado de permisos actualizado!');
     }
 
 }
