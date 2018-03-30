@@ -56,7 +56,7 @@
                                         Incapacidades <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li><a href="">Ingresar</a></li>
+                                        <li><a href="/incapacidades">Ingresar</a></li>
                                     </ul>
                                 </div>
                                 <div class="btn-group">

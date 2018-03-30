@@ -35,3 +35,7 @@ Route::get('/permisos', 'PermissionsController@showView');
 Route::get('/permisos/aprobar', 'PermissionsController@showApprovalView');
 Route::post('/permisos/actualizarestado', 'PermissionsController@updateStatus');
 Route::post('/permisos/solicitar', 'PermissionsController@store');
+
+//Incapacidades
+Route::get('/incapacidades', 'IncapacityController@showView');
+Route::post('/incapacidades/ingresar', 'IncapacityController@store');

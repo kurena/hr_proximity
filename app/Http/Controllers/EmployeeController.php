@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Employee;
 use Validator;
+use \Datetime;
 
 class EmployeeController extends Controller
 {
@@ -31,9 +32,9 @@ class EmployeeController extends Controller
     public function showTable() {
         if (Auth::user()) {
             $empleado = $this->getAuthUser();
-            $empleados = DB::select('select e.cedula,e.nombre,e.apellidos,e.email,e.puesto,e.fecha_ingreso,
-            e.rol,e.salario,e.direccion,e.celular,e.fecha_nacimiento, a.nombre as admin_nombre, 
-            a.apellidos as admin_apellidos from empleado e inner join empleado a ON e.id_manager=a.cedula');
+            $empleados = DB::select("select e.cedula,e.nombre,e.apellidos,e.email,e.puesto, date_format(e.fecha_ingreso, '%d-%m-%Y') as fecha_ingreso,
+            e.rol,e.salario,e.direccion,e.celular, date_format(e.fecha_nacimiento, '%d-%m-%Y') as fecha_nacimiento, a.nombre as admin_nombre, 
+            a.apellidos as admin_apellidos from empleado e inner join empleado a ON e.id_manager=a.cedula");
         } else {
             $empleado = [0 => ''];
             $empleados = [0 => ''];
@@ -47,7 +48,7 @@ class EmployeeController extends Controller
 
     public function showEdit(Request $request) {
         if (Auth::user()) {
-            $empleado = DB::select('select * from empleado where cedula = ?', [$request->id]);;
+            $empleado = DB::select("select cedula, nombre, apellidos, direccion, puesto, salario, rol, id_manager, email, celular, date_format(fecha_ingreso, '%d-%m-%Y') as fecha_ingreso, date_format(fecha_nacimiento, '%d-%m-%Y') as fecha_nacimiento  from empleado where cedula = ?", [$request->id]);;
             $admins = DB::select('select * from empleado where rol = ?', ['administrador']);
         } else {
             $empleado = [0 => ''];
@@ -100,8 +101,10 @@ class EmployeeController extends Controller
         $employee->celular = $request->celular;
         $employee->puesto = $request->puesto;
         $employee->salario = $request->salario;
-        $employee->fecha_nacimiento = $request->fecha_nacimiento;
-        $employee->fecha_ingreso = $request->fecha_ingreso;
+        $date = new DateTime($request->fecha_nacimiento);
+        $employee->fecha_nacimiento = $date->format('Y-m-d');
+        $date = new DateTime($request->fecha_ingreso);
+        $employee->fecha_ingreso = $date->format('Y-m-d');
         $employee->rol = $request->selectRol;
         $employee->id_manager = $request->selectManager;
         $employee->save();
@@ -160,10 +163,12 @@ class EmployeeController extends Controller
             $employee->salario = $request->salario;
         }
         if ($request->fecha_nacimiento) {
-            $employee->fecha_nacimiento = $request->fecha_nacimiento;
+            $date = new DateTime($request->fecha_nacimiento);
+            $employee->fecha_nacimiento = $date->format('Y-m-d');
         }
         if ($request->fecha_ingreso) {
-            $employee->fecha_ingreso = $request->fecha_ingreso;
+            $date = new DateTime($request->fecha_ingreso);
+            $employee->fecha_ingreso = $date->format('Y-m-d');
         }
         if ($request->rol ) {
             $employee->rol = $request->selectRol;

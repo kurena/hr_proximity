@@ -81,6 +81,10 @@ div.vacations-request .form-row, div.permissions-request .form-row {
 	width: 200px;
 }
 
+select.formatted {
+	display: inline;
+}
+
 .form-row label {
 	width: 180px;
 }
@@ -97,4 +101,8 @@ div.vacations-request .form-row, div.permissions-request .form-row {
 
 .admin-alerts h5 {
 	text-align: center;
+}
+
+.register-form form{
+	padding:20px;
 }

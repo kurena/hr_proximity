@@ -6,12 +6,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use \Datetime;
+use \DateInterval;
 use App\Vacations;
 use Validator;
 use Mail;
 
 class VacationsController extends Controller
 {
+    private $PERIOD_DAYS = 10;
+
     public function getAuthUser () {
         $idEmp = Auth::user()->id_empleado;
         $empleado = DB::select('select a.email as admin_email, a.nombre as admin_nombre, a.apellidos as admin_apellidos, e.nombre, e.apellidos, e.cedula, e.id_manager, e.fecha_ingreso, e.email  from empleado e inner join empleado a ON e.id_manager=a.cedula where e.cedula = ?', [$idEmp]);
@@ -21,21 +24,38 @@ class VacationsController extends Controller
     public function showView () {
         if (Auth::user()) {
             $empleado = $this->getAuthUser()[0];
-            $usedDays = DB::select('select count(*) as count from vacaciones where id_empleado = ?', [$empleado->cedula])[0];
+            $usedDays = DB::select('select count(*) as count from vacaciones where id_empleado = ? and estado in (?,?)', [$empleado->cedula, 'pendiente', 'aprobado'])[0];
             $requestedDays = DB::select("select date_format(fecha, '%d-%m-%Y') as fecha, estado from vacaciones where id_empleado = ?", [$empleado->cedula]);
             $admins = DB::select('select cedula, nombre, apellidos from empleado where rol = ?', ['administrador']);
             $date = DateTime::createFromFormat('Y-m-d', $empleado->fecha_ingreso);
-            $availableDays = (date("Y") - $date->format('Y')) * 10;
+            $availableDays = (date("Y") - $date->format('Y')) * $this->PERIOD_DAYS;
             if (date('m') < $date->format('m')) {
-              $availableDays -= 10;
+              $availableDays -= $this->PERIOD_DAYS;
             }
             $availableDays -= $usedDays->count;
+            $numberPeriods = date("Y") - $date->format('Y');
+            $periods = [];
+            $used = $usedDays->count;
+            for ($i = 0 ; $i < $numberPeriods; $i++) {
+                if ($this->PERIOD_DAYS >= $used) {
+                    $availablePeriodDays = $this->PERIOD_DAYS - $used;   
+                    $used = 0; 
+                }
+                if ($this->PERIOD_DAYS < $used) {
+                    $availablePeriodDays = 0;
+                    $used = $used - $this->PERIOD_DAYS;
+                }
+                if ($i == ($numberPeriods - 1) && date('m') < $date->format('m')) {
+                    $availablePeriodDays = 0;
+                }
+                array_push($periods, ['start' => $date->format('d-m-Y'), 'end' => $date->add(new DateInterval('P1Y'))->format('d-m-Y'), 'days' => $availablePeriodDays]);
+            }
         } else {
             $empleado = [0 => ''];
             $admins = [0 => ''];
             return redirect()->route('login');
         }
-    	return view('vacationsView', ['empleado' => $empleado, 'availableDays' => $availableDays, 'requestedDays' => $requestedDays, 'admins' => $admins]);
+    	return view('vacationsView', ['empleado' => $empleado, 'availableDays' => $availableDays, 'requestedDays' => $requestedDays, 'admins' => $admins, 'periods' => $periods]);
     }
 
     public function showApprovalView () {
@@ -70,6 +90,9 @@ class VacationsController extends Controller
                         ->withInput();
         }
         $days = explode(",", $request->dias);
+        if ($request->availableDays < count($days)) {
+            return redirect('/vacaciones')->with('error', 'Días disponibles de vacaciones insuficientes para realizar la solicitud!');
+        }
         foreach ($days as $day) {
             $vacations = new Vacations;
             $date = new DateTime($day);

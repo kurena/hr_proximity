@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
+@if (session('status'))
+  <div class="alert alert-success">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      {{ session('status') }}
+  </div>
+@endif 
 <div class="container">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="/">Principal</a></li>
@@ -54,12 +60,7 @@
         </tr>
         @endforeach
     </tbody>
-  </table>
-  @if (session('status'))
-    <div class="alert alert-success">
-        {{ session('status') }}
-    </div>
-  @endif  
+  </table> 
 </div>       
 <script type="text/javascript" src="{{ asset('js/util.js') }}"></script>
 

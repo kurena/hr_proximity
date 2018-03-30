@@ -3,11 +3,13 @@
 @section('content')
 @if (session('status'))
     <div class="alert alert-success">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
         {{ session('status') }}
     </div>
 @endif
 @if (session('error'))
     <div class="alert alert-danger">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
         {{ session('error') }}
     </div>
 @endif
@@ -84,7 +86,8 @@
     $(document).ready(function () {
       $('.datepicker').datepicker({
         startDate: '+1d',
-        daysOfWeekDisabled: [0,6]
+        daysOfWeekDisabled: [0,6],
+        language: 'es'
       });
     });
   }, 100);
