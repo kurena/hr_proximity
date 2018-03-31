@@ -26,7 +26,7 @@
         <thead>
           <tr>
             <th scope="col">Día</th>
-            <th scope="col">Empleado(a)</th>
+            <th scope="col">Colaborador</th>
             <th scope="col">Cantidad horas</th>
             <th scope="col">Comentarios</th>
             <th scope="col">Aprobar</th>
@@ -70,7 +70,7 @@
       <thead>
         <tr>
           <th scope="col">Día</th>
-          <th scope="col">Empleado(a)</th>
+          <th scope="col">Colaborador</th>
           <th scope="col">Cantidad horas</th>
           <th scope="col">Comentarios</th>
           <th scope="col">Estado</th>

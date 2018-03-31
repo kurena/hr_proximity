@@ -132,7 +132,7 @@ class EmployeeController extends Controller
             'fecha_nacimiento' => 'date'
         ]);
         if ($validator->fails()) {
-            $redirectEdit = $request->view == 1 ? 'empleado/consultar/'.$request->id : 'empleado/editar/'.$request->id;
+            $redirectEdit = $request->view == 1 ? '/empleado/consultar/'.$request->id : '/empleado/editar/'.$request->id;
             return redirect($redirectEdit)
                         ->withErrors($validator)
                         ->withInput();
@@ -170,10 +170,10 @@ class EmployeeController extends Controller
             $date = new DateTime($request->fecha_ingreso);
             $employee->fecha_ingreso = $date->format('Y-m-d');
         }
-        if ($request->rol ) {
+        if ($request->selectRol ) {
             $employee->rol = $request->selectRol;
         }
-        if ($request->id_manager) {
+        if ($request->selectManager) {
             $employee->id_manager = $request->selectManager;
         }
         $employee->save();

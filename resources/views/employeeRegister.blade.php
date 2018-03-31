@@ -6,22 +6,22 @@
       <li class="breadcrumb-item"><a href="/">Principal</a></li>
       @if ($editView and !$uniqueView)
       <li class="breadcrumb-item"><a href="/empleado/consultar">Consultar Empleados</a></li>
-      <li class="breadcrumb-item active">Editar Empleado</li>
+      <li class="breadcrumb-item active">Editar Colaborador</li>
       @elseif ($editView and $uniqueView)
-      <li class="breadcrumb-item active">Consultar datos empleado</li>  
+      <li class="breadcrumb-item active">Consultar datos colaborador</li>  
       @else
-      <li class="breadcrumb-item active">Registrar Empleado</li>
+      <li class="breadcrumb-item active">Registrar Colaborador</li>
       @endif
     </ol>
     <div class="row">
         <div class="register-form col-md-10 col-md-offset-1">
             <div class="panel panel-primary">
               @if ($editView and !$uniqueView)
-              <div class="panel-heading">Ingrese los datos del empleado que desea actualizar</div>
+              <div class="panel-heading">Ingrese los datos del colaborador que desea actualizar</div>
               @elseif ($editView and $uniqueView)
-              <div class="panel-heading">Datos del empleado</div>
+              <div class="panel-heading">Datos del colaborador</div>
               @else
-              <div class="panel-heading">Ingrese los datos del empleado</div>
+              <div class="panel-heading">Ingrese los datos del colaborador</div>
               @endif
               <form method="post" action="/empleado/{{$editView ? 'editar/'.$empleado->cedula : 'registrar'}}">
                 {{ csrf_field() }}

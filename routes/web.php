@@ -39,3 +39,17 @@ Route::post('/permisos/solicitar', 'PermissionsController@store');
 //Incapacidades
 Route::get('/incapacidades', 'IncapacityController@showView');
 Route::post('/incapacidades/ingresar', 'IncapacityController@store');
+
+//Viaticos
+Route::get('/viaticos', 'TravelExpenseController@showView');
+Route::get('/viaticos/empleado/{id}', 'TravelExpenseController@showEmployeeView');
+Route::post('/viaticos/ingresar', 'TravelExpenseController@store');
+Route::get('/viaticos/comprobacion/{id}', 'TravelExpenseController@showCalculationView');
+Route::post('/viaticos/comprobacion/ingresar', 'TravelExpenseController@storeCalculation');
+
+
+//Contratos
+Route::get('/contratos', 'ContractsController@showView');
+Route::post('/contratos/ingresar', 'ContractsController@store');
+Route::get('/contratos/comprobacion/{id}', 'ContractsController@showCalculationView');
+Route::post('/contratos/comprobacion/ingresar', 'ContractsController@storeCalculation');

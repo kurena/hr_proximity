@@ -56,7 +56,7 @@
                                         Incapacidades <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li><a href="/incapacidades">Ingresar</a></li>
+                                        <li><a href="/incapacidades">Consultar/Ingresar</a></li>
                                     </ul>
                                 </div>
                                 <div class="btn-group">
@@ -64,7 +64,7 @@
                                         Dashboard de contratos <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li><a href="">Consultar</a></li>
+                                        <li><a href="/contratos">Consultar/Ingresar</a></li>
                                     </ul>
                                 </div>
                                 <div class="btn-group">
@@ -72,7 +72,7 @@
                                         Viaticos <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li><a href="">Consultar</a></li>
+                                        <li><a href="/viaticos">Consultar/Ingresar</a></li>
                                     </ul>
                                 </div>
                             </div> 
@@ -83,20 +83,30 @@
                                 @if ($vacaciones == 1)
                                     <a href="/vacaciones/aprobar">1 solicitud de vacaciones pendiente de aprobación</a>
                                 @else
-                                <a href="/vacaciones/aprobar">{{ $vacaciones }} solicitudes de vacaciones pendientes de aprobación</a>
+                                    <a href="/vacaciones/aprobar">{{ $vacaciones }} solicitudes de vacaciones pendientes de aprobación</a>
                                 @endif
-                            @elseif ($permisos > 0) 
+                                <br>
+                            @endif    
+                            @if ($permisos > 0) 
                                 @if ($permisos == 1)
                                     <a href="/permisos/aprobar">1 solicitud de permiso pendiente de aprobación</a>
                                 @else
-                                <a href="/permisos/aprobar">{{ $vacaciones }} solicitudes de permiso pendientes de aprobación</a>
-                                @endif    
-                            @else
-                                No existen alertas por el momento.    
+                                    <a href="/permisos/aprobar">{{ $vacaciones }} solicitudes de permiso pendientes de aprobación</a>
+                                @endif 
+                                <br>
+                            @endif    
+                            @if ($contratos > 0) 
+                                @if ($contratos == 1)
+                                    <a href="/contratos">1 contrato está por vencer!</a>
+                                @else
+                                    <a href="/contratos">{{ $contratos }} contratos están por vencer!</a>
+                                @endif           
+                            @endif
+                            @if ($contratos == 0 and $permisos == 0 and $vacaciones == 0)
+                                No existen alertas por el momento.
                             @endif
                         </div>
-                        @endif
-                        @if($empleado->rol == 'empleado')
+                        @elseif($empleado->rol == 'empleado')
                         <div class="row">
                             <div class="btn-group-vertical col-md-4 col-md-offset-4" role="group">
                                 <br>
@@ -105,6 +115,8 @@
                                 <button type="button" class="btn-lg btn btn-primary" onclick="location.href = '/vacaciones'">Vacaciones</button>
                                 <br>
                                 <button type="button" class="btn-lg btn btn-primary" onclick="location.href = '/permisos'">Permisos</button>
+                                <br>
+                                <button type="button" class="btn-lg btn btn-primary" onclick="location.href = '/viaticos/empleado/{{$empleado->cedula}}'">Viáticos</button>
                                 <br>
                             </div>
                         </div>

@@ -16,45 +16,46 @@
 <div class="container">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="/">Principal</a></li>
-    <li class="breadcrumb-item active">Incapacidades</li>
+    <li class="breadcrumb-item active">Viáticos</li>
   </ol>
   <div class="permissions-requested">
-    <h4>Activas al día de hoy</h4>
+    <h4>Viáticos</h4>
     <table class="table table-bordered" id="requestedPermissions">
       <thead>
         <tr>
-          <th scope="col">Fecha Inicio</th>
-          <th scope="col">Fecha Fin</th>
+          <th scope="col">Fecha ingreso</th>
+          <th scope="col">Tipo</th>
           <th scope="col">Colaborador</th>
-          <th scope="col">Comentarios</th>
+          <th scope="col">Descripción</th>
+          <th scope="col">Monto total</th>
         </tr>
       </thead>
       <tbody>
-        @foreach ($activeDays as $day)
+        @foreach ($expenses as $expense)
         <tr class="success">
-          <td>{{$day->fecha_inicio}}</td>
-          <td>{{$day->fecha_fin}}</td>
-          <td>{{$day->nombre}} {{$day->apellidos}}</td>
-          <td>{{$day->comentarios}}</td>
+          <td>{{$expense->fecha}}</td>
+          <td>{{$expense->tipo}}</td>
+          <td>{{$expense->nombre}} {{$expense->apellidos}}</td>
+          <td>{{$expense->descripcion}}</td>
+          <td>${{$expense->total}}</td>
         </tr>
         @endforeach
       </tbody>
     </table>
   </div>
   <div class="panel panel-info permissions-request">
-    <div class="panel-heading">Ingresar nueva incapacidad</div>
-    <form action="/incapacidades/ingresar" method="POST">
+    <div class="panel-heading">Ingresar nuevo viático</div>
+    <form action="/viaticos/ingresar" method="POST">
       {{ csrf_field() }}
       <div class="form-row">
-        <label for="dia">Fecha inicio:<span class="required">*</span></label>
-        <input class="formatted datepicker" onkeydown="return false" data-date-format="dd-mm-yyyy" name="fecha_inicio">
-      </div>  
-      <div class="form-row">
-        <label for="dia">Fecha fin:<span class="required">*</span></label>
-        <input class="formatted datepicker" onkeydown="return false" data-date-format="dd-mm-yyyy" name="fecha_fin">
+        <label for="dia">Tipo:<span class="required">*</span></label>
+        <select class="form-control formatted" name="selectType">
+          <option value="viaje">Viaje</option>
+          <option value="otro">Otro</option>
+        </select>
       </div>
       <div class="form-row">
-          <label for="selectEmployee">Empleado(a):<span class="required">*</span></label>
+          <label for="selectEmployee">Colaborador:<span class="required">*</span></label>
           <select class="form-control formatted" name="selectEmployee">
           @foreach ($employees as $employee)
             <option value="{{$employee->cedula}}">{{ $employee->nombre }} {{ $employee->apellidos }}</option>
@@ -62,8 +63,12 @@
           </select>
       </div>
       <div class="form-row">
-        <label for="comentarios">Comentarios:<span class="required">*</span></label>
-        <textarea class="formatted" name="comentarios" required></textarea>
+        <label for="comentarios">Descripción:<span class="required">*</span></label>
+        <textarea class="formatted" name="descripcion" required></textarea>
+      </div>
+      <div class="form-row">
+        <label for="monto">Monto en $:<span class="required">*</span></label>
+        <input class="formatted" name="monto" type="number" min="0" required>
       </div>
       <div class="form-row">
         <div class="col-md-20 text-center"> 
@@ -71,17 +76,6 @@
         </div>  
       </div>
     </form>
-  <div>
+  </div>
 </div>
-<script>
-  setTimeout(() => {
-    $(document).ready(function () {
-      $('.datepicker').datepicker({
-        startDate: '+1d',
-        daysOfWeekDisabled: [0,6],
-        language: 'es'
-      });
-    });
-  }, 100);
-</script>  
 @endsection

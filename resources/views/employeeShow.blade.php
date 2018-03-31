@@ -18,7 +18,7 @@
         <tr>
             <th>Acciones</th>
             <th>Cédula</th>
-            <th>Empleado</th>
+            <th>Colaborador</th>
             <th>Email</th>
             <th>Fecha Ingreso</th>
             <th>Puesto</th>

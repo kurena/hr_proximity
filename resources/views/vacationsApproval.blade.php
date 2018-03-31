@@ -26,7 +26,7 @@
         <thead>
           <tr>
             <th scope="col">Día</th>
-            <th scope="col">Empleado(a)</th>
+            <th scope="col">Colaborador</th>
             <th scope="col">Aprobar</th>
             <th scope="col">No aprobar</th>
             <th scope="col">Mantener pendiente</th>
@@ -66,7 +66,7 @@
       <thead>
         <tr>
           <th scope="col">Día</th>
-          <th scope="col">Empleado(a)</th>
+          <th scope="col">Colaborador</th>
           <th scope="col">Estado</th>
         </tr>
       </thead>
