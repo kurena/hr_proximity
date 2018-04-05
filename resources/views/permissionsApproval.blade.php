@@ -73,6 +73,8 @@
           <th scope="col">Colaborador</th>
           <th scope="col">Cantidad horas</th>
           <th scope="col">Comentarios</th>
+          <th scope="col">Reposición de horas</th>
+          <th scope="col">Afectación en salario</th>
           <th scope="col">Estado</th>
         </tr>
       </thead>
@@ -83,6 +85,8 @@
           <td>{{$day->nombre}} {{$day->apellidos}}</td>
           <td>{{$day->cant_horas}}</td>
           <td>{{$day->comentarios}}</td>
+          <td>{{ $day->reposicion == 0 ? 'No' : 'Sí' }}</td>
+          <td>{{ $day->reposicion > 0 ? 'N/A' : '₡'.$day->afectacion }}</td>
           <td>{{ ucfirst(trans($day->estado))}}</td>
         </tr>
         @endforeach

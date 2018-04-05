@@ -13,7 +13,6 @@
 //Main
 Route::get('/', 'MainController@show');
 Auth::routes();
-Route::get('/home', 'HomeController@index')->name('home');
 
 //Empleados
 Route::get('/empleado/registrar', 'EmployeeController@showForm');

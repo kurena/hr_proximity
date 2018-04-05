@@ -20,7 +20,7 @@ class PermissionsController extends Controller
     public function showView () {
         if (Auth::user()) {
             $empleado = $this->getAuthUser()[0];
-            $requestedDays = DB::select("select date_format(fecha, '%d-%m-%Y') as fecha, estado, comentarios, cant_horas from ausencias where id_empleado = ?", [$empleado->cedula]);
+            $requestedDays = DB::select("select date_format(fecha, '%d-%m-%Y') as fecha, estado, comentarios, cant_horas, reposicion from ausencias where id_empleado = ?", [$empleado->cedula]);
         } else {
             $empleado = [0 => ''];
             $admins = [0 => ''];
@@ -32,8 +32,15 @@ class PermissionsController extends Controller
     public function showApprovalView () {
         if (Auth::user()) {
             $empleado = $this->getAuthUser()[0];
-            $requestedDays = DB::select("select date_format(a.fecha, '%d-%m-%Y') as fecha, a.estado, a.id, e.nombre, e.apellidos, a.cant_horas, a.comentarios from ausencias a inner join empleado e on  e.cedula=a.id_empleado inner join empleado ad on ad.cedula = e.id_manager where e.id_manager=? and a.estado=?", [$empleado->cedula, 'pendiente']);
-            $approvedDays = DB::select("select date_format(a.fecha, '%d-%m-%Y') as fecha, a.estado, a.id, e.nombre, e.apellidos, a.cant_horas, a.comentarios from ausencias a inner join empleado e on  e.cedula=a.id_empleado inner join empleado ad on ad.cedula = e.id_manager where e.id_manager=? and a.estado in (?,?) ", [$empleado->cedula, 'aprobado', 'no aprobado']);
+            $requestedDays = DB::select("select date_format(a.fecha, '%d-%m-%Y') as fecha, a.estado, a.id, e.nombre, e.apellidos, a.cant_horas, a.comentarios, a.reposicion from ausencias a inner join empleado e on  e.cedula=a.id_empleado inner join empleado ad on ad.cedula = e.id_manager where e.id_manager=? and a.estado=?", [$empleado->cedula, 'pendiente']);
+            $approvedDays = DB::select("select date_format(a.fecha, '%d-%m-%Y') as fecha, a.estado, a.id, e.nombre, e.apellidos, e.salario, a.cant_horas, a.comentarios, a.reposicion from ausencias a inner join empleado e on  e.cedula=a.id_empleado inner join empleado ad on ad.cedula = e.id_manager where e.id_manager=? and a.estado in (?,?) ", [$empleado->cedula, 'aprobado', 'no aprobado']);
+            foreach ($approvedDays as $day) {
+                $affect = 0;
+                if ($day->reposicion == 0) {
+                    $affect = ($day->salario / 30) * $day->cant_horas;
+                }    
+                $day->afectacion = $affect;
+            }
         } else {
             $empleado = [0 => ''];
             return redirect()->route('login');
@@ -59,6 +66,7 @@ class PermissionsController extends Controller
         $permission->cant_horas = $request->cantidad;  
         $permission->estado = 'pendiente'; 
         $permission->comentarios = $request->comentarios; 
+        $permission->reposicion = $request->reposicion;
         $permission->save();  
         return redirect('/permisos')->with('status', 'Permiso de ausencia solicitado!');
              

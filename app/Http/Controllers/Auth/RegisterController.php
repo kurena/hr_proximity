@@ -71,10 +71,14 @@ class RegisterController extends Controller
     }
 
     protected function showRegistrationForm() {
-        $idEmp = Auth::user()->id_empleado;
-        $empleado = DB::select('select * from empleado where cedula = ?', [$idEmp]);
-        $emps = DB::select('select * from empleado');
-        return view('auth.register', ['emps' => $emps, 'empleado' => $empleado[0]]);
+        if (Auth::user()) {
+            $idEmp = Auth::user()->id_empleado;
+            $empleado = DB::select('select * from empleado where cedula = ?', [$idEmp]);
+            $emps = DB::select('select * from empleado');
+            return view('auth.register', ['emps' => $emps, 'empleado' => $empleado[0]]); 
+        }else {   
+            return redirect()->route('login');
+        }
     }
 
     public function registered($request,$user)

@@ -51,6 +51,6 @@ class IncapacityController extends Controller
       $incapacity->save();  
       return redirect('/incapacidades')->with('status', 'Incapacidad ingresada correctamente!');
            
-  }
+    }
 
 }

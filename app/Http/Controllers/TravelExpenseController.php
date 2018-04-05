@@ -36,7 +36,9 @@ class TravelExpenseController extends Controller
         if (Auth::user()) {
             $empleado = $this->getAuthUser()[0];
             $empId = $request->id;
-            $expenses = DB::select("select date_format(v.fecha, '%d-%m-%Y') as fecha, v.id, v.tipo, v.descripcion, v.total from viaticos v inner join empleado e on e.cedula=v.id_empleado where e.cedula=?", [$empId]);
+            $expenses = DB::select("select date_format(v.fecha, '%d-%m-%Y') as fecha, v.id, 
+            v.tipo, v.descripcion, v.total from viaticos v inner join empleado e on 
+            e.cedula=v.id_empleado where e.cedula=?", [$empId]);
           } else {
             $empleado = [0 => ''];
             return redirect()->route('login');
@@ -101,7 +103,8 @@ class TravelExpenseController extends Controller
         $calculation->monto = $request->monto; 
         $calculation->tipo = $request->selectType; 
         $calculation->save();  
-        return redirect('/viaticos/comprobacion/'.$expenseId)->with('status', 'Comprobación ingresada correctamente!');
+        return redirect('/viaticos/comprobacion/'.$expenseId)->with('status', 'Comprobación ingresada 
+        correctamente!');
              
     }
 

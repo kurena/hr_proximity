@@ -26,6 +26,7 @@
           <th scope="col">Día</th>
           <th scope="col">Estado</th>
           <th scope="col">Cantidad de horas</th>
+          <th scope="col">Reposición de horas</th>
           <th scope="col">Comentarios</th>
         </tr>
       </thead>
@@ -41,6 +42,7 @@
           <td>{{$day->fecha}}</td>
           <td>{{ ucfirst(trans($day->estado)) }}</td>
           <td>{{ $day->cant_horas }}</td>
+          <td>{{ $day->reposicion == 0 ? 'No' : 'Sí' }}</td>
           <td>{{ $day->comentarios }}</td>
         </tr>
         @endforeach
@@ -67,6 +69,13 @@
       <div class="form-row">
         <label for="cantidad">Cantidad de horas:<span class="required">*</span></label>
         <input class="formatted" type="number" name="cantidad" min="0" required>
+      </div>
+      <div class="form-row">
+        <label for="dia">Reposición de horas:<span class="required">*</span></label>
+        <select class="form-control formatted" name="reposicion">
+          <option value="1">Sí</option>
+          <option value="0">No</option>
+        </select>
       </div>
       <div class="form-row">
         <label for="comentarios">Comentarios:<span class="required">*</span></label>

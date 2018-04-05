@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ForgotPasswordController extends Controller
 {
@@ -27,6 +29,15 @@ class ForgotPasswordController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+    }
+
+    public function showLinkRequestForm() {
+        if (Auth::user()) {
+            $idEmp = Auth::user()->id_empleado;
+            $empleado = DB::select('select * from empleado where cedula = ?', [$idEmp])[0];
+            return view('auth.passwords.email', ['empleado' => $empleado]);
+        }else {   
+            return redirect()->route('login');
+        }
     }
 }
