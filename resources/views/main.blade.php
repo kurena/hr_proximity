@@ -75,6 +75,14 @@
                                         <li><a href="/viaticos">Consultar/Ingresar</a></li>
                                     </ul>
                                 </div>
+                                <div class="btn-group">
+                                    <button type="button" class="btn-lg btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Reportes <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="/reportes">Generar</a></li>
+                                    </ul>
+                                </div>
                             </div> 
                         </div>
                         <div class="admin-alerts alert alert-warning">

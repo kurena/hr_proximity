@@ -52,3 +52,7 @@ Route::get('/contratos', 'ContractsController@showView');
 Route::post('/contratos/ingresar', 'ContractsController@store');
 Route::get('/contratos/comprobacion/{id}', 'ContractsController@showCalculationView');
 Route::post('/contratos/comprobacion/ingresar', 'ContractsController@storeCalculation');
+
+//Reportes
+Route::get('/reportes', 'ReportsController@showView');
+Route::post('/reportes/generar/datos', 'ReportsController@createEmployeeReport');

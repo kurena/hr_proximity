@@ -54,7 +54,7 @@
         <input class="formatted datepicker" onkeydown="return false" data-date-format="dd-mm-yyyy" name="fecha_fin">
       </div>
       <div class="form-row">
-          <label for="selectEmployee">Empleado(a):<span class="required">*</span></label>
+          <label for="selectEmployee">Colaborador:<span class="required">*</span></label>
           <select class="form-control formatted" name="selectEmployee">
           @foreach ($employees as $employee)
             <option value="{{$employee->cedula}}">{{ $employee->nombre }} {{ $employee->apellidos }}</option>
