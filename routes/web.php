@@ -56,3 +56,4 @@ Route::post('/contratos/comprobacion/ingresar', 'ContractsController@storeCalcul
 //Reportes
 Route::get('/reportes', 'ReportsController@showView');
 Route::post('/reportes/generar/datos', 'ReportsController@createEmployeeReport');
+Route::post('/reportes/generar/vacaciones', 'ReportsController@createVacationsReport');

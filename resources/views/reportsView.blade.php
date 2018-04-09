@@ -54,7 +54,7 @@
 <script>
 $(document).ready(function() {
   $('#selectType').on('change', function() {
-    $('#reportsForm').attr('action', 'reportes/crear/'+this.value);  
+    $('#reportsForm').attr('action', '/reportes/generar/'+this.value);  
   });
 });
 </script>  

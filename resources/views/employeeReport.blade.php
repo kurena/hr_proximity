@@ -4,11 +4,13 @@
 <div id="report">
   <header>
   <div class="head-first">  
+    <button type="button" class="hide-print btn btn-primary" onclick="location.href='/reportes'">Reportes</button>
+    <button type="button" class="hide-print btn btn-primary" onclick="window.print();">Imprimir</button>
     <h5>Generado por: {{$reporter->nombre}} {{$reporter->apellidos}}</h5>
     <span>{{$creationDate}}</span>
   </div>
   <div class="head-second">  
-    <h3>Datos de colaborador</h3>
+    <h3>Reporte de datos de colaborador</h3>
     <h3>Colaborador: {{$employee->nombre}} {{$employee->apellidos}}</h3>
   </div>
   </header>

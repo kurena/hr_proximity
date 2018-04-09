@@ -15,6 +15,10 @@ class VacationsController extends Controller
 {
     private $PERIOD_DAYS = 10;
 
+    public function getAvailableDays() {
+
+    }
+    
     public function getAuthUser () {
         $idEmp = Auth::user()->id_empleado;
         $empleado = DB::select('select a.email as admin_email, a.nombre as admin_nombre, a.apellidos as admin_apellidos, e.nombre, e.apellidos, e.cedula, e.id_manager, e.fecha_ingreso, e.email  from empleado e inner join empleado a ON e.id_manager=a.cedula where e.cedula = ?', [$idEmp]);
