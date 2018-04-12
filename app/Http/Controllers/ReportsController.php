@@ -69,7 +69,7 @@ class ReportsController extends Controller
         $reporter = $this->getAuthUser()[0];
         $empId = $request->selectEmployee;
         $employee = DB::select("select nombre, apellidos, cedula, direccion, celular, puesto, salario, date_format(fecha_nacimiento, '%d/%m/%Y') as fecha_nacimiento, date_format(fecha_ingreso, '%d/%m/%Y') as fecha_ingreso, email from empleado where cedula=?", [$empId])[0];
-        $date = date('d/m/y');
+        $date = date('d/m/Y');
       } else {
         $reporter = [];
         return redirect()->route('login');
@@ -84,7 +84,7 @@ class ReportsController extends Controller
         $usedDays = DB::select('select count(*) as count from vacaciones where id_empleado = ? and estado in (?,?)', [$empId, 'pendiente', 'aprobado'])[0];
         $employee = DB::select("select nombre, apellidos, cedula, fecha_ingreso from empleado where cedula=?", [$empId])[0];
         $days = DB::select("select date_format(fecha, '%d-%m-%Y') as f_fecha from vacaciones where id_empleado = ? and estado = ? order by fecha desc", [$empId, 'aprobado']);
-        $date = date('d/m/y');
+        $date = date('d/m/Y');
         $availableDays = $this->getAvailableDays($empId, $employee->fecha_ingreso);
         $periods = $this->getVacationsPeriods($employee->fecha_ingreso, $usedDays->count);
       } else {
@@ -92,6 +92,49 @@ class ReportsController extends Controller
         return redirect()->route('login');
       }    
       return view('vacationsReport', ['reporter' => $reporter, 'creationDate' => $date, 'employee' => $employee, 'days' => $days, 'availableDays' => $availableDays, 'periods' => $periods]);
+    }
+
+    public function createPermissionsReport (Request $request) {
+      if (Auth::user()) {
+        $reporter = $this->getAuthUser()[0];
+        $empId = $request->selectEmployee;
+        $employee = DB::select("select nombre, apellidos, cedula, fecha_ingreso, salario from empleado where cedula=?", [$empId])[0];
+        $days = DB::select("select date_format(fecha, '%d-%m-%Y') as f_fecha, reposicion, cant_horas from ausencias where id_empleado = ? and estado = ? order by fecha desc", [$empId, 'aprobado']);
+        $date = date('d/m/Y');
+        foreach ($days as $day) {
+          $affect = 0;
+          if ($day->reposicion == 0) {
+              $affect = ($employee->salario / 30) * $day->cant_horas;
+          }    
+          $day->afectacion = $affect;
+        }
+      } else {
+        $reporter = [];
+        return redirect()->route('login');
+      }    
+      return view('permissionsReport', ['reporter' => $reporter, 'creationDate' => $date, 'employee' => $employee, 'days' => $days]);
+    }
+
+    public function createIncapacityReport (Request $request) {
+      if (Auth::user()) {
+        $reporter = $this->getAuthUser()[0];
+        $empId = $request->selectEmployee;
+        $employee = DB::select("select nombre, apellidos, cedula, fecha_ingreso, salario from empleado where cedula=?", [$empId])[0];
+        $days = DB::select("select date_format(fecha_inicio, '%d-%m-%Y') as f_fecha_i, date_format(fecha_fin, '%d-%m-%Y') as f_fecha_f from incapacidades where id_empleado = ? order by fecha_inicio desc", [$empId]);
+        $date = date('d/m/Y');
+        foreach ($days as $day) {
+          $salDay = $employee->salario / 30;
+          $affect1 =  $salDay * 0.50;
+          $affect2 =  $salDay * 0.60;
+          $day->afectacionCCSS1 = $affect1;
+          $day->afectacionCCSS2 = $affect2;
+          $day->afectacionPatrono = $affect1;
+        }
+      } else {
+        $reporter = [];
+        return redirect()->route('login');
+      }    
+      return view('incapacityReport', ['reporter' => $reporter, 'creationDate' => $date, 'employee' => $employee, 'days' => $days]);
     }
 
 }

@@ -57,3 +57,5 @@ Route::post('/contratos/comprobacion/ingresar', 'ContractsController@storeCalcul
 Route::get('/reportes', 'ReportsController@showView');
 Route::post('/reportes/generar/datos', 'ReportsController@createEmployeeReport');
 Route::post('/reportes/generar/vacaciones', 'ReportsController@createVacationsReport');
+Route::post('/reportes/generar/ausencias', 'ReportsController@createPermissionsReport');
+Route::post('/reportes/generar/incapacidades', 'ReportsController@createIncapacityReport');
