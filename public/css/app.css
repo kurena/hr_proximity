@@ -144,3 +144,31 @@ select.formatted {
 	margin-left: 60px;
 	float: left;
 }
+
+.btn-primary.align-left {
+	display:block;
+}
+
+.contracts-report .info-content, .contracts-report .detail-content{
+	width: 50%;
+  float: left;
+}
+
+.contracts-report .info-content ul.list-group {
+	width: 80%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.contracts-report .detail-content table {
+	width: 70%;
+  margin: 0 auto;
+}
+
+.contracts-report h3 {
+	text-align: center;
+}
+
+.report-logo {
+	float:left;
+}

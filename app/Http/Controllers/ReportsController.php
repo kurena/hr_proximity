@@ -137,4 +137,40 @@ class ReportsController extends Controller
       return view('incapacityReport', ['reporter' => $reporter, 'creationDate' => $date, 'employee' => $employee, 'days' => $days]);
     }
 
+    public function createContractsReport (Request $request) {
+      if (Auth::user()) {
+        $reporter = $this->getAuthUser()[0];
+        $contractId = $request->id;
+        $contract = DB::select("select e.nombre, e.apellidos, c.nombre as nombre_contrato, c.tipo, c.forma_pago, c.monto,  date_format(fecha_inicio, '%d/%m/%Y') as fecha_inicio, date_format(fecha_fin, '%d/%m/%Y') as fecha_fin from contratos c inner join empleado e on c.id_empleado = e.cedula where id=?", [$contractId])[0];
+        $calculations = DB::select("select date_format(fecha, '%d/%m/%Y') as fecha_f, monto from contratos_comprobacion where id_contrato = ? order by fecha desc", [$contractId]);
+        $date = date('d/m/Y');
+        $total = 0;
+        foreach ($calculations as $calculation) {
+          $total += $calculation->monto;  
+        }
+      } else {
+        $reporter = [];
+        return redirect()->route('login');
+      }    
+      return view('contractsReport', ['reporter' => $reporter, 'creationDate' => $date, 'contract' => $contract, 'calculations' => $calculations, 'total' => $total]);
+    }
+
+    public function createTravelExpenseReport (Request $request) {
+      if (Auth::user()) {
+        $reporter = $this->getAuthUser()[0];
+        $expenseId = $request->id;
+        $expense = DB::select("select e.nombre, e.apellidos, v.tipo, v.total, v.descripcion, date_format(v.fecha, '%d/%m/%Y') as fecha from viaticos v inner join empleado e on v.id_empleado = e.cedula where id=?", [$expenseId])[0];
+        $calculations = DB::select("select date_format(fecha, '%d/%m/%Y') as fecha_f, monto, tipo, descripcion from viaticos_comprobacion where id_viatico = ? order by fecha desc", [$expenseId]);
+        $date = date('d/m/Y');
+        $total = 0;
+        foreach ($calculations as $calculation) {
+          $total += $calculation->monto;  
+        }
+      } else {
+        $reporter = [];
+        return redirect()->route('login');
+      }    
+      return view('travelExpenseReport', ['reporter' => $reporter, 'creationDate' => $date, 'expense' => $expense, 'calculations' => $calculations, 'total' => $total]);
+    }
+
 }

@@ -20,24 +20,32 @@
   </ol>
   <div class="permissions-requested">
     <h4>Viáticos</h4>
-    <table class="table table-bordered" id="requestedPermissions">
+    <table class="table table-bordered" id="travel-expense">
       <thead>
         <tr>
+          <th scope="col"></th>
           <th scope="col">Fecha ingreso</th>
           <th scope="col">Tipo</th>
           <th scope="col">Colaborador</th>
-          <th scope="col">Descripción</th>
           <th scope="col">Monto total</th>
+          <th scope="col">Descripción</th>
         </tr>
       </thead>
       <tbody>
         @foreach ($expenses as $expense)
         <tr class="success">
+          <td>
+            <form action="/viaticos/comprobacion/{{$expense->id}}" method="get">
+              {{ csrf_field() }}
+              <input type="hidden" name="_method" value="GET" >
+              <button type="submit" class="btn btn-primary">Comprobación</button>
+            </form>
+          </td>
           <td>{{$expense->fecha}}</td>
           <td>{{$expense->tipo}}</td>
           <td>{{$expense->nombre}} {{$expense->apellidos}}</td>
-          <td>{{$expense->descripcion}}</td>
           <td>${{$expense->total}}</td>
+          <td>{{$expense->descripcion}}</td>
         </tr>
         @endforeach
       </tbody>
@@ -78,4 +86,5 @@
     </form>
   </div>
 </div>
+<script type="text/javascript" src="{{ asset('js/util.js') }}"></script>
 @endsection

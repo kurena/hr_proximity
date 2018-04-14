@@ -20,6 +20,7 @@
     <li class="breadcrumb-item active">Comprobación</li>
   </ol>
   <div class="permissions-requested">
+    <button type="button" class="align-left btn btn-primary" onclick="location.href = '/reportes/generar/viaticos/{{$expenseId}}'">Generar reporte de viatico</button>
     <h4>Comprobación de Víaticos</h4>
     <table class="table table-bordered" id="requestedPermissions">
       <thead>

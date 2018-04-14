@@ -21,7 +21,7 @@ class TravelExpenseController extends Controller
     public function showView () {
         if (Auth::user()) {
             $empleado = $this->getAuthUser()[0];
-            $expenses = DB::select("select date_format(v.fecha, '%d-%m-%Y') as fecha, v.tipo, v.descripcion, v.total, e.nombre, e.apellidos from viaticos v inner join empleado e on e.cedula=v.id_empleado", []);
+            $expenses = DB::select("select date_format(v.fecha, '%d-%m-%Y') as fecha, v.tipo, v.descripcion, v.total, v.id, e.nombre, e.apellidos from viaticos v inner join empleado e on e.cedula=v.id_empleado", []);
             $employees = DB::select("select nombre, apellidos, cedula from empleado");
             $actualDay = date('d-m-Y');
           } else {

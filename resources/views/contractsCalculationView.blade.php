@@ -19,6 +19,7 @@
     <li class="breadcrumb-item"><a href="/contratos">Contratos</a></li>
     <li class="breadcrumb-item active">Comprobación</li>
   </ol>
+  <button type="button" class="align-left btn btn-primary" onclick="location.href = '/reportes/generar/contratos/{{$contractId}}'">Generar reporte de contrato</button>
   <div class="permissions-requested">
     <h4>Comprobación de Contratos</h4>
     <table class="table table-bordered" id="requestedPermissions">

@@ -24,14 +24,6 @@
     <form action="/reportes/generar/datos" method="POST" id="reportsForm">
       {{ csrf_field() }}
       <div class="form-row">
-          <label for="selectEmployee">Colaborador:<span class="required">*</span></label>
-          <select class="form-control formatted" name="selectEmployee">
-          @foreach ($employees as $employee)
-            <option value="{{$employee->cedula}}">{{ $employee->nombre }} {{ $employee->apellidos }}</option>
-          @endforeach
-          </select>
-      </div>
-      <div class="form-row">
           <label for="selectType">Tipo de reporte:<span class="required">*</span></label>
           <select class="form-control formatted" name="selectType" id="selectType">
             <option value="datos">Datos colaborador</option>
@@ -39,8 +31,14 @@
             <option value="vacaciones">Vacaciones</option>
             <option value="incapacidades">Incapacidades</option>
             <option value="ausencias">Ausencias</option>
-            <option value="contratos">Contratos</option>
-            <option value="viaticos">Viáticos</option>
+          </select>
+      </div>
+      <div class="form-row">
+          <label for="selectEmployee">Colaborador:<span class="required">*</span></label>
+          <select class="form-control formatted" name="selectEmployee">
+          @foreach ($employees as $employee)
+            <option value="{{$employee->cedula}}">{{ $employee->nombre }} {{ $employee->apellidos }}</option>
+          @endforeach
           </select>
       </div>
       <div class="form-row">
