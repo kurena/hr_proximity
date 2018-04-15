@@ -20,7 +20,7 @@ class IncapacityController extends Controller
     public function showView () {
         if (Auth::user()) {
             $empleado = $this->getAuthUser()[0];
-            $activeDays = DB::select("select date_format(i.fecha_inicio, '%d-%m-%Y') as fecha_inicio, date_format(i.fecha_fin, '%d-%m-%Y') as fecha_fin, i.comentarios, e.nombre, e.apellidos from incapacidades i inner join empleado e on e.cedula=i.id_empleado", []);
+            $activeDays = DB::select("select date_format(i.fecha_inicio, '%d-%m-%Y') as fecha_inicio, date_format(i.fecha_fin, '%d-%m-%Y') as fecha_fin, i.comentarios, i.id, e.nombre, e.apellidos from incapacidades i inner join empleado e on e.cedula=i.id_empleado", []);
             $employees = DB::select("select nombre, apellidos, cedula from empleado");
           } else {
             $empleado = [0 => ''];
@@ -52,5 +52,46 @@ class IncapacityController extends Controller
       return redirect('/incapacidades')->with('status', 'Incapacidad ingresada correctamente!');
            
     }
+
+    public function delete(Request $request) {
+        $contract = TravelExpense::find($request->id);
+        $contract->delete();
+        return redirect('/incapacidades')->with('status', 'Incapacidade eliminada!');
+    }
+
+    public function getIncapacityInformation(Request $request) {
+        if (Auth::user()) {
+            $incapacityId = $request->id;
+            $incapacity = DB::select("select date_format(fecha_inicio, '%d-%m-%Y') as fecha_inicio, date_format(fecha_fin, '%d-%m-%Y') as fecha_fin, comentarios, id, id_empleado from incapacidades where id=?", [$incapacityId])[0];
+          } else {
+            $empleado = [0 => ''];
+            $admins = [0 => ''];
+            return redirect()->route('login');
+        }
+        return ['incapacity' => $incapacity];
+    }
+
+    public function updateIncapacity(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'fecha_inicio' => 'required|date',
+            'fecha_fin' => 'required|date',
+            'comentarios' => 'required|string|max:300'
+        ]);
+        if ($validator->fails()) {
+            return redirect('/incapacidades')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+        $incapacity = Incapacity::find($request->id);
+        $dateStart = new DateTime($request->fecha_inicio);
+        $dateEnd = new DateTime($request->fecha_fin);
+        $incapacity->id_empleado = $request->selectEmployee;
+        $incapacity->fecha_inicio = $dateStart->format('Y-m-d');
+        $incapacity->fecha_fin = $dateEnd->format('Y-m-d');
+        $incapacity->comentarios = $request->comentarios; 
+        $incapacity->save();  
+        return redirect('/incapacidades')->with('status', 'Incapacidad modificada!');
+    }
+
 
 }

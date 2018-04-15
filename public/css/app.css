@@ -172,3 +172,23 @@ select.formatted {
 .report-logo {
 	float:left;
 }
+
+.panel-heading .show-menu, .panel-heading .hide-menu {
+	float:right;
+}
+.panel-heading:not(.collapsed)  .hide-menu{
+	display:inline-block;
+}
+.panel-heading:not(.collapsed)  .show-menu{
+	display:none;
+}
+.panel-heading.collapsed .hide-menu {
+	display:none;
+}
+.panel-heading.collapsed .show-menu {
+	display:inline-block;
+}
+
+#contracts-dashboard button, #travel-expense button, #incapacity-view button{
+	width:100%
+}

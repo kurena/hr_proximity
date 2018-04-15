@@ -108,4 +108,41 @@ class TravelExpenseController extends Controller
              
     }
 
+    public function delete(Request $request) {
+        $contract = TravelExpense::find($request->id);
+        $contract->delete();
+        return redirect('/viaticos')->with('status', 'Viatico eliminado!');
+    }
+
+    public function getTravelExpenseInformation(Request $request) {
+        if (Auth::user()) {
+            $expenseId = $request->id;
+            $expense = DB::select("select tipo, total, id, descripcion, id_empleado from viaticos where id=?", [$expenseId])[0];
+          } else {
+            $empleado = [0 => ''];
+            $admins = [0 => ''];
+            return redirect()->route('login');
+        }
+        return ['expense' => $expense];
+    }
+
+    public function updateTravelExpense(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'descripcion' => 'required|string|max:300',
+            'monto' => 'required|numeric'
+        ]);
+        if ($validator->fails()) {
+            return redirect('/viaticos')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+        $expense = TravelExpense::find($request->id);
+        $expense->id_empleado = $request->selectEmployee;
+        $expense->descripcion = $request->descripcion; 
+        $expense->total = $request->monto; 
+        $expense->tipo = $request->selectType; 
+        $expense->save();  
+        return redirect('/viaticos')->with('status', 'Viático modificado!');
+    }
+
 }

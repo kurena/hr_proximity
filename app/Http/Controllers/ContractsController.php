@@ -94,8 +94,54 @@ class ContractsController extends Controller
         $calculation->fecha = $date->format('Y-m-d');
         $calculation->monto = $request->monto; 
         $calculation->save();  
-        return redirect('/contratos/comprobacion/'.$contractId)->with('status', 'Comprobación ingresada correctamente!');
-             
+        return redirect('/contratos/comprobacion/'.$contractId)->with('status', 'Comprobación ingresada correctamente!'); 
+    }
+
+    public function delete(Request $request) {
+        $contract = Contracts::find($request->id);
+        $contract->delete();
+        return redirect('/contratos')->with('status', 'Contrato eliminado!');
+    }
+
+    public function getContractInformation(Request $request) {
+        if (Auth::user()) {
+            $contractId = $request->id;
+            $contract = DB::select("select date_format(fecha_inicio, '%d-%m-%Y') as fecha_inicio, date_format(fecha_fin, '%d-%m-%Y') as fecha_fin, tipo, nombre, id, forma_pago, monto, multa, id_empleado from contratos where id=?", [$contractId])[0];
+          } else {
+            $empleado = [0 => ''];
+            $admins = [0 => ''];
+            return redirect()->route('login');
+        }
+        return ['contract' => $contract];
+    }
+
+    public function updateContract(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'nombre_contrato' => 'required|string|max:50',
+            'fecha_inicio' => 'required|date',
+            'multa' => 'required|numeric',
+            'monto' => 'required|numeric'
+        ]);
+        if ($validator->fails()) {
+            return redirect('/contratos')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+        $contract = Contracts::find($request->id);
+        $contract->id_empleado = $request->selectEmployee;
+        $date = new DateTime($request->fecha_inicio);
+        $contract->fecha_inicio = $date->format('Y-m-d');
+        if ($request->fecha_fin && !empty($request->fecha_fin) ) {
+          $date = new DateTime($request->fecha_fin);
+          $contract->fecha_fin = $date->format('Y-m-d');
+        }
+        $contract->nombre = $request->nombre_contrato; 
+        $contract->monto = $request->monto; 
+        $contract->tipo = $request->selectType; 
+        $contract->forma_pago = $request->selectPayType; 
+        $contract->multa = $request->multa; 
+        $contract->save();  
+        return redirect('/contratos')->with('status', 'Contrato actualizado!');
     }
 
 }

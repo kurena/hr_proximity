@@ -73,6 +73,7 @@
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li><a href="/viaticos">Consultar/Ingresar</a></li>
+                                        <li><a href="/viaticos/empleado/{{$empleado->cedula}}">Consultar mis viaticos</a></li>
                                     </ul>
                                 </div>
                                 <div class="btn-group">

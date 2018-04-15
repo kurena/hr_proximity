@@ -26,7 +26,7 @@
           <th scope="col"></th>
           <th scope="col">Fecha ingreso</th>
           <th scope="col">Tipo</th>
-          <th scope="col">Colaborador</th>
+          <th scope="col">Empleado</th>
           <th scope="col">Monto total</th>
           <th scope="col">Descripción</th>
         </tr>
@@ -40,9 +40,17 @@
               <input type="hidden" name="_method" value="GET" >
               <button type="submit" class="btn btn-primary">Comprobación</button>
             </form>
+            <br>
+            <form class="deleteExpense" action="/viaticos/eliminar/{{$expense->id}}" method="post">
+                {{ csrf_field() }}
+                <input type="hidden" name="_method" value="DELETE" >
+                <button type="submit" class="btn btn-primary">Eliminar</button>
+            </form>
+            <br>
+            <button value="{{$expense->id}}" class="edit-expense btn btn-primary">Editar</button>
           </td>
           <td>{{$expense->fecha}}</td>
-          <td>{{$expense->tipo}}</td>
+          <td>{{ucfirst(trans($expense->tipo))}}</td>
           <td>{{$expense->nombre}} {{$expense->apellidos}}</td>
           <td>${{$expense->total}}</td>
           <td>{{$expense->descripcion}}</td>
@@ -52,8 +60,8 @@
     </table>
   </div>
   <div class="panel panel-info permissions-request">
-    <div class="panel-heading">Ingresar nuevo viático</div>
-    <form action="/viaticos/ingresar" method="POST">
+    <div href="#show" data-toggle="collapse" class="panel-heading collapsed"><span>Ingresar nuevo viático</span><i class="show-menu fas fa-chevron-circle-down fa-lg"></i><i class="hide-menu fas fa-chevron-circle-up fa-lg"></i></div>
+    <form action="/viaticos/ingresar" method="POST" id="show" class="collapse">
       {{ csrf_field() }}
       <div class="form-row">
         <label for="dia">Tipo:<span class="required">*</span></label>
@@ -63,7 +71,7 @@
         </select>
       </div>
       <div class="form-row">
-          <label for="selectEmployee">Colaborador:<span class="required">*</span></label>
+          <label for="selectEmployee">Empleado:<span class="required">*</span></label>
           <select class="form-control formatted" name="selectEmployee">
           @foreach ($employees as $employee)
             <option value="{{$employee->cedula}}">{{ $employee->nombre }} {{ $employee->apellidos }}</option>
@@ -86,5 +94,29 @@
     </form>
   </div>
 </div>
+<script>
+  $(document).ready(function () {
+    $(".deleteExpense").on("submit", function(){
+      return confirm("¿Desea eliminar este viatico?");
+    });
+    $(".edit-expense").click(function(el){
+      $.get("/viaticos/modificar/"+el.target.value, function(result){
+        //If Collapsed then open
+        $isCollapsed = $('.panel-heading').hasClass('collapsed');
+        if ($isCollapsed) {
+          $('.panel-heading').trigger('click');
+        }
+        $('.panel-heading span').text('Modificar viatico');
+        $('form#show button').text('Modificar');
+        $('form#show').attr('action', '/viaticos/modificar/'+ result.expense.id);  
+        //Fill Form
+        $('select[name=selectType]')[0].value = result.expense.tipo;
+        $('select[name=selectEmployee]')[0].value = result.expense.id_empleado;
+        $('input[name=monto]')[0].value = result.expense.total;
+        $('textarea[name=descripcion]')[0].value = result.expense.descripcion;
+      });
+    });
+  });
+</script>  
 <script type="text/javascript" src="{{ asset('js/util.js') }}"></script>
 @endsection
