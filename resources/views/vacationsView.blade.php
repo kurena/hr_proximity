@@ -31,6 +31,7 @@
     <table class="table table-bordered" id="requestedVacations">
       <thead>
         <tr>
+          <th scope="col"></th>
           <th scope="col">Día</th>
           <th scope="col">Estado</th>
         </tr>
@@ -44,6 +45,17 @@
         @else
         <tr class="danger">
         @endif
+          <td>
+            @if ($day->estado == 'pendiente')
+            <form class="deleteVacation" action="/vacaciones/eliminar/{{$day->id}}" method="post">
+                {{ csrf_field() }}
+                <input type="hidden" name="_method" value="DELETE" >
+                <button type="submit" class="btn btn-primary">Eliminar</button>
+            </form>
+            <br>
+            <button value="{{$day->id}}" class="edit-vacation btn btn-primary">Editar</button>
+            @endif
+          </td>
           <td>{{$day->fecha}}</td>
           <td>{{ ucfirst(trans($day->estado)) }}</td>
         </tr>
@@ -52,8 +64,8 @@
     </table>
   </div>
   <div class="panel panel-info vacations-request">
-    <div class="panel-heading">Solicitar vacaciones</div>
-    <form action="/vacaciones/solicitar" method="POST">
+    <div href="#show" data-toggle="collapse" class="panel-heading collapsed"><span>Solicitar vacaciones</span><i class="show-menu fas fa-chevron-circle-down fa-lg"></i><i class="hide-menu fas fa-chevron-circle-up fa-lg"></i></div>
+    <form action="/vacaciones/solicitar" method="POST" id="show" class="collapse"> 
       {{ csrf_field() }}
       <div class="form-row">
         <label for="dias">Día(s) a solicitar:<span class="required">*</span></label>
@@ -102,6 +114,33 @@
         language: 'es'
       });
     });
+
+    $(".deleteVacation").on("submit", function(){
+        return confirm("¿Desea eliminar esta solicitud de vacaciones?");
+    });
+
+    $(".edit-vacation").click(function(el){
+      $('.datepicker').datepicker('remove');
+      $('.datepicker').datepicker({
+        startDate: '+1d',
+        daysOfWeekDisabled: [0,6],
+        language: 'es'
+      });
+      $.get("/vacaciones/modificar/"+el.target.value, function(result){
+        //If Collapsed then open
+        $isCollapsed = $('.panel-heading').hasClass('collapsed');
+        if ($isCollapsed) {
+          $('.panel-heading').trigger('click');
+        }
+        $('.panel-heading span').text('Modificar solicitud');
+        $('form#show button').text('Modificar');
+        $('form#show').attr('action', '/vacaciones/modificar/'+ result.vacation.id);  
+        //Fill Form
+        $('input[name=dias]')[0].value = result.vacation.fecha;
+      });
+    });
+
   }, 100);
 </script>  
+<script type="text/javascript" src="{{ asset('js/util.js') }}"></script>
 @endsection

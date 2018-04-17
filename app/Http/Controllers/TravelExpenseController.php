@@ -50,7 +50,7 @@ class TravelExpenseController extends Controller
         if (Auth::user()) {
             $empleado = $this->getAuthUser()[0];
             $expenseId = $request->id;
-            $expenses = DB::select("select date_format(v.fecha, '%d-%m-%Y') as fecha, v.tipo, v.descripcion, v.monto, e.total from viaticos_comprobacion v inner join viaticos e on e.id=v.id_viatico where v.id_viatico=?", [$expenseId]);
+            $expenses = DB::select("select date_format(v.fecha, '%d-%m-%Y') as fecha, v.tipo, v.descripcion, v.monto, e.total, v.id from viaticos_comprobacion v inner join viaticos e on e.id=v.id_viatico where v.id_viatico=?", [$expenseId]);
         } else {
             $empleado = [0 => ''];
             return redirect()->route('login');
@@ -103,8 +103,7 @@ class TravelExpenseController extends Controller
         $calculation->monto = $request->monto; 
         $calculation->tipo = $request->selectType; 
         $calculation->save();  
-        return redirect('/viaticos/comprobacion/'.$expenseId)->with('status', 'Comprobación ingresada 
-        correctamente!');
+        return redirect('/viaticos/comprobacion/'.$expenseId)->with('status', 'Comprobación ingresada correctamente!');
              
     }
 
@@ -112,6 +111,24 @@ class TravelExpenseController extends Controller
         $contract = TravelExpense::find($request->id);
         $contract->delete();
         return redirect('/viaticos')->with('status', 'Viatico eliminado!');
+    }
+
+    public function deleteCalculation(Request $request) {
+        $contract = TravelExpenseCalculation::find($request->id);
+        $contract->delete();
+        return redirect('/viaticos/comprobacion/'.$request->expenseId)->with('status', 'Comprobación eliminada!');
+    }
+
+    public function getCalculationInformation(Request $request) {
+        if (Auth::user()) {
+            $calculationId = $request->id;
+            $calculation = DB::select("select date_format(fecha, '%d-%m-%Y') as fecha, tipo, monto, id, descripcion from viaticos_comprobacion where id=?", [$calculationId])[0];
+          } else {
+            $empleado = [0 => ''];
+            $admins = [0 => ''];
+            return redirect()->route('login');
+        }
+        return ['calculation' => $calculation];
     }
 
     public function getTravelExpenseInformation(Request $request) {
@@ -143,6 +160,28 @@ class TravelExpenseController extends Controller
         $expense->tipo = $request->selectType; 
         $expense->save();  
         return redirect('/viaticos')->with('status', 'Viático modificado!');
+    }
+
+    public function updateCalculation(Request $request) {
+        $expenseId = $request->expenseId;
+        $validator = Validator::make($request->all(), [
+            'descripcion' => 'required|string|max:300',
+            'fecha' => 'required|date',
+            'monto' => 'required|numeric'
+        ]);
+        if ($validator->fails()) {
+            return redirect('/viaticos/comprobacion/'.$expenseId)
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+        $calculation = TravelExpenseCalculation::find($request->id);
+        $date = new DateTime($request->fecha);
+        $calculation->fecha = $date->format('Y-m-d');
+        $calculation->descripcion = $request->descripcion; 
+        $calculation->monto = $request->monto; 
+        $calculation->tipo = $request->selectType; 
+        $calculation->save();  
+        return redirect('/viaticos/comprobacion/'.$expenseId)->with('status', 'Comprobación modificada correctamente!');
     }
 
 }

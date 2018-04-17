@@ -25,6 +25,7 @@
     <table class="table table-bordered" id="requestedPermissions">
       <thead>
         <tr>
+          <th></th>
           <th scope="col">Fecha</th>
           <th scope="col">Monto</th>
         </tr>
@@ -32,6 +33,16 @@
       <tbody>
         @foreach ($contracts as $contract)
         <tr class="info">
+          <td>
+            <form class="deleteExpense" action="/contratos/comprobacion/eliminar/{{$contract->id}}" method="post">
+                {{ csrf_field() }}
+                <input type="hidden" name="_method" value="DELETE" >
+                <input type="hidden" name="contractId" value="{{$contractId}}" >
+                <button type="submit" class="btn btn-primary">Eliminar</button>
+            </form>
+            <br>
+            <button value="{{$contract->id}}" class="edit-expense btn btn-primary">Editar</button>
+          </td>
           <td>{{$contract->fecha}}</td>
           <td>${{$contract->monto}}</td>
         </tr>
@@ -40,8 +51,8 @@
     </table>
   </div>
   <div class="panel panel-info permissions-request">
-    <div class="panel-heading">Ingresar nueva comprobación de contrato</div>
-    <form action="/contratos/comprobacion/ingresar" method="POST">
+    <div href="#show" data-toggle="collapse" class="panel-heading collapsed"><span>Ingresar nueva comprobación de contrato</span><i class="show-menu fas fa-chevron-circle-down fa-lg"></i><i class="hide-menu fas fa-chevron-circle-up fa-lg"></i></div>
+    <form action="/contratos/comprobacion/ingresar" method="POST" id="show" class="collapse">
       {{ csrf_field() }}
       <div class="form-row">
         <label for="fecha">Fecha:<span class="required">*</span></label>
@@ -65,6 +76,26 @@
     $(document).ready(function () {
       $('.datepicker').datepicker({
         language: 'es'
+      });
+    });
+
+    $(".deleteExpense").on("submit", function(){
+      return confirm("¿Desea eliminar esta comprobación?");
+    });
+
+    $(".edit-expense").click(function(el){
+      $.get("/contratos/comprobacion/modificar/"+el.target.value, function(result){
+        //If Collapsed then open
+        $isCollapsed = $('.panel-heading').hasClass('collapsed');
+        if ($isCollapsed) {
+          $('.panel-heading').trigger('click');
+        }
+        $('.panel-heading span').text('Modificar comprobación');
+        $('form#show button').text('Modificar');
+        $('form#show').attr('action', '/contratos/comprobacion/modificar/'+ result.calculation.id);  
+        //Fill Form
+        $('input[name=fecha]')[0].value = result.calculation.fecha;
+        $('input[name=monto]')[0].value = result.calculation.monto;
       });
     });
   }, 100);

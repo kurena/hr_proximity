@@ -29,7 +29,7 @@ class VacationsController extends Controller
         if (Auth::user()) {
             $empleado = $this->getAuthUser()[0];
             $usedDays = DB::select('select count(*) as count from vacaciones where id_empleado = ? and estado in (?,?)', [$empleado->cedula, 'pendiente', 'aprobado'])[0];
-            $requestedDays = DB::select("select date_format(fecha, '%d-%m-%Y') as fecha, estado from vacaciones where id_empleado = ?", [$empleado->cedula]);
+            $requestedDays = DB::select("select date_format(fecha, '%d-%m-%Y') as fecha, estado, id from vacaciones where id_empleado = ?", [$empleado->cedula]);
             $admins = DB::select('select cedula, nombre, apellidos from empleado where rol = ?', ['administrador']);
             $date = DateTime::createFromFormat('Y-m-d', $empleado->fecha_ingreso);
             $availableDays = (date("Y") - $date->format('Y')) * $this->PERIOD_DAYS;
@@ -104,7 +104,7 @@ class VacationsController extends Controller
             $vacations->fecha = $date->format('Y-m-d');
             $vacations->estado = 'pendiente';  
             $vacations->save();  
-            $this->request_email($request->adminName, $request->adminEmail, $request->employeeName, $day);
+            //$this->request_email($request->adminName, $request->adminEmail, $request->employeeName, $day);
         } 
         return redirect('/vacaciones')->with('status', 'Vacaciones solicitadas!');
              
@@ -120,5 +120,41 @@ class VacationsController extends Controller
         }
         return redirect('vacaciones/aprobar')->with('status', 'Estado de vacaciones actualizado!');
     } 
+
+    public function delete(Request $request) {
+        $vacation = Vacations::find($request->id);
+        $vacation->delete();
+        return redirect('/vacaciones')->with('status', 'Solicitud eliminada!');
+    }
+
+    public function getVacationInformation(Request $request) {
+        if (Auth::user()) {
+            $vacationId = $request->id;
+            $vacation = DB::select("select date_format(fecha, '%d-%m-%Y') as fecha, id, id_empleado, estado from vacaciones where id=?", [$vacationId])[0];
+          } else {
+            $empleado = [0 => ''];
+            $admins = [0 => ''];
+            return redirect()->route('login');
+        }
+        return ['vacation' => $vacation];
+    }
+
+    public function updateVacation(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'dias' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return redirect('/vacaciones')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+        $vacation = Vacations::find($request->id);
+        $date = new DateTime($request->dias);
+        $vacation->fecha = $date->format('Y-m-d');
+        $vacation->estado = 'pendiente';  
+        $vacation->save();  
+        //$this->request_email($request->adminName, $request->adminEmail, $request->employeeName, $day);
+        return redirect('/vacaciones')->with('status', 'Solicitud modificada!');
+    }
 
 }

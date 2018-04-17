@@ -22,7 +22,7 @@
     <h4>Permisos pendientes de aprobación</h4>
     <form action="/permisos/actualizarestado" method="POST">  
     {{ csrf_field() }}
-      <table class="table table-bordered" id="requestedVacations">
+      <table class="table table-bordered" id="requestedPermissions">
         <thead>
           <tr>
             <th scope="col">Día</th>
@@ -66,9 +66,10 @@
   </div>
   <div class="permissions-approved">
     <h4>Permisos aprobados/no aprobados</h4>
-    <table class="table table-bordered" id="approvedVacations">
+    <table class="table table-bordered" id="approvedPermissions">
       <thead>
         <tr>
+          <th></th>
           <th scope="col">Día</th>
           <th scope="col">Colaborador</th>
           <th scope="col">Cantidad horas</th>
@@ -81,6 +82,13 @@
       <tbody>
         @foreach ($approvedDays as $day)
         <tr class="{{ $day->estado=='aprobado' ? 'success' : 'danger'}}">
+          <td>
+            <form class="deletePermission" action="/permisos/eliminar/{{$day->id}}" method="post">
+              {{ csrf_field() }}
+              <input type="hidden" name="_method" value="DELETE" >
+              <button type="submit" class="btn btn-primary">Eliminar</button>
+            </form>
+          </td>
           <td>{{$day->fecha}}</td>
           <td>{{$day->nombre}} {{$day->apellidos}}</td>
           <td>{{$day->cant_horas}}</td>
@@ -94,4 +102,10 @@
     </table>
   </div>
 </div> 
+<script>
+$(".deletePermission").on("submit", function(){
+  return confirm("¿Desea eliminar esta solicitud de permiso de ausencia?");
+});
+</script>  
+<script type="text/javascript" src="{{ asset('js/util.js') }}"></script> 
 @endsection

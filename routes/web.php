@@ -28,12 +28,18 @@ Route::get('/vacaciones', 'VacationsController@showView');
 Route::get('/vacaciones/aprobar', 'VacationsController@showApprovalView');
 Route::post('/vacaciones/actualizarestado', 'VacationsController@updateStatus');
 Route::post('/vacaciones/solicitar', 'VacationsController@store');
+Route::delete('/vacaciones/eliminar/{id}', 'VacationsController@delete');
+Route::get('/vacaciones/modificar/{id}', 'VacationsController@getVacationInformation');
+Route::post('/vacaciones/modificar/{id}', 'VacationsController@updateVacation');
 
 //Permisos
 Route::get('/permisos', 'PermissionsController@showView');
 Route::get('/permisos/aprobar', 'PermissionsController@showApprovalView');
 Route::post('/permisos/actualizarestado', 'PermissionsController@updateStatus');
 Route::post('/permisos/solicitar', 'PermissionsController@store');
+Route::delete('/permisos/eliminar/{id}', 'PermissionsController@delete');
+Route::get('/permisos/modificar/{id}', 'PermissionsController@getPermissionInformation');
+Route::post('/permisos/modificar/{id}', 'PermissionsController@updatePermission');
 
 //Incapacidades
 Route::get('/incapacidades', 'IncapacityController@showView');
@@ -51,6 +57,9 @@ Route::post('/viaticos/comprobacion/ingresar', 'TravelExpenseController@storeCal
 Route::delete('/viaticos/eliminar/{id}', 'TravelExpenseController@delete');
 Route::get('/viaticos/modificar/{id}', 'TravelExpenseController@getTravelExpenseInformation');
 Route::post('/viaticos/modificar/{id}', 'TravelExpenseController@updateTravelExpense');
+Route::delete('/viaticos/comprobacion/eliminar/{id}', 'TravelExpenseController@deleteCalculation');
+Route::get('/viaticos/comprobacion/modificar/{id}', 'TravelExpenseController@getCalculationInformation');
+Route::post('/viaticos/comprobacion/modificar/{id}', 'TravelExpenseController@updateCalculation');
 
 //Contratos
 Route::get('/contratos', 'ContractsController@showView');
@@ -60,6 +69,9 @@ Route::post('/contratos/comprobacion/ingresar', 'ContractsController@storeCalcul
 Route::delete('/contratos/eliminar/{id}', 'ContractsController@delete');
 Route::get('/contratos/modificar/{id}', 'ContractsController@getContractInformation');
 Route::post('/contratos/modificar/{id}', 'ContractsController@updateContract');
+Route::delete('/contratos/comprobacion/eliminar/{id}', 'ContractsController@deleteCalculation');
+Route::get('/contratos/comprobacion/modificar/{id}', 'ContractsController@getCalculationInformation');
+Route::post('/contratos/comprobacion/modificar/{id}', 'ContractsController@updateCalculation');
 
 //Reportes
 Route::get('/reportes', 'ReportsController@showView');

@@ -34,7 +34,7 @@
         @foreach ($activeDays as $day)
         <tr class="success">
           <td>
-          <form class="deleteIncapacity" action="/incapacidades/eliminar/{{$day->id}}" method="post">
+            <form class="deleteIncapacity" action="/incapacidades/eliminar/{{$day->id}}" method="post">
                 {{ csrf_field() }}
                 <input type="hidden" name="_method" value="DELETE" >
                 <button type="submit" class="btn btn-primary">Eliminar</button>

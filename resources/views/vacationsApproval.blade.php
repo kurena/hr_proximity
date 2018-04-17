@@ -65,6 +65,8 @@
     <table class="table table-bordered" id="approvedVacations">
       <thead>
         <tr>
+          <th>
+          </th>
           <th scope="col">Día</th>
           <th scope="col">Colaborador</th>
           <th scope="col">Estado</th>
@@ -73,6 +75,13 @@
       <tbody>
         @foreach ($approvedDays as $day)
         <tr class="{{ $day->estado=='aprobado' ? 'success' : 'danger'}}">
+          <td>
+            <form class="deleteVacation" action="/vacaciones/eliminar/{{$day->id}}" method="post">
+              {{ csrf_field() }}
+              <input type="hidden" name="_method" value="DELETE" >
+              <button type="submit" class="btn btn-primary">Eliminar</button>
+            </form>
+          </td>
           <td>{{$day->fecha}}</td>
           <td>{{$day->nombre}} {{$day->apellidos}}</td>
           <td>{{ ucfirst(trans($day->estado))}}</td>
@@ -81,5 +90,11 @@
       </tbody>
     </table>
   </div>
-</div> 
+</div>
+<script>
+$(".deleteVacation").on("submit", function(){
+  return confirm("¿Desea eliminar esta solicitud de vacaciones?");
+});
+</script> 
+<script type="text/javascript" src="{{ asset('js/util.js') }}"></script>
 @endsection

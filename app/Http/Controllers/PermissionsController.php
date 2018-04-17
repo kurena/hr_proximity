@@ -20,7 +20,7 @@ class PermissionsController extends Controller
     public function showView () {
         if (Auth::user()) {
             $empleado = $this->getAuthUser()[0];
-            $requestedDays = DB::select("select date_format(fecha, '%d-%m-%Y') as fecha, estado, comentarios, cant_horas, reposicion from ausencias where id_empleado = ?", [$empleado->cedula]);
+            $requestedDays = DB::select("select id, date_format(fecha, '%d-%m-%Y') as fecha, estado, comentarios, cant_horas, reposicion from ausencias where id_empleado = ?", [$empleado->cedula]);
         } else {
             $empleado = [0 => ''];
             $admins = [0 => ''];
@@ -82,5 +82,46 @@ class PermissionsController extends Controller
         }
         return redirect('permisos/aprobar')->with('status', 'Estado de permisos actualizado!');
     }
+
+    public function delete(Request $request) {
+        $permission = Permissions::find($request->id);
+        $permission->delete();
+        return redirect('/permisos')->with('status', 'Solicitud eliminada!');
+    }
+
+    public function getPermissionInformation(Request $request) {
+        if (Auth::user()) {
+            $permissionId = $request->id;
+            $permission = DB::select("select date_format(fecha, '%d-%m-%Y') as fecha, id, cant_horas, reposicion, comentarios from ausencias where id=?", [$permissionId])[0];
+          } else {
+            $empleado = [0 => ''];
+            $admins = [0 => ''];
+            return redirect()->route('login');
+        }
+        return ['permission' => $permission];
+    }
+
+    public function updatePermission (Request $request){
+        $validator = Validator::make($request->all(), [
+            'dia' => 'required',
+            'cantidad' => 'required|numeric',
+            'comentarios' => 'required|string|max:300'
+        ]);
+        if ($validator->fails()) {
+            return redirect('/permisos')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+        $permission = Permissions::find($request->id);
+        $date = new DateTime($request->day);
+        $permission->fecha = $date->format('Y-m-d');
+        $permission->cant_horas = $request->cantidad;  
+        $permission->estado = 'pendiente'; 
+        $permission->comentarios = $request->comentarios; 
+        $permission->reposicion = $request->reposicion;
+        $permission->save();  
+        return redirect('/permisos')->with('status', 'Permiso de ausencia modificado!');
+    }
+
 
 }

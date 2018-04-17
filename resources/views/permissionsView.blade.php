@@ -23,6 +23,7 @@
     <table class="table table-bordered" id="requestedPermissions">
       <thead>
         <tr>
+          <th></th>
           <th scope="col">Día</th>
           <th scope="col">Estado</th>
           <th scope="col">Cantidad de horas</th>
@@ -39,6 +40,17 @@
         @else
         <tr class="danger">
         @endif
+          <td>  
+            @if ($day->estado == 'pendiente')
+              <form class="deletePermission" action="/permisos/eliminar/{{$day->id}}" method="post">
+                  {{ csrf_field() }}
+                  <input type="hidden" name="_method" value="DELETE" >
+                  <button type="submit" class="btn btn-primary">Eliminar</button>
+              </form>
+              <br>
+              <button value="{{$day->id}}" class="edit-permission btn btn-primary">Editar</button>
+            @endif
+          </td>  
           <td>{{$day->fecha}}</td>
           <td>{{ ucfirst(trans($day->estado)) }}</td>
           <td>{{ $day->cant_horas }}</td>
@@ -50,8 +62,8 @@
     </table>
   </div>
   <div class="panel panel-info permissions-request">
-    <div class="panel-heading">Solicitar permiso de ausencia</div>
-    <form action="/permisos/solicitar" method="POST">
+    <div href="#show" data-toggle="collapse" class="panel-heading collapsed"><span>Solicitar permiso de ausencia</span><i class="show-menu fas fa-chevron-circle-down fa-lg"></i><i class="hide-menu fas fa-chevron-circle-up fa-lg"></i></div>
+    <form action="/permisos/solicitar" method="POST" id="show" class="collapse">
       {{ csrf_field() }}
       <div class="form-row">
         <label for="manager">Manager:</label>
@@ -99,6 +111,30 @@
         language: 'es'
       });
     });
+
+    $(".deletePermission").on("submit", function(){
+        return confirm("¿Desea eliminar esta solicitud de permiso de ausencia?");
+    });
+
+    $(".edit-permission").click(function(el){
+      $.get("/permisos/modificar/"+el.target.value, function(result){
+        //If Collapsed then open
+        $isCollapsed = $('.panel-heading').hasClass('collapsed');
+        if ($isCollapsed) {
+          $('.panel-heading').trigger('click');
+        }
+        $('.panel-heading span').text('Modificar solicitud');
+        $('form#show button').text('Modificar');
+        $('form#show').attr('action', '/permisos/modificar/'+ result.permission.id);  
+        //Fill Form
+        $('input[name=dia]')[0].value = result.permission.fecha;
+        $('input[name=cantidad]')[0].value = result.permission.cant_horas;
+        $('select[name=reposicion]')[0].value = result.permission.reposicion;
+        $('textarea[name=comentarios]')[0].value = result.permission.comentarios;
+      });
+    });
+
   }, 100);
-</script>  
+</script> 
+<script type="text/javascript" src="{{ asset('js/util.js') }}"></script> 
 @endsection

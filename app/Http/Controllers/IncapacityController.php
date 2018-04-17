@@ -54,9 +54,9 @@ class IncapacityController extends Controller
     }
 
     public function delete(Request $request) {
-        $contract = TravelExpense::find($request->id);
-        $contract->delete();
-        return redirect('/incapacidades')->with('status', 'Incapacidade eliminada!');
+        $incapacity = TravelExpense::find($request->id);
+        $incapacity->delete();
+        return redirect('/incapacidades')->with('status', 'Incapacidad eliminada!');
     }
 
     public function getIncapacityInformation(Request $request) {

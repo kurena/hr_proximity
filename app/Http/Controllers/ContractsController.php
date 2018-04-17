@@ -36,7 +36,7 @@ class ContractsController extends Controller
         if (Auth::user()) {
             $empleado = $this->getAuthUser()[0];
             $contractId = $request->id;
-            $contracts = DB::select("select date_format(cc.fecha, '%d-%m-%Y') as fecha, 
+            $contracts = DB::select("select cc.id, date_format(cc.fecha, '%d-%m-%Y') as fecha, 
             cc.monto from contratos_comprobacion cc inner join contratos c on c.id=cc.id_contrato 
             where cc.id_contrato=?", [$contractId]);
         } else {
@@ -103,6 +103,12 @@ class ContractsController extends Controller
         return redirect('/contratos')->with('status', 'Contrato eliminado!');
     }
 
+    public function deleteCalculation(Request $request) {
+        $contract = ContractsCalculation::find($request->id);
+        $contract->delete();
+        return redirect('/contratos/comprobacion/'.$request->contractId)->with('status', 'Comprobación eliminada!');
+    }
+
     public function getContractInformation(Request $request) {
         if (Auth::user()) {
             $contractId = $request->id;
@@ -113,6 +119,18 @@ class ContractsController extends Controller
             return redirect()->route('login');
         }
         return ['contract' => $contract];
+    }
+
+    public function getCalculationInformation(Request $request) {
+        if (Auth::user()) {
+            $calculationId = $request->id;
+            $calculation = DB::select("select id, date_format(fecha, '%d-%m-%Y') as fecha, monto from contratos_comprobacion where id=?", [$calculationId])[0];
+          } else {
+            $empleado = [0 => ''];
+            $admins = [0 => ''];
+            return redirect()->route('login');
+        }
+        return ['calculation' => $calculation];
     }
 
     public function updateContract(Request $request) {
@@ -142,6 +160,25 @@ class ContractsController extends Controller
         $contract->multa = $request->multa; 
         $contract->save();  
         return redirect('/contratos')->with('status', 'Contrato actualizado!');
+    }
+
+    public function updateCalculation(Request $request) {
+        $contractId = $request->contractId;
+        $validator = Validator::make($request->all(), [
+            'fecha' => 'required|date',
+            'monto' => 'required|numeric'
+        ]);
+        if ($validator->fails()) {
+            return redirect('/contratos/comprobacion/'.$contractId)
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+        $calculation = ContractsCalculation::find($request->id);
+        $date = new DateTime($request->fecha);
+        $calculation->fecha = $date->format('Y-m-d');
+        $calculation->monto = $request->monto; 
+        $calculation->save();  
+        return redirect('/contratos/comprobacion/'.$contractId)->with('status', 'Comprobación modificada correctamente!'); 
     }
 
 }

@@ -189,6 +189,7 @@ select.formatted {
 	display:inline-block;
 }
 
-#contracts-dashboard button, #travel-expense button, #incapacity-view button{
+#contracts-dashboard button, #travel-expense button, #incapacity-view button,
+#requestedVacations button, #requestedPermissions button{
 	width:100%
 }

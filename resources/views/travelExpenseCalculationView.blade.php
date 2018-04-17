@@ -25,6 +25,7 @@
     <table class="table table-bordered" id="requestedPermissions">
       <thead>
         <tr>
+          <th></th>
           <th scope="col">Fecha</th>
           <th scope="col">Tipo</th>
           <th scope="col">Descripción</th>
@@ -34,6 +35,16 @@
       <tbody>
         @foreach ($expenses as $expense)
         <tr class="info">
+          <td>
+            <form class="deleteExpense" action="/viaticos/comprobacion/eliminar/{{$expense->id}}" method="post">
+                {{ csrf_field() }}
+                <input type="hidden" name="_method" value="DELETE" >
+                <input type="hidden" name="expenseId" value="{{$expenseId}}" >
+                <button type="submit" class="btn btn-primary">Eliminar</button>
+            </form>
+            <br>
+            <button value="{{$expense->id}}" class="edit-expense btn btn-primary">Editar</button>
+          </td>
           <td>{{$expense->fecha}}</td>
           <td>{{ucfirst(trans($expense->tipo))}}</td>
           <td>{{$expense->descripcion}}</td>
@@ -44,9 +55,11 @@
           <td> </td>
           <td> </td>
           <td> </td>
+          <td> </td>
           <td><strong>Total: ${{$expense->total}}</strong></td>
         <tr>
         <tr>
+          <td> </td>
           <td> </td>
           <td> </td>
           <td> </td>
@@ -56,14 +69,15 @@
           <td> </td>
           <td> </td>
           <td> </td>
+          <td> </td>
           <td><strong>Diferencia: ${{$expense->total - $reported}}</strong></td>
         <tr>  
       </tbody>
     </table>
   </div>
   <div class="panel panel-info permissions-request">
-    <div class="panel-heading">Ingresar nueva comprobación de viático</div>
-    <form action="/viaticos/comprobacion/ingresar" method="POST">
+    <div href="#show" data-toggle="collapse" class="panel-heading collapsed"><span>Ingresar nueva comprobación de viático</span><i class="show-menu fas fa-chevron-circle-down fa-lg"></i><i class="hide-menu fas fa-chevron-circle-up fa-lg"></i></div>
+    <form action="/viaticos/comprobacion/ingresar" method="POST" id="show" class="collapse">
       {{ csrf_field() }}
       <div class="form-row">
         <label for="dia">Tipo:<span class="required">*</span></label>
@@ -103,6 +117,28 @@
     $(document).ready(function () {
       $('.datepicker').datepicker({
         language: 'es'
+      });
+    });
+
+    $(".deleteExpense").on("submit", function(){
+      return confirm("¿Desea eliminar esta comprobación?");
+    });
+
+    $(".edit-expense").click(function(el){
+      $.get("/viaticos/comprobacion/modificar/"+el.target.value, function(result){
+        //If Collapsed then open
+        $isCollapsed = $('.panel-heading').hasClass('collapsed');
+        if ($isCollapsed) {
+          $('.panel-heading').trigger('click');
+        }
+        $('.panel-heading span').text('Modificar comprobación');
+        $('form#show button').text('Modificar');
+        $('form#show').attr('action', '/viaticos/comprobacion/modificar/'+ result.calculation.id);  
+        //Fill Form
+        $('select[name=selectType]')[0].value = result.calculation.tipo;
+        $('input[name=fecha]')[0].value = result.calculation.fecha;
+        $('input[name=monto]')[0].value = result.calculation.monto;
+        $('textarea[name=descripcion]')[0].value = result.calculation.descripcion;
       });
     });
   }, 100);
