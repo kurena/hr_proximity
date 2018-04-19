@@ -12,6 +12,8 @@
 */
 //Main
 Route::get('/', 'MainController@show');
+Route::get('/cambiarContrasena','MainController@showChangePasswordForm');
+Route::post('/cambiarContrasena','MainController@changePassword');
 Auth::routes();
 
 //Empleados

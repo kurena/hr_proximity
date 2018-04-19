@@ -193,3 +193,9 @@ select.formatted {
 #requestedVacations button, #requestedPermissions button{
 	width:100%
 }
+
+.navbar-right .dropdown-toggle {
+	padding: 0;
+	color: #fff !important;
+	margin-top: 20px;
+}
