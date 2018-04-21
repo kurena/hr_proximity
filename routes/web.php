@@ -62,6 +62,8 @@ Route::post('/viaticos/modificar/{id}', 'TravelExpenseController@updateTravelExp
 Route::delete('/viaticos/comprobacion/eliminar/{id}', 'TravelExpenseController@deleteCalculation');
 Route::get('/viaticos/comprobacion/modificar/{id}', 'TravelExpenseController@getCalculationInformation');
 Route::post('/viaticos/comprobacion/modificar/{id}', 'TravelExpenseController@updateCalculation');
+Route::get('/viaticos/empleado/{id}', 'TravelExpenseController@getExpenseInformation');
+
 
 //Contratos
 Route::get('/contratos', 'ContractsController@showView');
@@ -74,6 +76,7 @@ Route::post('/contratos/modificar/{id}', 'ContractsController@updateContract');
 Route::delete('/contratos/comprobacion/eliminar/{id}', 'ContractsController@deleteCalculation');
 Route::get('/contratos/comprobacion/modificar/{id}', 'ContractsController@getCalculationInformation');
 Route::post('/contratos/comprobacion/modificar/{id}', 'ContractsController@updateCalculation');
+Route::get('/contratos/empleado/{id}', 'ContractsController@getContractsInformation');
 
 //Reportes
 Route::get('/reportes', 'ReportsController@showView');
@@ -81,5 +84,5 @@ Route::post('/reportes/generar/datos', 'ReportsController@createEmployeeReport')
 Route::post('/reportes/generar/vacaciones', 'ReportsController@createVacationsReport');
 Route::post('/reportes/generar/ausencias', 'ReportsController@createPermissionsReport');
 Route::post('/reportes/generar/incapacidades', 'ReportsController@createIncapacityReport');
-Route::get('/reportes/generar/contratos/{id}', 'ReportsController@createContractsReport');
-Route::get('/reportes/generar/viaticos/{id}', 'ReportsController@createTravelExpenseReport');
+Route::post('/reportes/generar/contratos/{id}', 'ReportsController@createContractsReport');
+Route::post('/reportes/generar/viaticos/{id}', 'ReportsController@createTravelExpenseReport');

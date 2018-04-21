@@ -11,7 +11,7 @@
     <h6>por: {{$reporter->nombre}} {{$reporter->apellidos}}</h6>
   </div>
   <div class="head-second">  
-    <h3>Reporte de viatico</h3>
+    <h3>Reporte de viático</h3>
     <h4>Empleado(a): {{$expense->nombre}} {{$expense->apellidos}}</h4>
   </div>
   </header>
@@ -21,18 +21,18 @@
       <ul class="list-group">
           <li class="list-group-item">Tipo: {{ucfirst(trans($expense->tipo))}}</li>
           <li class="list-group-item">Fecha ingreso: {{$expense->fecha}}</li>
-          <li class="list-group-item">Descripcion: {{$expense->descripcion}}</li>
+          <li class="list-group-item">Descripción: {{$expense->descripcion}}</li>
           <li class="list-group-item">Total: ${{$expense->total}}</li>
       </ul>
     </div>
     <div class="detail-content">
-      <h3>Comprobacion de viatico</h3>
+      <h3>Comprobacion de viático</h3>
       <table class="table table-bordered" id="">
         <thead>
           <tr>
             <th scope="col">Fecha ingreso</th>
             <th scope="col">Tipo</th>
-            <th scope="col">Descripcion</th>
+            <th scope="col">Descripción</th>
             <th scope="col">Monto</th>
           </tr>
         </thead>

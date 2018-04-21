@@ -61,11 +61,11 @@ div.vacations-approved, div.permissions-approved {
 	margin-top: 40px !important;
 }
 
-div.vacations-request form, div.permissions-request form{
-	padding: 0 0 20px 20px
+div.vacations-request form, div.permissions-request form, .report-container form{
+	padding: 0 0 20px 20px;
 }
 
-div.vacations-request .form-row, div.permissions-request .form-row {
+div.vacations-request .form-row, div.permissions-request .form-row, .report-container .form-row{
 	margin-top: 20px;
 }
 
@@ -110,17 +110,24 @@ select.formatted {
 }
 
 #report .head-first {
-	padding: 10px;
-  border-bottom: 1px solid #000;
+	padding: 20px 20px 30px 20px;
   width: 100%;
-  text-align: right;
+	text-align: right;
+	border-bottom: 1px solid #000;
+	background-color: rgb(39, 67, 80) !important;
 }
+
+#report .head-second h3, #report .head-second h4, #report .head-first h5, #report .head-first h6{
+	color: #fff !important;
+}
+
 
 #report .head-second {
 	clear: both;
 	text-align: center;
 	border-bottom: 1px solid #000;
 	padding: 10px;
+	background-color: rgb(39, 67, 80) !important;
 }
 
 #employee-report-content ul {
@@ -130,6 +137,15 @@ select.formatted {
 @media print {
 	.hide-print {
 		display: none !important;
+	}
+	.list-group-item-info {
+		color: #31708f !important;
+    background-color: #d9edf7 !important;
+	} 
+	.list-group-item.active {
+		color: #fff !important;
+    background-color: #3097d1 !important;
+    border-color: #3097d1 !important;
 	}
 }
 
@@ -198,4 +214,20 @@ select.formatted {
 	padding: 0;
 	color: #fff !important;
 	margin-top: 20px;
+}
+
+.report-container {
+	width: 50%;
+	margin: 0 auto;
+}
+
+#employee-report-content .list-group {
+	margin: 0 auto;
+	width: 60%;
+}
+
+#employee-report-content {
+	padding: 60px 0;
+	border: 1px solid #000;
+	height: 700px;
 }

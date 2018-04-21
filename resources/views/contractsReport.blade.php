@@ -17,7 +17,7 @@
   </header>
   <section class="contracts-report">
     <div class="info-content">
-      <h3>Informacion de contrato</h3>
+      <h3>Información de contrato</h3>
       <ul class="list-group">
           <li class="list-group-item">Empleado asignado: {{$contract->nombre}} {{$contract->apellidos}}</li>
           <li class="list-group-item">Fecha inicio: {{$contract->fecha_inicio}}</li>
@@ -28,7 +28,7 @@
       </ul>
     </div>
     <div class="detail-content">
-      <h3>Comprobacion de pagos</h3>
+      <h3>Comprobación de pagos</h3>
       <table class="table table-bordered" id="">
         <thead>
           <tr>

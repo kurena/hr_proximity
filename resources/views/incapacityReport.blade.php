@@ -4,10 +4,11 @@
 <div id="report">
   <header>
   <div class="head-first">  
+    <img class="report-logo" src="/images/main-logo.png"> 
     <button type="button" class="hide-print btn btn-primary" onclick="location.href='/reportes'">Reportes</button>
     <button type="button" class="hide-print btn btn-primary" onclick="window.print();">Imprimir</button>
-    <h5>Generado por: {{$reporter->nombre}} {{$reporter->apellidos}}</h5>
-    <span>{{$creationDate}}</span>
+    <h5>Generado el: {{$creationDate}}</h5>
+    <h6>por: {{$reporter->nombre}} {{$reporter->apellidos}}</h6>
   </div>
   <div class="head-second">  
     <h3>Reporte de incapacidades</h3>

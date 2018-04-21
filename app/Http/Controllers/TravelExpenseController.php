@@ -184,4 +184,16 @@ class TravelExpenseController extends Controller
         return redirect('/viaticos/comprobacion/'.$expenseId)->with('status', 'Comprobación modificada correctamente!');
     }
 
+    public function getExpenseInformation(Request $request) {
+        if (Auth::user()) {
+            $empId = $request->id;
+            $expense = DB::select("select date_format(fecha, '%d-%m-%Y') as fecha, tipo, total, id from viaticos where id_empleado=?", [$empId]);
+          } else {
+            $empleado = [0 => ''];
+            $admins = [0 => ''];
+            return redirect()->route('login');
+        }
+        return ['expenses' => $expense];    
+    }
+
 }

@@ -181,4 +181,16 @@ class ContractsController extends Controller
         return redirect('/contratos/comprobacion/'.$contractId)->with('status', 'Comprobación modificada correctamente!'); 
     }
 
+    public function getContractsInformation(Request $request) {
+        if (Auth::user()) {
+            $empId = $request->id;
+            $contracts = DB::select("select nombre, id from contratos where id_empleado=?", [$empId]);
+          } else {
+            $empleado = [0 => ''];
+            $admins = [0 => ''];
+            return redirect()->route('login');
+        }
+        return ['contracts' => $contracts];    
+    }
+
 }
