@@ -19,7 +19,7 @@
     <div class="permissions-days">
       <h4>Permisos de ausencia</h4>
       <table class="table table-bordered" id="">
-        <thead>
+        <thead class="active">
           <tr>
             <th scope="col">Día</th>
             <th scope="col">Cantidad de horas</th>
@@ -30,10 +30,10 @@
         <tbody>
           @foreach ($days as $day)
           <tr>
-            <td>{{$day->f_fecha}}</td>
-            <td>{{ $day->cant_horas }}</td>
-            <td>{{ $day->reposicion == 0 ? 'No' : 'Sí' }}</td>
-            <td>{{ $day->reposicion > 0 ? 'N/A' : '₡'.$day->afectacion }}</td>
+            <td class="list-group-item-info">{{$day->f_fecha}}</td>
+            <td class="list-group-item-info">{{ $day->cant_horas }}</td>
+            <td class="list-group-item-info">{{ $day->reposicion == 0 ? 'No' : 'Sí' }}</td>
+            <td class="list-group-item-info">{{ $day->reposicion > 0 ? 'N/A' : '₡'.$day->afectacion }}</td>
           </tr>
           @endforeach
         </tbody>

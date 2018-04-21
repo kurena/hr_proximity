@@ -138,14 +138,26 @@ select.formatted {
 	.hide-print {
 		display: none !important;
 	}
+
 	.list-group-item-info {
 		color: #31708f !important;
     background-color: #d9edf7 !important;
 	} 
+
+	td.list-group-item-info {
+		color: #31708f !important;
+    background-color: #d9edf7 !important;
+	}
+
 	.list-group-item.active {
 		color: #fff !important;
     background-color: #3097d1 !important;
     border-color: #3097d1 !important;
+	}
+
+	table thead{
+		color: #fff !important;
+		background-color: #3097d1 !important;
 	}
 }
 
@@ -230,4 +242,26 @@ select.formatted {
 	padding: 60px 0;
 	border: 1px solid #000;
 	height: 700px;
+}
+
+#vacations-report-content{
+	padding: 40px 40px 0 40px;
+	border: 1px solid #000;
+	display: flex;
+}
+
+#permissions-report-content, #incapacity-report-content, .contracts-report{
+	padding: 40px 40px 0 40px;
+	border: 1px solid #000;
+	height: 700px;
+}
+
+#permissions-report-content table , #incapacity-report-content table{
+	text-align: center;
+}
+
+#permissions-report-content table th, #incapacity-report-content table th, .contracts-report table th{
+	color: #fff !important;
+	background-color: #3097d1 !important;
+	text-align: center;
 }

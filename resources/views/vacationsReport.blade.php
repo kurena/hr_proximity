@@ -20,7 +20,7 @@
       <h4>Días de vacaciones disfrutados</h4>
       <ul class="list-group">
         @foreach ($days as $day) 
-          <li class="list-group-item">{{$day->f_fecha}}</li>
+          <li class="list-group-item list-group-item-info">{{$day->f_fecha}}</li>
         @endforeach
       </ul>
     </div>

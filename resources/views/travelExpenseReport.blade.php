@@ -19,10 +19,10 @@
     <div class="info-content">
       <h3>Informacion de viatico</h3>
       <ul class="list-group">
-          <li class="list-group-item">Tipo: {{ucfirst(trans($expense->tipo))}}</li>
-          <li class="list-group-item">Fecha ingreso: {{$expense->fecha}}</li>
-          <li class="list-group-item">Descripción: {{$expense->descripcion}}</li>
-          <li class="list-group-item">Total: ${{$expense->total}}</li>
+          <li class="list-group-item list-group-item-info">Tipo: {{ucfirst(trans($expense->tipo))}}</li>
+          <li class="list-group-item list-group-item-info">Fecha ingreso: {{$expense->fecha}}</li>
+          <li class="list-group-item list-group-item-info">Descripción: {{$expense->descripcion}}</li>
+          <li class="list-group-item list-group-item-info">Total: ${{$expense->total}}</li>
       </ul>
     </div>
     <div class="detail-content">
@@ -39,17 +39,17 @@
         <tbody>
           @foreach ($calculations as $calculation)
           <tr>
-            <td>{{$calculation->fecha_f}}</td>
-            <td>{{$calculation->tipo}}</td>
-            <td>{{$calculation->descripcion}}</td>
-            <td>${{$calculation->monto }}</td>
+            <td class="list-group-item-info">{{$calculation->fecha_f}}</td>
+            <td class="list-group-item-info">{{$calculation->tipo}}</td>
+            <td class="list-group-item-info">{{$calculation->descripcion}}</td>
+            <td class="list-group-item-info">${{$calculation->monto }}</td>
           </tr>
           @endforeach
           <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>Total: <strong>${{$total }}</strong></td>
+            <td class="list-group-item-info"></td>
+            <td class="list-group-item-info"></td>
+            <td class="list-group-item-info"></td>
+            <td class="list-group-item-info">Total: <strong>${{$total }}</strong></td>
           </tr>
         </tbody>
       </table>

@@ -29,9 +29,9 @@
         <tbody>
           @foreach ($days as $day)
           <tr>
-            <td>{{$day->f_fecha_i}}</td>
-            <td>{{$day->f_fecha_f}}</td>
-            <td>
+            <td class="list-group-item-info">{{$day->f_fecha_i}}</td>
+            <td class="list-group-item-info">{{$day->f_fecha_f}}</td>
+            <td class="list-group-item-info">
                 <strong>Primeros tres dias:</strong><br>
                 Proximity CR:₡{{$day->afectacionPatrono}} por dia / CCSS:₡{{$day->afectacionCCSS1}} por dia<br>
                 <strong>Cuarto dia en adelante:</strong><br>
