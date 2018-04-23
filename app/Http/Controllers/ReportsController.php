@@ -173,4 +173,54 @@ class ReportsController extends Controller
       return view('travelExpenseReport', ['reporter' => $reporter, 'creationDate' => $date, 'expense' => $expense, 'calculations' => $calculations, 'total' => $total]);
     }
 
+    public function createSettleReport(Request $request) {
+      if (Auth::user()) {
+        $validator = Validator::make($request->all(), [
+          'fecha_salida' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return redirect('/reportes')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+        $reporter = $this->getAuthUser()[0];
+        $empId = $request->selectEmployee;
+        $type = $request->selectSettle;
+        $employee = DB::select("select nombre, apellidos, cedula, salario, fecha_ingreso from empleado where cedula=?", [$empId])[0];
+        $date = date('d/m/Y');
+        $salDay = $employee->salario / 30;
+        $availableDays = $this->getAvailableDays($empId, $employee->fecha_ingreso);
+        $vacations = $salDay * $availableDays;
+        $dateStart = DateTime::createFromFormat('Y-m-d', $employee->fecha_ingreso);
+        $dateEnd = DateTime::createFromFormat('d/m/Y', $request->fecha_salida);
+        $pre = 30;
+        $ces = 22;
+        if ($dateEnd->format('Y') == $dateStart->format('Y')) {
+          if ($dateEnd->format('m') - $dateStart->format('m') < 3) {
+            $pre = 0;
+            $ces = 0;
+          }
+          if ( ($dateEnd->format('m') - $dateStart->format('m') >= 3) && ($dateEnd->format('m') - $dateStart->format('m') <= 6)) {
+            $pre = 5;
+            $ces = 7;
+          }
+          if ( $dateEnd->format('m') - $dateStart->format('m') > 6) {
+            $pre = 15;
+            $ces = 14;
+          }
+        }
+        $preTotal = $salDay * $pre;
+        $cesTotal = $salDay * $ces;
+        if ($type == 'settle1' || $type == 'settle3') {
+          $total = $vacations;
+        }else {
+          $total = $vacations + $preTotal + $cesTotal;
+        }
+      } else {
+        $reporter = [];
+        return redirect()->route('login');
+      }    
+      return view('settleReport', ['reporter' => $reporter, 'creationDate' => $date, 'employee' => $employee, 'vacations' => $vacations, 'pre' => $preTotal, 'ces' => $cesTotal, 'total' =>$total, 'type' =>$type]);  
+    }
+
 }

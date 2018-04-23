@@ -27,6 +27,7 @@
           <label for="selectType">Tipo de reporte:<span class="required">*</span></label>
           <select class="form-control formatted" name="selectType" id="selectType">
             <option value="datos">Datos empleado(a)</option>
+            <option value="liquidacion">Liquidacion de empleado(a)</option>
             <option value="vacaciones">Vacaciones</option>
             <option value="incapacidades">Incapacidades</option>
             <option value="ausencias">Ausencias</option>
@@ -52,6 +53,31 @@
           <select class="form-control formatted" id="selectExpense" name="selectExpense">
           </select>
       </div>
+      <div class="form-row settle-selector">
+          <label for="selectEmployee">Motivo salida:<span class="required">*</span></label>
+          <select class="form-control formatted" id="selectSettle" name="selectExpense">
+            <option value="settle1">Renuncia</option>
+            <option value="settle2">Despido con responsabilidad patronal</option>
+            <option value="settle3">Despido sin responsabilidad patronal</option>
+          </select>
+      </div>
+      <div class="form-row settle-out">
+        <label for="dia">Fecha salida:<span class="required">*</span></label>
+        <input class="formatted datepicker" onkeydown="return false" data-date-format="dd/mm/yyyy" name="fecha_salida">
+        @if ($errors->has('fecha_salida'))
+          <script>
+            $(".settle-out, .settle-selector").show();
+            $('#selectType')[0].value = 'liquidacion';
+          </script>  
+          <span class="label label-danger">
+              <strong>{{ $errors->first('fecha_salida') }}</strong>
+          </span>
+        @else
+          <script>
+            $(".settle-out, .settle-selector").hide();
+          </script>  
+        @endif
+      </div> 
       <div class="form-row">
         <div class="col-md-20 text-center"> 
           <button type="submit" id="createReport" class="btn btn-primary">Generar</button>
@@ -62,6 +88,12 @@
 </div> 
 <script>
 $(document).ready(function() {
+  $('.datepicker').datepicker({
+    startDate: '+1d',
+    daysOfWeekDisabled: [0,6],
+    language: 'es'
+  });
+
   $(".expense-selector, .contract-selector").hide();
 
   $('#selectType').on('change', function() {
@@ -79,7 +111,7 @@ $(document).ready(function() {
     if ($('#selectType')[0].value == "viaticos") {
       $('.expense-selector').show();
       $empId = $('select[name=selectEmployee]')[0].value;
-      $.get("/viaticos/empleado/"+$empId, function(result){
+      $.get("/viaticos/empleado-todo/"+$empId, function(result){
         $('#selectExpense option').remove();
         var x = document.getElementById("selectExpense");
         if (result.expenses.length > 0) {
@@ -119,6 +151,11 @@ $(document).ready(function() {
           $('#createReport').prop("disabled",true);
         }
       });  
+    }
+    if ($('#selectType')[0].value == "liquidacion") {
+      $(".settle-out, .settle-selector").show();
+    } else {
+      $(".settle-out, .settle-selector").hide();
     }
   });
 
