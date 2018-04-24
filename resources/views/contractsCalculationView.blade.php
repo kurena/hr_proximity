@@ -25,7 +25,7 @@
       <thead>
         <tr>
           <th></th>
-          <th scope="col">Fecha</th>
+          <th scope="col">Fecha ingreso</th>
           <th scope="col">Monto</th>
         </tr>
       </thead>
@@ -58,8 +58,13 @@
         <input onkeydown="return false" class="datepicker formatted" data-date-format="dd-mm-yyyy" name="fecha">
       </div>
       <div class="form-row">
-        <label for="monto">Monto en $:<span class="required">*</span></label>
-        <input class="formatted" name="monto" type="number" min="0" required>
+        <label for="monto">Monto contrato:</label>
+        <input type="hidden" value="{{$contractValue->monto}}" name="monto">
+        <label class="formatted" id="monto" value="{{$contractValue->monto}}">${{$contractValue->monto}}</label>
+      </div>
+      <div class="form-row">
+        <label for="monto">Cantidad {{ $contractValue->forma_pago == 'mensual' ? 'meses' : 'horas'}}:<span class="required">*</span></label>
+        <input class="formatted" name="cantidad" type="number" min="1" required>
       </div>
       <div class="form-row">
         <div class="col-md-20 text-center"> 
@@ -94,7 +99,8 @@
         $('form#show').attr('action', '/contratos/comprobacion/modificar/'+ result.calculation.id);  
         //Fill Form
         $('input[name=fecha]')[0].value = result.calculation.fecha;
-        $('input[name=monto]')[0].value = result.calculation.monto;
+        $('label#monto')[0].value = result.calculation.contrato_monto;
+        $('input[name=cantidad]')[0].value = result.calculation.monto / result.calculation.contrato_monto;
       });
     });
   }, 100);

@@ -146,6 +146,20 @@
                     </select>
                   </div>
                 </div>
+                @if ($editView)
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="puesto">Nombre usuario<span class="required">*</span></label>
+                    <input type="text" class="form-control" name="usuario" placeholder="nombre.apellido" required value="{{$editView ? $empleado->nombre_usuario : ''}}" @if($uniqueView) disabled @endif>
+                    @if ($errors->has('usuario'))
+                      <span class="label label-danger">
+                          <strong>{{ $errors->first('usuario') }}</strong>
+                      </span>
+                    @endif
+                  </div>
+                  <input name="userId" type="hidden" value="{{$empleado->usuario_id}}">
+                </div>
+                @endif
                 <div class="form-row">
                   <div class="text-center col-md-20">
                     <button type="submit" class="btn btn-primary">{{$editView ? 'Actualizar' : 'Registrar'}}</button>

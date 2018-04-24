@@ -107,6 +107,7 @@ select.formatted {
 
 .register-form form{
 	padding:20px;
+	display: grid;
 }
 
 #report .head-first {
@@ -250,17 +251,17 @@ select.formatted {
 	display: flex;
 }
 
-#permissions-report-content, #incapacity-report-content, .contracts-report{
+#permissions-report-content, #incapacity-report-content, .contracts-report, #settle-report-content{
 	padding: 40px 40px 0 40px;
 	border: 1px solid #000;
 	height: 700px;
 }
 
-#permissions-report-content table , #incapacity-report-content table{
+#permissions-report-content table , #incapacity-report-content table, #settle-report-content table{
 	text-align: center;
 }
 
-#permissions-report-content table th, #incapacity-report-content table th, .contracts-report table th{
+#permissions-report-content table th, #incapacity-report-content table th, .contracts-report table th, #settle-report-content table th{
 	color: #fff !important;
 	background-color: #3097d1 !important;
 	text-align: center;

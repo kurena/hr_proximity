@@ -55,7 +55,7 @@
       </div>
       <div class="form-row settle-selector">
           <label for="selectEmployee">Motivo salida:<span class="required">*</span></label>
-          <select class="form-control formatted" id="selectSettle" name="selectExpense">
+          <select class="form-control formatted" id="selectSettle" name="selectSettle">
             <option value="settle1">Renuncia</option>
             <option value="settle2">Despido con responsabilidad patronal</option>
             <option value="settle3">Despido sin responsabilidad patronal</option>

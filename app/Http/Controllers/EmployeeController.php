@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Employee;
+use App\Usuario;
 use Validator;
 use \Datetime;
 
@@ -32,9 +33,9 @@ class EmployeeController extends Controller
     public function showTable() {
         if (Auth::user()) {
             $empleado = $this->getAuthUser();
-            $empleados = DB::select("select e.cedula,e.nombre,e.apellidos,e.email,e.puesto, date_format(e.fecha_ingreso, '%d-%m-%Y') as fecha_ingreso,
+            $empleados = DB::select("select u.nombre_usuario,e.cedula,e.nombre,e.apellidos,e.email,e.puesto, date_format(e.fecha_ingreso, '%d-%m-%Y') as fecha_ingreso,
             e.rol,e.salario,e.direccion,e.celular, date_format(e.fecha_nacimiento, '%d-%m-%Y') as fecha_nacimiento, a.nombre as admin_nombre, 
-            a.apellidos as admin_apellidos from empleado e inner join empleado a ON e.id_manager=a.cedula");
+            a.apellidos as admin_apellidos from empleado e inner join empleado a ON e.id_manager=a.cedula inner join usuario u on e.cedula=u.id_empleado");
         } else {
             $empleado = [0 => ''];
             $empleados = [0 => ''];
@@ -48,7 +49,10 @@ class EmployeeController extends Controller
 
     public function showEdit(Request $request) {
         if (Auth::user()) {
-            $empleado = DB::select("select cedula, nombre, apellidos, direccion, puesto, salario, rol, id_manager, email, celular, date_format(fecha_ingreso, '%d-%m-%Y') as fecha_ingreso, date_format(fecha_nacimiento, '%d-%m-%Y') as fecha_nacimiento  from empleado where cedula = ?", [$request->id]);;
+            $empleado = DB::select("select u.id as usuario_id, u.nombre_usuario, e.cedula, e.nombre, e.apellidos, e.direccion, e.puesto, e.salario, e.rol, e.id_manager, e.email, 
+            e.celular, date_format(e.fecha_ingreso, '%d-%m-%Y') as fecha_ingreso, 
+            date_format(e.fecha_nacimiento, '%d-%m-%Y') as fecha_nacimiento  
+            from empleado e inner join usuario u on u.id_empleado = e.cedula where e.cedula = ?", [$request->id]);;
             $admins = DB::select('select * from empleado where rol = ?', ['administrador']);
         } else {
             $empleado = [0 => ''];
@@ -81,7 +85,7 @@ class EmployeeController extends Controller
             'apellidos' => 'required|string|max:255',
             'cedula' => 'required|numeric|digits:9|unique:empleado,cedula',
             'celular' => 'required|digits:8',
-            'email' => 'required|email|max:255',
+            'email' => 'required|email|max:255|unique:empleado,email',
             'direccion' => 'required|string|max:255',
             'puesto' => 'required|string|max:255',
             'salario' => 'required|numeric',
@@ -119,17 +123,19 @@ class EmployeeController extends Controller
 
     public function update(Request $request) {
         $employee = Employee::find($request->id);
+        $user = Usuario::find($request->userId);
         $validator = Validator::make($request->all(), [
             'nombre' => 'string|max:255',
             'apellidos' => 'string|max:255',
-            'cedula' => 'numeric|digits:9',
+            'cedula' => 'numeric|digits:9|unique:empleado,cedula,'.$request->id.',cedula',
             'celular' => 'numeric|digits:8',
-            'email' => 'email|max:255',
+            'email' => 'email|max:255|unique:empleado,email,'.$request->id.',cedula',
             'direccion' => 'string|max:255',
             'puesto' => 'string|max:255',
             'salario' => 'numeric',
             'fecha_ingreso' => 'date',
-            'fecha_nacimiento' => 'date'
+            'fecha_nacimiento' => 'date',
+            'usuario' => 'string|max:255|unique:usuario,nombre_usuario,'.$request->userId
         ]);
         if ($validator->fails()) {
             $redirectEdit = $request->view == 1 ? '/empleado/consultar/'.$request->id : '/empleado/editar/'.$request->id;
@@ -140,6 +146,10 @@ class EmployeeController extends Controller
         
         if ($request->nombre) {
             $employee->nombre = $request->nombre;
+        }
+        if ($request->usuario) {
+            $user->nombre_usuario = $request->usuario;
+            $user->save();
         }
         if ($request->apellidos) {
             $employee->apellidos = $request->apellidos;

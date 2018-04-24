@@ -11,11 +11,12 @@
     <h6>por: {{$reporter->nombre}} {{$reporter->apellidos}}</h6>
   </div>
   <div class="head-second">  
-    <h3>Liquidación de empleado(a)</h3>
+    <h3>Reporte de liquidación de empleado(a)</h3>
     <h3>Empleado(a): {{$employee->nombre}} {{$employee->apellidos}}</h3>
   </div>
   </header>
   <section id="settle-report-content">
+    <h4>Cálculo aproximado de la liquidación</h4>
     <table class="table table-bordered" id="">
       <thead>
         <tr>
@@ -30,7 +31,7 @@
       <tbody>
         <tr>
           <td class="list-group-item-info">₡{{$vacations}}</td>
-          <td class="list-group-item-info">₡{{$vacations}}</td>
+          <td class="list-group-item-info">₡{{$agui}}</td>
           @if ($type == "settle2")
           <td class="list-group-item-info">₡{{$ces}}</td>
           <td class="list-group-item-info">₡{{$pre}}</td>

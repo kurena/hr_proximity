@@ -18,16 +18,17 @@
         <tr>
             <th>Acciones</th>
             <th>Cédula</th>
-            <th>Colaborador</th>
+            <th>Empleado(a)</th>
             <th>Email</th>
-            <th>Fecha Ingreso</th>
+            <th>Fecha ingreso</th>
             <th>Puesto</th>
             <th>Manager</th>
             <th>Rol</th>
             <th>Salario</th>
             <th>Direccion</th>
-            <th>Fecha Nacimiento</th>
+            <th>Fecha nacimiento</th>
             <th>Celular</th>
+            <th>Nombre usuario</th>
         </tr>
     </thead>
     <tbody>
@@ -52,11 +53,12 @@
             <td>{{$emp->fecha_ingreso}}</td>
             <td>{{$emp->puesto}}</td>
             <td>{{$emp->admin_nombre}} {{$emp->admin_apellidos}}</td>
-            <td>{{$emp->rol}}</td>
+            <td>{{ucfirst(trans($emp->rol))}}</td>
             <td>{{$emp->salario}}</td>
             <td>{{$emp->direccion}}</td>
             <td>{{$emp->fecha_nacimiento}}</td>
             <td>{{$emp->celular}}</td>
+            <td>{{$emp->nombre_usuario}}</td>
         </tr>
         @endforeach
     </tbody>

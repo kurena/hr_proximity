@@ -36,15 +36,17 @@ class ContractsController extends Controller
         if (Auth::user()) {
             $empleado = $this->getAuthUser()[0];
             $contractId = $request->id;
+            $contractValue = DB::select("select monto,forma_pago from contratos where id=?", [$contractId])[0];
             $contracts = DB::select("select cc.id, date_format(cc.fecha, '%d-%m-%Y') as fecha, 
             cc.monto from contratos_comprobacion cc inner join contratos c on c.id=cc.id_contrato 
             where cc.id_contrato=?", [$contractId]);
+            $actualDay = date('d-m-Y');
         } else {
             $empleado = [0 => ''];
             return redirect()->route('login');
         }
         return view('contractsCalculationView', ['empleado' => $empleado, 'contracts' => $contracts, 
-        'contractId' => $contractId]);    
+        'contractId' => $contractId, 'contractValue' => $contractValue, 'date' => $actualDay]);    
     }
 
     public function store (Request $request) {
@@ -81,7 +83,7 @@ class ContractsController extends Controller
         $contractId = $request->contractId;
         $validator = Validator::make($request->all(), [
             'fecha' => 'required|date',
-            'monto' => 'required|numeric'
+            'cantidad' => 'required|numeric'
         ]);
         if ($validator->fails()) {
             return redirect('/contratos/comprobacion/'.$contractId)
@@ -92,7 +94,7 @@ class ContractsController extends Controller
         $calculation->id_contrato = $contractId;
         $date = new DateTime($request->fecha);
         $calculation->fecha = $date->format('Y-m-d');
-        $calculation->monto = $request->monto; 
+        $calculation->monto = $request->cantidad * $request->monto; 
         $calculation->save();  
         return redirect('/contratos/comprobacion/'.$contractId)->with('status', 'Comprobación ingresada correctamente!'); 
     }
@@ -124,7 +126,8 @@ class ContractsController extends Controller
     public function getCalculationInformation(Request $request) {
         if (Auth::user()) {
             $calculationId = $request->id;
-            $calculation = DB::select("select id, date_format(fecha, '%d-%m-%Y') as fecha, monto from contratos_comprobacion where id=?", [$calculationId])[0];
+            $calculation = DB::select("select c.monto as contrato_monto, cp.id, date_format(cp.fecha, '%d-%m-%Y') as fecha, cp.monto from contratos_comprobacion cp
+            inner join contratos c on c.id=cp.id_contrato where cp.id=?", [$calculationId])[0];
           } else {
             $empleado = [0 => ''];
             $admins = [0 => ''];
@@ -166,7 +169,7 @@ class ContractsController extends Controller
         $contractId = $request->contractId;
         $validator = Validator::make($request->all(), [
             'fecha' => 'required|date',
-            'monto' => 'required|numeric'
+            'cantidad' => 'required|numeric'
         ]);
         if ($validator->fails()) {
             return redirect('/contratos/comprobacion/'.$contractId)
@@ -176,7 +179,7 @@ class ContractsController extends Controller
         $calculation = ContractsCalculation::find($request->id);
         $date = new DateTime($request->fecha);
         $calculation->fecha = $date->format('Y-m-d');
-        $calculation->monto = $request->monto; 
+        $calculation->monto = $request->cantidad * $request->monto; 
         $calculation->save();  
         return redirect('/contratos/comprobacion/'.$contractId)->with('status', 'Comprobación modificada correctamente!'); 
     }

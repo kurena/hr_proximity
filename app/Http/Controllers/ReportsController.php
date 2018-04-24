@@ -211,16 +211,17 @@ class ReportsController extends Controller
         }
         $preTotal = $salDay * $pre;
         $cesTotal = $salDay * $ces;
+        $aguiTotal = (($dateEnd->format('m') + 1) * $employee->salario ) / 12;
         if ($type == 'settle1' || $type == 'settle3') {
-          $total = $vacations;
+          $total = $vacations + $aguiTotal;
         }else {
-          $total = $vacations + $preTotal + $cesTotal;
+          $total = $vacations + $preTotal + $cesTotal + $aguiTotal;
         }
       } else {
         $reporter = [];
         return redirect()->route('login');
       }    
-      return view('settleReport', ['reporter' => $reporter, 'creationDate' => $date, 'employee' => $employee, 'vacations' => $vacations, 'pre' => $preTotal, 'ces' => $cesTotal, 'total' =>$total, 'type' =>$type]);  
+      return view('settleReport', ['reporter' => $reporter, 'creationDate' => $date, 'employee' => $employee, 'vacations' => $vacations, 'pre' => $preTotal, 'ces' => $cesTotal, 'total' =>$total, 'type' =>$type, 'agui' => $aguiTotal]);  
     }
 
 }
