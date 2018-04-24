@@ -50,7 +50,7 @@ class PermissionsController extends Controller
 
     public function store (Request $request) {
         $validator = Validator::make($request->all(), [
-            'dia' => 'required',
+            'dia' => 'required|date',
             'cantidad' => 'required|numeric',
             'comentarios' => 'required|string|max:300'
         ]);

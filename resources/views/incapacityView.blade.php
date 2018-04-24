@@ -26,7 +26,7 @@
           <th scope="col"></th>
           <th scope="col">Fecha Inicio</th>
           <th scope="col">Fecha Fin</th>
-          <th scope="col">Empleado</th>
+          <th scope="col">Empleado(a)</th>
           <th scope="col">Comentarios</th>
         </tr>
       </thead>
@@ -55,25 +55,58 @@
     <div href="#show" data-toggle="collapse" class="panel-heading collapsed"><span>Ingresar nueva incapacidad</span><i class="show-menu fas fa-chevron-circle-down fa-lg"></i><i class="hide-menu fas fa-chevron-circle-up fa-lg"></i></div>
     <form action="/incapacidades/ingresar" method="POST" id="show" class="collapse">
       {{ csrf_field() }}
-      <div class="form-row">
-        <label for="dia">Fecha inicio:<span class="required">*</span></label>
-        <input class="formatted datepicker" onkeydown="return false" data-date-format="dd-mm-yyyy" name="fecha_inicio">
+      <div class="form-row{{ $errors->has('fecha_inicio') ? ' has-error' : '' }}">
+        <label class="control-label" for="dia">Fecha inicio:<span class="required">*</span></label>
+        <input class="formatted datepicker" onkeydown="return false" data-date-format="dd-mm-yyyy" name="fecha_inicio" required>
+        @if ($errors->has('fecha_inicio'))
+          <script>
+            $(document).ready(function () {
+              //If Collapsed then open
+              openMenu();  
+            });
+          </script>
+          <span class="help-block formatted">
+              <strong>{{ $errors->first('fecha_inicio') }}</strong>
+          </span>
+        @endif
       </div>  
-      <div class="form-row">
-        <label for="dia">Fecha fin:<span class="required">*</span></label>
-        <input class="formatted datepicker" onkeydown="return false" data-date-format="dd-mm-yyyy" name="fecha_fin">
+      <div class="form-row {{ $errors->has('fecha_fin') ? ' has-error' : '' }}">
+        <label class="control-label" for="dia">Fecha fin:<span class="required">*</span></label>
+        <input class="formatted datepicker" onkeydown="return false" data-date-format="dd-mm-yyyy" name="fecha_fin" required>
+        @if ($errors->has('fecha_fin'))
+          <script>
+            $(document).ready(function () {
+              //If Collapsed then open
+              openMenu();  
+            });
+          </script>  
+          <span class="help-block formatted">
+              <strong>{{ $errors->first('fecha_fin') }}</strong>
+          </span>
+        @endif
       </div>
       <div class="form-row">
-          <label for="selectEmployee">Empleado:<span class="required">*</span></label>
+          <label for="selectEmployee">Empleado(a):<span class="required">*</span></label>
           <select class="form-control formatted" name="selectEmployee">
           @foreach ($employees as $employee)
             <option value="{{$employee->cedula}}">{{ $employee->nombre }} {{ $employee->apellidos }}</option>
           @endforeach
           </select>
       </div>
-      <div class="form-row">
-        <label for="comentarios">Comentarios:<span class="required">*</span></label>
+      <div class="form-row {{ $errors->has('comentarios') ? ' has-error' : '' }}">
+        <label class="control-label" for="comentarios">Comentarios:<span class="required">*</span></label>
         <textarea class="formatted" name="comentarios" required></textarea>
+        @if ($errors->has('comentarios'))
+          <script>
+            $(document).ready(function () {
+              //If Collapsed then open
+              openMenu();  
+            });
+          </script>  
+          <span class="help-block formatted">
+              <strong>{{ $errors->first('comentarios') }}</strong>
+          </span>
+        @endif
       </div>
       <div class="form-row">
         <div class="col-md-20 text-center"> 
@@ -84,6 +117,12 @@
   <div>
 </div>
 <script>
+  function openMenu() {
+    $isCollapsed = $('.panel-heading').hasClass('collapsed');
+    if ($isCollapsed) {
+      $('.panel-heading').trigger('click');
+    }  
+  }
   setTimeout(() => {
     $(document).ready(function () {
       $('.datepicker').datepicker({
@@ -99,10 +138,7 @@
       $(".edit-incapacity").click(function(el){
         $.get("/incapacidades/modificar/"+el.target.value, function(result){
           //If Collapsed then open
-          $isCollapsed = $('.panel-heading').hasClass('collapsed');
-          if ($isCollapsed) {
-            $('.panel-heading').trigger('click');
-          }
+          openMenu();
           $('.panel-heading span').text('Modificar incapacidad');
           $('form#show button').text('Modificar');
           $('form#show').attr('action', '/incapacidades/modificar/'+ result.incapacity.id);  

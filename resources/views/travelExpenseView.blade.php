@@ -35,9 +35,8 @@
         @foreach ($expenses as $expense)
         <tr class="success">
           <td>
-            <form action="/viaticos/comprobacion/{{$expense->id}}" method="get">
+            <form action="/viaticos/comprobacion/{{$expense->id}}" method="post">
               {{ csrf_field() }}
-              <input type="hidden" name="_method" value="GET" >
               <button type="submit" class="btn btn-primary">Comprobación</button>
             </form>
             <br>

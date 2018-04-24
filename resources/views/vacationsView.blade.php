@@ -67,11 +67,17 @@
     <div href="#show" data-toggle="collapse" class="panel-heading collapsed"><span>Solicitar vacaciones</span><i class="show-menu fas fa-chevron-circle-down fa-lg"></i><i class="hide-menu fas fa-chevron-circle-up fa-lg"></i></div>
     <form action="/vacaciones/solicitar" method="POST" id="show" class="collapse"> 
       {{ csrf_field() }}
-      <div class="form-row">
-        <label for="dias">Día(s) a solicitar:<span class="required">*</span></label>
-        <input onkeydown="return false" class="datepicker" data-date-format="dd-mm-yyyy" name="dias">
+      <div class="form-row {{ $errors->has('dias') ? ' has-error' : '' }}">
+        <label class="control-label" for="dias">Día(s) a solicitar:<span class="required">*</span></label>
+        <input onkeydown="return false" class="datepicker" data-date-format="dd-mm-yyyy" name="dias" required>
         @if ($errors->has('dias'))
-          <span class="label label-danger">
+          <script>
+            $(document).ready(function () {
+              //If Collapsed then open
+              openMenu();  
+            });
+          </script>  
+          <span class="help-block formatted">
               <strong>{{ $errors->first('dias') }}</strong>
           </span>
         @endif
@@ -105,6 +111,12 @@
   <div>
 </div> 
 <script>
+  function openMenu() {
+    $isCollapsed = $('.panel-heading').hasClass('collapsed');
+    if ($isCollapsed) {
+      $('.panel-heading').trigger('click');
+    }  
+  }
   setTimeout(() => {
     $(document).ready(function () {
       $('.datepicker').datepicker({
@@ -128,10 +140,7 @@
       });
       $.get("/vacaciones/modificar/"+el.target.value, function(result){
         //If Collapsed then open
-        $isCollapsed = $('.panel-heading').hasClass('collapsed');
-        if ($isCollapsed) {
-          $('.panel-heading').trigger('click');
-        }
+        openMenu();
         $('.panel-heading span').text('Modificar solicitud');
         $('form#show button').text('Modificar');
         $('form#show').attr('action', '/vacaciones/modificar/'+ result.vacation.id);  

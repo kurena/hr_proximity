@@ -52,7 +52,10 @@ class EmployeeController extends Controller
             $empleado = DB::select("select u.id as usuario_id, u.nombre_usuario, e.cedula, e.nombre, e.apellidos, e.direccion, e.puesto, e.salario, e.rol, e.id_manager, e.email, 
             e.celular, date_format(e.fecha_ingreso, '%d-%m-%Y') as fecha_ingreso, 
             date_format(e.fecha_nacimiento, '%d-%m-%Y') as fecha_nacimiento  
-            from empleado e inner join usuario u on u.id_empleado = e.cedula where e.cedula = ?", [$request->id]);;
+            from empleado e inner join usuario u on u.id_empleado = e.cedula where e.cedula = ?", [$request->id]);
+            if (!$empleado) {
+                return redirect('/');
+            }
             $admins = DB::select('select * from empleado where rol = ?', ['administrador']);
         } else {
             $empleado = [0 => ''];

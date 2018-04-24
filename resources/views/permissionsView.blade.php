@@ -69,18 +69,35 @@
         <label for="manager">Manager:</label>
         <label name="manager" >{{$empleado->admin_nombre}} {{$empleado->admin_apellidos}}</label>
       </div>
-      <div class="form-row">
-        <label for="dia">Día a solicitar:<span class="required">*</span></label>
-        <input class="formatted datepicker" onkeydown="return false" data-date-format="dd-mm-yyyy" name="dia">
+      <div class="form-row {{ $errors->has('dia') ? ' has-error' : '' }}">
+        <label class="control-label" for="dia">Día a solicitar:<span class="required">*</span></label>
+        <input class="formatted datepicker" onkeydown="return false" data-date-format="dd-mm-yyyy" name="dia" required>
         @if ($errors->has('dia'))
-          <span class="label label-danger">
+          <script>
+            $(document).ready(function () {
+              //If Collapsed then open
+              openMenu();  
+            });
+          </script>  
+          <span class="help-block formatted">
               <strong>{{ $errors->first('dia') }}</strong>
           </span>
         @endif
       </div>  
-      <div class="form-row">
-        <label for="cantidad">Cantidad de horas:<span class="required">*</span></label>
-        <input class="formatted" type="number" name="cantidad" min="0" required>
+      <div class="form-row {{ $errors->has('cantidad') ? ' has-error' : '' }}">
+        <label class="control-label" for="cantidad">Cantidad de horas:<span class="required">*</span></label>
+        <input class="formatted" type="number" name="cantidad" min="1" required>
+        @if ($errors->has('cantidad'))
+          <script>
+            $(document).ready(function () {
+              //If Collapsed then open
+              openMenu();  
+            });
+          </script>  
+          <span class="help-block formatted">
+              <strong>{{ $errors->first('cantidad') }}</strong>
+          </span>
+        @endif
       </div>
       <div class="form-row">
         <label for="dia">Reposición de horas:<span class="required">*</span></label>
@@ -89,9 +106,20 @@
           <option value="0">No</option>
         </select>
       </div>
-      <div class="form-row">
-        <label for="comentarios">Comentarios:<span class="required">*</span></label>
+      <div class="form-row {{ $errors->has('comentarios') ? ' has-error' : '' }}">
+        <label class="control-label" for="comentarios">Comentarios:<span class="required">*</span></label>
         <textarea class="formatted" name="comentarios" required></textarea>
+        @if ($errors->has('comentarios'))
+          <script>
+            $(document).ready(function () {
+              //If Collapsed then open
+              openMenu();  
+            });
+          </script>  
+          <span class="help-block formatted">
+              <strong>{{ $errors->first('comentarios') }}</strong>
+          </span>
+        @endif
       </div>
       <div class="form-row">
         <div class="col-md-20 text-center"> 
@@ -103,6 +131,12 @@
   <div>
 </div>
 <script>
+  function openMenu() {
+    $isCollapsed = $('.panel-heading').hasClass('collapsed');
+    if ($isCollapsed) {
+      $('.panel-heading').trigger('click');
+    }  
+  }
   setTimeout(() => {
     $(document).ready(function () {
       $('.datepicker').datepicker({
@@ -119,10 +153,7 @@
     $(".edit-permission").click(function(el){
       $.get("/permisos/modificar/"+el.target.value, function(result){
         //If Collapsed then open
-        $isCollapsed = $('.panel-heading').hasClass('collapsed');
-        if ($isCollapsed) {
-          $('.panel-heading').trigger('click');
-        }
+        openMenu();
         $('.panel-heading span').text('Modificar solicitud');
         $('form#show button').text('Modificar');
         $('form#show').attr('action', '/permisos/modificar/'+ result.permission.id);  

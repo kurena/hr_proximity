@@ -266,3 +266,19 @@ select.formatted {
 	background-color: #3097d1 !important;
 	text-align: center;
 }
+
+.content-404 {
+	align-items: center;
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	height: 70vh;
+}
+
+.has-error input, .has-error textarea {
+	border-color: #a94442;
+}
+
+.help-block.formatted {
+	position: relative;
+}

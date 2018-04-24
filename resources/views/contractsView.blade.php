@@ -28,7 +28,7 @@
           <th scope="col">Nombre</th>
           <th scope="col">Fecha inicio</th>
           <th scope="col">Fecha fin</th>
-          <th scope="col">Empleado asignado</th>
+          <th scope="col">Empleado(a) asignado</th>
           <th scope="col">Forma pago</th>
           <th scope="col">Monto</th>
           <th scope="col">Multa</th>
@@ -38,9 +38,8 @@
         @foreach ($contracts as $contract)
         <tr class="">
           <td>
-            <form action="/contratos/comprobacion/{{$contract->id}}" method="get">
+            <form action="/contratos/comprobacion/{{$contract->id}}" method="post">
               {{ csrf_field() }}
-              <input type="hidden" name="_method" value="GET" >
               <button type="submit" class="btn btn-primary">Comprobación</button>
             </form>
             <br>
@@ -76,13 +75,35 @@
           <option value="cliente">Cliente</option>
         </select>
       </div>
-      <div class="form-row">
-        <label for="monto">Nombre contrato:<span class="required">*</span></label>
+      <div class="form-row {{ $errors->has('nombre_contrato') ? ' has-error' : '' }}">
+        <label class="control-label" for="monto">Nombre contrato:<span class="required">*</span></label>
         <input class="formatted" name="nombre_contrato" type="text" required>
+        @if ($errors->has('nombre_contrato'))
+          <script>
+            $(document).ready(function () {
+              //If Collapsed then open
+              openMenu();  
+            });
+          </script>  
+          <span class="help-block formatted">
+              <strong>{{ $errors->first('nombre_contrato') }}</strong>
+          </span>
+        @endif
       </div>
-      <div class="form-row">
-        <label for="fecha_inicio">Fecha inicio:<span class="required">*</span></label>
+      <div class="form-row {{ $errors->has('nombre_contrato') ? ' has-error' : '' }}">
+        <label class="control-label" for="fecha_inicio">Fecha inicio:<span class="required">*</span></label>
         <input required class="formatted datepicker" onkeydown="return false" data-date-format="dd-mm-yyyy" name="fecha_inicio">
+        @if ($errors->has('fecha_inicio'))
+          <script>
+            $(document).ready(function () {
+              //If Collapsed then open
+              openMenu();  
+            });
+          </script>  
+          <span class="help-block formatted">
+              <strong>{{ $errors->first('fecha_inicio') }}</strong>
+          </span>
+        @endif
       </div>
       <div class="form-row">
         <label for="fecha_fin">Fecha fin:</label>
@@ -103,13 +124,35 @@
           <option value="horas">Horas</option>
         </select>
       </div>
-      <div class="form-row">
-        <label for="monto">Monto en $:<span class="required">*</span></label>
-        <input class="formatted" name="monto" type="number" min="0" required>
+      <div class="form-row {{ $errors->has('monto') ? ' has-error' : '' }}">
+        <label class="control-label" for="monto">Monto en $:<span class="required">*</span></label>
+        <input class="formatted" name="monto" type="number" min="1" required>
+        @if ($errors->has('monto'))
+          <script>
+            $(document).ready(function () {
+              //If Collapsed then open
+              openMenu();  
+            });
+          </script>  
+          <span class="help-block formatted">
+              <strong>{{ $errors->first('monto') }}</strong>
+          </span>
+        @endif
       </div>
-      <div class="form-row">
-        <label for="multa">Multa en $:<span class="required">*</span></label>
+      <div class="form-row {{ $errors->has('multa') ? ' has-error' : '' }}">
+        <label class="control-label" for="multa">Multa en $:<span class="required">*</span></label>
         <input class="formatted" name="multa" type="number" min="0">
+        @if ($errors->has('multa'))
+          <script>
+            $(document).ready(function () {
+              //If Collapsed then open
+              openMenu();  
+            });
+          </script>  
+          <span class="help-block formatted">
+              <strong>{{ $errors->first('multa') }}</strong>
+          </span>
+        @endif
       </div>
       <div class="form-row">
         <div class="col-md-20 text-center"> 
@@ -120,6 +163,12 @@
   <div>
 </div>
 <script>
+  function openMenu() {
+    $isCollapsed = $('.panel-heading').hasClass('collapsed');
+    if ($isCollapsed) {
+      $('.panel-heading').trigger('click');
+    }  
+  }
   setTimeout(() => {
     $(document).ready(function () {
       $('.datepicker').datepicker({
@@ -131,10 +180,7 @@
       $(".edit-contract").click(function(el){
         $.get("/contratos/modificar/"+el.target.value, function(result){
           //If Collapsed then open
-          $isCollapsed = $('.panel-heading').hasClass('collapsed');
-          if ($isCollapsed) {
-            $('.panel-heading').trigger('click');
-          }
+          openMenu();
           $('.panel-heading span').text('Modificar contrato');
           $('form#show button').text('Modificar');
           $('form#show').attr('action', '/contratos/modificar/'+ result.contract.id);  

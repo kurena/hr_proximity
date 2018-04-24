@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Usuario;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Auth\Events\Registered;
 
 class RegisterController extends Controller
 {
@@ -74,7 +76,7 @@ class RegisterController extends Controller
         if (Auth::user()) {
             $idEmp = Auth::user()->id_empleado;
             $empleado = DB::select('select * from empleado where cedula = ?', [$idEmp]);
-            $emps = DB::select('select * from empleado');
+            $emps = DB::select('select * from empleado where cedula not in (select id_empleado from usuario)');
             return view('auth.register', ['emps' => $emps, 'empleado' => $empleado[0]]); 
         }else {   
             return redirect()->route('login');
@@ -84,5 +86,15 @@ class RegisterController extends Controller
     public function registered($request,$user)
     {
         return redirect('/')->with('status', 'Usuario registrado!');
+    }
+
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        event(new Registered($user = $this->create($request->all())));
+
+        return $this->registered($request, $user)
+                        ?: redirect($this->redirectPath());
     }
 }
