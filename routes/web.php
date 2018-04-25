@@ -70,6 +70,7 @@ Route::get('/contratos', 'ContractsController@showView');
 Route::post('/contratos/ingresar', 'ContractsController@store');
 Route::get('/contratos/comprobacion/{id}', 'ContractsController@showCalculationView');
 Route::post('/contratos/comprobacion/ingresar', 'ContractsController@storeCalculation');
+Route::post('/contratos/multa/{id}', 'ContractsController@storeApp');
 Route::delete('/contratos/eliminar/{id}', 'ContractsController@delete');
 Route::get('/contratos/modificar/{id}', 'ContractsController@getContractInformation');
 Route::post('/contratos/modificar/{id}', 'ContractsController@updateContract');

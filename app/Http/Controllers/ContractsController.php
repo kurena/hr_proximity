@@ -36,7 +36,7 @@ class ContractsController extends Controller
         if (Auth::user()) {
             $empleado = $this->getAuthUser()[0];
             $contractId = $request->id;
-            $contractValue = DB::select("select monto,forma_pago from contratos where id=?", [$contractId]);
+            $contractValue = DB::select("select monto,forma_pago,multa from contratos where id=?", [$contractId]);
             if (!$contractValue) {
                 return redirect('/');    
             }
@@ -78,7 +78,7 @@ class ContractsController extends Controller
       $contract->forma_pago = $request->selectPayType; 
       $contract->multa = $request->multa; 
       $contract->save();  
-      return redirect('/contratos')->with('status', 'Contrato ingresado correctamente!');
+      return redirect('/contratos')->with('status', 'Contrato ingresado correctamente');
            
     }
 
@@ -99,19 +99,29 @@ class ContractsController extends Controller
         $calculation->fecha = $date->format('Y-m-d');
         $calculation->monto = $request->cantidad * $request->monto; 
         $calculation->save();  
-        return redirect('/contratos/comprobacion/'.$contractId)->with('status', 'Comprobación ingresada correctamente!'); 
+        return redirect('/contratos/comprobacion/'.$contractId)->with('status', 'Comprobación ingresada correctamente'); 
+    }
+
+    public function storeApp (Request $request) {
+        $contractId = $request->contractId;
+        $calculation = new ContractsCalculation;
+        $calculation->id_contrato = $contractId;
+        $calculation->fecha = date('Y-m-d');
+        $calculation->monto = $request->multa; 
+        $calculation->save();  
+        return redirect('/contratos/comprobacion/'.$contractId)->with('status', 'Multa ingresada correctamente'); 
     }
 
     public function delete(Request $request) {
         $contract = Contracts::find($request->id);
         $contract->delete();
-        return redirect('/contratos')->with('status', 'Contrato eliminado!');
+        return redirect('/contratos')->with('status', 'Contrato eliminado');
     }
 
     public function deleteCalculation(Request $request) {
         $contract = ContractsCalculation::find($request->id);
         $contract->delete();
-        return redirect('/contratos/comprobacion/'.$request->contractId)->with('status', 'Comprobación eliminada!');
+        return redirect('/contratos/comprobacion/'.$request->contractId)->with('status', 'Comprobación eliminada');
     }
 
     public function getContractInformation(Request $request) {
@@ -165,7 +175,7 @@ class ContractsController extends Controller
         $contract->forma_pago = $request->selectPayType; 
         $contract->multa = $request->multa; 
         $contract->save();  
-        return redirect('/contratos')->with('status', 'Contrato actualizado!');
+        return redirect('/contratos')->with('status', 'Contrato actualizado');
     }
 
     public function updateCalculation(Request $request) {
@@ -184,7 +194,7 @@ class ContractsController extends Controller
         $calculation->fecha = $date->format('Y-m-d');
         $calculation->monto = $request->cantidad * $request->monto; 
         $calculation->save();  
-        return redirect('/contratos/comprobacion/'.$contractId)->with('status', 'Comprobación modificada correctamente!'); 
+        return redirect('/contratos/comprobacion/'.$contractId)->with('status', 'Comprobación modificada correctamente'); 
     }
 
     public function getContractsInformation(Request $request) {

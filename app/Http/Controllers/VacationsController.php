@@ -82,7 +82,17 @@ class VacationsController extends Controller
               ('Solicitud de vacaciones');
            $message->from('kaut0894@gmail.com','Vacaciones');
         });
-     }
+    }
+
+    public function update_email(String $employeeEmail, String $empName, String $date, String $status){
+        $data = array('status'=>$status, 'employeeName' => $empName, 'day' => $date);
+     
+        Mail::send('mailUpdate', $data, function($message) use($employeeEmail, $empName) {
+           $message->to($employeeEmail, $empName)->subject
+              ('Solicitud de vacaciones');
+           $message->from('kaut0894@gmail.com','Vacaciones');
+        });
+    }
 
     public function store (Request $request) {
         $validator = Validator::make($request->all(), [
@@ -95,7 +105,7 @@ class VacationsController extends Controller
         }
         $days = explode(",", $request->dias);
         if ($request->availableDays < count($days)) {
-            return redirect('/vacaciones')->with('error', 'Días disponibles de vacaciones insuficientes para realizar la solicitud!');
+            return redirect('/vacaciones')->with('error', 'Días disponibles de vacaciones insuficientes para realizar la solicitud');
         }
         foreach ($days as $day) {
             $vacations = new Vacations;
@@ -104,9 +114,9 @@ class VacationsController extends Controller
             $vacations->fecha = $date->format('Y-m-d');
             $vacations->estado = 'pendiente';  
             $vacations->save();  
-            //$this->request_email($request->adminName, $request->adminEmail, $request->employeeName, $day);
+            $this->request_email($request->adminName, $request->adminEmail, $request->employeeName, $day);
         } 
-        return redirect('/vacaciones')->with('status', 'Vacaciones solicitadas!');
+        return redirect('/vacaciones')->with('status', 'Vacaciones solicitadas');
              
     }
 
@@ -117,14 +127,15 @@ class VacationsController extends Controller
             $status = $request['group'.$day];
             $vacation->estado = $status;
             $vacation->save();    
+            //$this->update_email($employee->email, $empName, $vacation->fecha, $status);
         }
-        return redirect('vacaciones/aprobar')->with('status', 'Estado de vacaciones actualizado!');
+        return redirect('vacaciones/aprobar')->with('status', 'Estado de vacaciones actualizado');
     } 
 
     public function delete(Request $request) {
         $vacation = Vacations::find($request->id);
         $vacation->delete();
-        return redirect('/vacaciones')->with('status', 'Solicitud eliminada!');
+        return redirect('/vacaciones')->with('status', 'Solicitud eliminada');
     }
 
     public function getVacationInformation(Request $request) {

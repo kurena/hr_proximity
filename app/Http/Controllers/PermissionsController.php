@@ -68,7 +68,7 @@ class PermissionsController extends Controller
         $permission->comentarios = $request->comentarios; 
         $permission->reposicion = $request->reposicion;
         $permission->save();  
-        return redirect('/permisos')->with('status', 'Permiso de ausencia solicitado!');
+        return redirect('/permisos')->with('status', 'Permiso de ausencia solicitado');
              
     }
 
@@ -80,13 +80,13 @@ class PermissionsController extends Controller
             $permission->estado = $status;
             $permission->save();    
         }
-        return redirect('permisos/aprobar')->with('status', 'Estado de permisos actualizado!');
+        return redirect('permisos/aprobar')->with('status', 'Estado de permisos actualizado');
     }
 
     public function delete(Request $request) {
         $permission = Permissions::find($request->id);
         $permission->delete();
-        return redirect('/permisos')->with('status', 'Solicitud eliminada!');
+        return redirect('/permisos')->with('status', 'Solicitud eliminada');
     }
 
     public function getPermissionInformation(Request $request) {
@@ -120,7 +120,7 @@ class PermissionsController extends Controller
         $permission->comentarios = $request->comentarios; 
         $permission->reposicion = $request->reposicion;
         $permission->save();  
-        return redirect('/permisos')->with('status', 'Permiso de ausencia modificado!');
+        return redirect('/permisos')->with('status', 'Permiso de ausencia modificado');
     }
 
 

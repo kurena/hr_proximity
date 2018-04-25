@@ -77,7 +77,7 @@ class EmployeeController extends Controller
         }
         $emp = $this->getAuthUser();
         if ($emp[0]->cedula != $request->id) {
-            return redirect('/')->with('error', 'Permisos insuficientes!');
+            return redirect('/');
         }
     	return view('employeeRegister', ['empleado' => $empleado[0], 'admins' => $admins, 'editView' => true, 'uniqueView' => true]);    
     }
@@ -116,13 +116,13 @@ class EmployeeController extends Controller
         $employee->rol = $request->selectRol;
         $employee->id_manager = $request->selectManager;
         $employee->save();
-        return redirect('/')->with('status', 'Empleado registrado!');
+        return redirect('/')->with('status', 'Empleado registrado');
     }
 
     public function delete(Request $request) {
         $emp = Employee::find($request->id);
         $emp->delete();
-        return redirect('empleado/consultar')->with('status', 'Empleado eliminado!');
+        return redirect('empleado/consultar')->with('status', 'Empleado eliminado');
     }
 
     public function update(Request $request) {
@@ -192,9 +192,9 @@ class EmployeeController extends Controller
         }
         $employee->save();
         if ($request->view == 1) {
-            return redirect('/')->with('status', 'Datos actualizados!');
+            return redirect('/')->with('status', 'Datos actualizados');
         } else {
-            return redirect('empleado/consultar')->with('status', 'Empleado actualizado!');
+            return redirect('empleado/consultar')->with('status', 'Empleado actualizado');
         }
     }
 }

@@ -49,14 +49,14 @@ class IncapacityController extends Controller
       $incapacity->fecha_fin = $dateEnd->format('Y-m-d');
       $incapacity->comentarios = $request->comentarios; 
       $incapacity->save();  
-      return redirect('/incapacidades')->with('status', 'Incapacidad ingresada correctamente!');
+      return redirect('/incapacidades')->with('status', 'Incapacidad ingresada correctamente');
            
     }
 
     public function delete(Request $request) {
         $incapacity = TravelExpense::find($request->id);
         $incapacity->delete();
-        return redirect('/incapacidades')->with('status', 'Incapacidad eliminada!');
+        return redirect('/incapacidades')->with('status', 'Incapacidad eliminada');
     }
 
     public function getIncapacityInformation(Request $request) {
@@ -90,7 +90,7 @@ class IncapacityController extends Controller
         $incapacity->fecha_fin = $dateEnd->format('Y-m-d');
         $incapacity->comentarios = $request->comentarios; 
         $incapacity->save();  
-        return redirect('/incapacidades')->with('status', 'Incapacidad modificada!');
+        return redirect('/incapacidades')->with('status', 'Incapacidad modificada');
     }
 
 

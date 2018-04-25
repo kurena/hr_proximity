@@ -26,7 +26,7 @@
                         {{ csrf_field() }}
  
                         <div class="form-group{{ $errors->has('current-password') ? ' has-error' : '' }}">
-                            <label for="new-password" class="col-md-4 control-label">Contraseña actual</label>
+                            <label for="nueva-contraseña" class="col-md-4 control-label">Contraseña actual<span class="required">*</span></label>
  
                             <div class="col-md-6">
                                 <input id="current-password" type="password" class="form-control" name="current-password" required>
@@ -39,25 +39,25 @@
                             </div>
                         </div>
  
-                        <div class="form-group{{ $errors->has('new-password') ? ' has-error' : '' }}">
-                            <label for="new-password" class="col-md-4 control-label">Nueva contraseña</label>
+                        <div class="form-group{{ $errors->has('nueva_contraseña') ? ' has-error' : '' }}">
+                            <label for="new-password" class="col-md-4 control-label">Nueva contraseña<span class="required">*</span></label>
  
                             <div class="col-md-6">
-                                <input id="new-password" type="password" class="form-control" name="new-password" required>
+                                <input id="new-password" type="password" class="form-control" name="nueva_contraseña" required>
  
-                                @if ($errors->has('new-password'))
+                                @if ($errors->has('nueva_contraseña'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('new-password') }}</strong>
+                                        <strong>{{ $errors->first('nueva_contraseña') }}</strong>
                                     </span>
                                 @endif
                             </div>
                         </div>
  
                         <div class="form-group">
-                            <label for="new-password-confirm" class="col-md-4 control-label">Confirmar contraseña</label>
+                            <label for="new-password-confirm" class="col-md-4 control-label">Confirmar contraseña<span class="required">*</span></label>
  
                             <div class="col-md-6">
-                                <input id="new-password-confirm" type="password" class="form-control" name="new-password_confirmation" required>
+                                <input id="new-password-confirm" type="password" class="form-control" name="nueva_contraseña_confirmation" required>
                             </div>
                         </div>
  

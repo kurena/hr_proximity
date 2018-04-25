@@ -45,22 +45,22 @@ class MainController extends Controller
             return redirect()->back()->with("error","Su contraseña actual no coincide con la contraseña ingresada. Por favor intente de nuevo.");
         }
  
-        if(strcmp($request->get('current-password'), $request->get('new-password')) == 0){
+        if(strcmp($request->get('current-password'), $request->get('nueva-contraseña')) == 0){
             //Current password and new password are same
             return redirect()->back()->with("error","La nueva contraseña no debe ser igual que la actual. Por favor elija una nueva contraseña.");
         }
  
         $validatedData = $request->validate([
             'current-password' => 'required',
-            'new-password' => 'required|string|min:6|confirmed',
+            'nueva_contraseña' => 'required|string|min:6|confirmed',
         ]);
  
         //Change Password
         $user = Auth::user();
-        $user->contrasena = bcrypt($request->get('new-password'));
+        $user->contrasena = bcrypt($request->get('nueva_contraseña'));
         $user->save();
  
-        return redirect('/')->with("status","Contraseña modificada satisfactoriamente!");
+        return redirect('/')->with("status","Contraseña modificada satisfactoriamente");
  
     }
 }

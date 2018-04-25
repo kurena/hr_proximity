@@ -72,7 +72,9 @@
           <label for="selectEmployee">Empleado(a):<span class="required">*</span></label>
           <select class="form-control formatted" name="selectEmployee">
           @foreach ($employees as $employee)
+            @if ($employee->cedula != $empleado->cedula)
             <option value="{{$employee->cedula}}">{{ $employee->nombre }} {{ $employee->apellidos }}</option>
+            @endif
           @endforeach
           </select>
       </div>

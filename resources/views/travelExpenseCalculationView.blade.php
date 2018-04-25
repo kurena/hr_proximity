@@ -16,7 +16,11 @@
 <div class="container">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="/">Principal</a></li>
+    @if ($empleado->cedula != $expense->id_empleado)
+    <li class="breadcrumb-item"><a href="/viaticos">Viáticos</a></li>
+    @else
     <li class="breadcrumb-item"><a href="/viaticos/empleado/{{$empleado->cedula}}">Viáticos</a></li>
+    @endif
     <li class="breadcrumb-item active">Comprobación</li>
   </ol>
   <div class="permissions-requested">
@@ -55,7 +59,7 @@
           <td> </td>
           <td> </td>
           <td> </td>
-          <td><strong>Total: ${{$total->total}}</strong></td>
+          <td><strong>Total: ${{$expense->total}}</strong></td>
         <tr>
         <tr>
           <td> </td>
@@ -64,12 +68,12 @@
           <td> </td>
           <td><strong>Reportado: ${{$reported}}</strong></td>
         <tr>
-        <tr class="{{$total->total - $reported == 0 ? 'success' : 'danger'}}">
+        <tr class="{{$expense->total - $reported == 0 ? 'success' : 'danger'}}">
           <td> </td>
           <td> </td>
           <td> </td>
           <td> </td>
-          <td><strong>Diferencia: ${{$total->total - $reported}}</strong></td>
+          <td><strong>Diferencia: ${{$expense->total - $reported}}</strong></td>
         <tr>  
       </tbody>
     </table>

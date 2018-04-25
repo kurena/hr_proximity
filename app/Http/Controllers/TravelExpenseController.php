@@ -21,7 +21,7 @@ class TravelExpenseController extends Controller
     public function showView () {
         if (Auth::user()) {
             $empleado = $this->getAuthUser()[0];
-            $expenses = DB::select("select date_format(v.fecha, '%d-%m-%Y') as fecha, v.tipo, v.descripcion, v.total, v.id, e.nombre, e.apellidos from viaticos v inner join empleado e on e.cedula=v.id_empleado", []);
+            $expenses = DB::select("select date_format(v.fecha, '%d-%m-%Y') as fecha, v.tipo, v.descripcion, v.total, v.id, e.nombre, e.apellidos from viaticos v inner join empleado e on e.cedula=v.id_empleado where e.cedula !=?", [$empleado->cedula]);
             $employees = DB::select("select nombre, apellidos, cedula from empleado");
             $actualDay = date('d-m-Y');
           } else {
@@ -56,8 +56,8 @@ class TravelExpenseController extends Controller
         if (Auth::user()) {
             $empleado = $this->getAuthUser()[0];
             $expenseId = $request->id;
-            $total = DB::select("select total from viaticos where id=?",[$expenseId]);
-            if (!$total) {
+            $TExpense = DB::select("select total,id_empleado from viaticos where id=?",[$expenseId]);
+            if (!$TExpense) {
                 return redirect('/');    
             }
             $expenses = DB::select("select date_format(v.fecha, '%d-%m-%Y') as fecha, v.tipo, v.descripcion, v.monto, e.total, v.id from viaticos_comprobacion v inner join viaticos e on e.id=v.id_viatico where v.id_viatico=?", [$expenseId]);
@@ -69,7 +69,7 @@ class TravelExpenseController extends Controller
         foreach($expenses as $expense) {
             $reported += $expense->monto;
         } 
-    	return view('travelExpenseCalculationView', ['total'=>$total[0],'reported' => $reported, 'empleado' => $empleado, 'expenses' => $expenses, 'expenseId' => $expenseId]);    
+    	return view('travelExpenseCalculationView', ['expense'=>$TExpense[0],'reported' => $reported, 'empleado' => $empleado, 'expenses' => $expenses, 'expenseId' => $expenseId]);    
     }
 
     public function store (Request $request) {

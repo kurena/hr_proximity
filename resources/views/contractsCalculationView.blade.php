@@ -40,7 +40,9 @@
                 <button type="submit" class="btn btn-primary">Eliminar</button>
             </form>
             <br>
+            @if ($contract->monto != $contractValue->multa)
             <button value="{{$contract->id}}" class="edit-expense btn btn-primary">Editar</button>
+            @endif
           </td>
           <td>{{$contract->fecha}}</td>
           <td>${{$contract->monto}}</td>
@@ -95,6 +97,18 @@
       </div>
       <input type="hidden" value="{{$contractId}}" name="contractId">
     </form>
+    @if ($contractValue->multa != 0)        
+    <div class="form-row">
+      <div class="col-md-20"> 
+        <form class="applyValue" action="/contratos/multa/{{$contract->id}}" method="post">
+          {{ csrf_field() }}
+          <input type="hidden" name="contractId" value="{{$contractId}}" >
+          <input type="hidden" value="{{$contractValue->multa}}" name="multa">
+          <button type="submits" class="btn btn-primary">Aplicar Multa de ${{$contractValue->multa}}</button>
+        </form>  
+      </div>  
+    </div>
+  @endif
   </div>
 </div>
 <script>
