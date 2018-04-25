@@ -28,7 +28,7 @@
           <th scope="col">Nombre</th>
           <th scope="col">Fecha inicio</th>
           <th scope="col">Fecha fin</th>
-          <th scope="col">Empleado(a) asignado</th>
+          <th scope="col">Empleado(a) asignado(a)</th>
           <th scope="col">Forma pago</th>
           <th scope="col">Monto</th>
           <th scope="col">Multa</th>
@@ -38,8 +38,7 @@
         @foreach ($contracts as $contract)
         <tr class="">
           <td>
-            <form action="/contratos/comprobacion/{{$contract->id}}" method="post">
-              {{ csrf_field() }}
+            <form action="/contratos/comprobacion/{{$contract->id}}" method="get">
               <button type="submit" class="btn btn-primary">Comprobación</button>
             </form>
             <br>
@@ -90,7 +89,7 @@
           </span>
         @endif
       </div>
-      <div class="form-row {{ $errors->has('nombre_contrato') ? ' has-error' : '' }}">
+      <div class="form-row {{ $errors->has('fecha_inicio') ? ' has-error' : '' }}">
         <label class="control-label" for="fecha_inicio">Fecha inicio:<span class="required">*</span></label>
         <input required class="formatted datepicker" onkeydown="return false" data-date-format="dd-mm-yyyy" name="fecha_inicio">
         @if ($errors->has('fecha_inicio'))
@@ -110,7 +109,7 @@
         <input class="formatted datepicker" onkeydown="return false" data-date-format="dd-mm-yyyy" name="fecha_fin">
       </div>
       <div class="form-row">
-          <label for="selectEmployee">Empleado asignado:<span class="required">*</span></label>
+          <label for="selectEmployee">Empleado(a) asignado(a):<span class="required">*</span></label>
           <select class="form-control formatted" name="selectEmployee">
           @foreach ($employees as $employee)
             <option value="{{$employee->cedula}}">{{ $employee->nombre }} {{ $employee->apellidos }}</option>

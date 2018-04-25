@@ -53,18 +53,40 @@
     <div href="#show" data-toggle="collapse" class="panel-heading collapsed"><span>Ingresar nueva comprobación de contrato</span><i class="show-menu fas fa-chevron-circle-down fa-lg"></i><i class="hide-menu fas fa-chevron-circle-up fa-lg"></i></div>
     <form action="/contratos/comprobacion/ingresar" method="POST" id="show" class="collapse">
       {{ csrf_field() }}
-      <div class="form-row">
+      <div class="form-row {{ $errors->has('fecha') ? ' has-error' : '' }}">
         <label for="fecha">Fecha:<span class="required">*</span></label>
-        <input onkeydown="return false" class="datepicker formatted" data-date-format="dd-mm-yyyy" name="fecha">
+        <input onkeydown="return false" class="datepicker formatted" data-date-format="dd-mm-yyyy" name="fecha" required>
+        @if ($errors->has('fecha'))
+          <script>
+            $(document).ready(function () {
+              //If Collapsed then open
+              openMenu();  
+            });
+          </script>  
+          <span class="help-block formatted">
+              <strong>{{ $errors->first('fecha') }}</strong>
+          </span>
+        @endif
       </div>
       <div class="form-row">
-        <label for="monto">Monto contrato:</label>
+        <label class="control-label" for="monto">Monto contrato:</label>
         <input type="hidden" value="{{$contractValue->monto}}" name="monto">
         <label class="formatted" id="monto" value="{{$contractValue->monto}}">${{$contractValue->monto}}</label>
       </div>
-      <div class="form-row">
-        <label for="monto">Cantidad {{ $contractValue->forma_pago == 'mensual' ? 'meses' : 'horas'}}:<span class="required">*</span></label>
+      <div class="form-row {{ $errors->has('cantidad') ? ' has-error' : '' }}">
+        <label class="control-label" for="monto">Cantidad {{ $contractValue->forma_pago == 'mensual' ? 'meses' : 'horas'}}:<span class="required">*</span></label>
         <input class="formatted" name="cantidad" type="number" min="1" required>
+        @if ($errors->has('cantidad'))
+          <script>
+            $(document).ready(function () {
+              //If Collapsed then open
+              openMenu();  
+            });
+          </script>  
+          <span class="help-block formatted">
+              <strong>{{ $errors->first('cantidad') }}</strong>
+          </span>
+        @endif    
       </div>
       <div class="form-row">
         <div class="col-md-20 text-center"> 
@@ -76,6 +98,13 @@
   </div>
 </div>
 <script>
+  function openMenu() {
+    $isCollapsed = $('.panel-heading').hasClass('collapsed');
+    if ($isCollapsed) {
+      $('.panel-heading').trigger('click');
+    }  
+  }
+  
   setTimeout(() => {
     $(document).ready(function () {
       $('.datepicker').datepicker({
@@ -89,11 +118,7 @@
 
     $(".edit-expense").click(function(el){
       $.get("/contratos/comprobacion/modificar/"+el.target.value, function(result){
-        //If Collapsed then open
-        $isCollapsed = $('.panel-heading').hasClass('collapsed');
-        if ($isCollapsed) {
-          $('.panel-heading').trigger('click');
-        }
+        openMenu();
         $('.panel-heading span').text('Modificar comprobación');
         $('form#show button').text('Modificar');
         $('form#show').attr('action', '/contratos/comprobacion/modificar/'+ result.calculation.id);  

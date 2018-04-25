@@ -44,12 +44,12 @@
           </select>
       </div>
       <div class="form-row contract-selector">
-          <label for="selectEmployee">Contrato:<span class="required">*</span></label>
+          <label for="selectContract">Contrato:<span class="required">*</span></label>
           <select class="form-control formatted" id="selectContract" name="selectContract">
           </select>
       </div>
       <div class="form-row expense-selector">
-          <label for="selectEmployee">Viático:<span class="required">*</span></label>
+          <label for="selectExpense">Viático:<span class="required">*</span></label>
           <select class="form-control formatted" id="selectExpense" name="selectExpense">
           </select>
       </div>
@@ -61,15 +61,18 @@
             <option value="settle3">Despido sin responsabilidad patronal</option>
           </select>
       </div>
-      <div class="form-row settle-out">
-        <label for="dia">Fecha salida:<span class="required">*</span></label>
-        <input class="formatted datepicker" onkeydown="return false" data-date-format="dd/mm/yyyy" name="fecha_salida">
+      <div class="form-row settle-out {{ $errors->has('fecha_salida') ? ' has-error' : '' }}">
+        <label class="control-label" for="dia">Fecha salida:<span class="required">*</span></label>
+        <input value="{{old('fecha_salida')}}" class="formatted datepicker" onkeydown="return false" data-date-format="dd/mm/yyyy" name="fecha_salida">
         @if ($errors->has('fecha_salida'))
           <script>
             $(".settle-out, .settle-selector").show();
             $('#selectType')[0].value = 'liquidacion';
+            $('#selectEmployee')[0].value = "{{old('selectEmployee')}}";
+            $('#selectSettle')[0].value = "{{old('selectSettle')}}";
+            $('#reportsForm').attr('action', '/reportes/generar/liquidacion'); 
           </script>  
-          <span class="label label-danger">
+          <span class="help-block formatted">
               <strong>{{ $errors->first('fecha_salida') }}</strong>
           </span>
         @else

@@ -12,7 +12,7 @@
   </div>
   <div class="head-second">  
     <h3>Reporte de permisos</h3>
-    <h3>Colaborador: {{$employee->nombre}} {{$employee->apellidos}}</h3>
+    <h3>Empleado(a): {{$employee->nombre}} {{$employee->apellidos}}</h3>
   </div>
   </header>
   <section id="permissions-report-content">

@@ -36,7 +36,10 @@ class ContractsController extends Controller
         if (Auth::user()) {
             $empleado = $this->getAuthUser()[0];
             $contractId = $request->id;
-            $contractValue = DB::select("select monto,forma_pago from contratos where id=?", [$contractId])[0];
+            $contractValue = DB::select("select monto,forma_pago from contratos where id=?", [$contractId]);
+            if (!$contractValue) {
+                return redirect('/');    
+            }
             $contracts = DB::select("select cc.id, date_format(cc.fecha, '%d-%m-%Y') as fecha, 
             cc.monto from contratos_comprobacion cc inner join contratos c on c.id=cc.id_contrato 
             where cc.id_contrato=?", [$contractId]);
@@ -46,7 +49,7 @@ class ContractsController extends Controller
             return redirect()->route('login');
         }
         return view('contractsCalculationView', ['empleado' => $empleado, 'contracts' => $contracts, 
-        'contractId' => $contractId, 'contractValue' => $contractValue, 'date' => $actualDay]);    
+        'contractId' => $contractId, 'contractValue' => $contractValue[0], 'date' => $actualDay]);    
     }
 
     public function store (Request $request) {

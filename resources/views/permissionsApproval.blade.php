@@ -26,7 +26,7 @@
         <thead>
           <tr>
             <th scope="col">Día</th>
-            <th scope="col">Colaborador</th>
+            <th scope="col">Empleado(a)</th>
             <th scope="col">Cantidad horas</th>
             <th scope="col">Comentarios</th>
             <th scope="col">Aprobar</th>
@@ -71,7 +71,7 @@
         <tr>
           <th></th>
           <th scope="col">Día</th>
-          <th scope="col">Colaborador</th>
+          <th scope="col">Empleado(a)</th>
           <th scope="col">Cantidad horas</th>
           <th scope="col">Comentarios</th>
           <th scope="col">Reposición de horas</th>

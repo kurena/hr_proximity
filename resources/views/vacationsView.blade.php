@@ -69,7 +69,7 @@
       {{ csrf_field() }}
       <div class="form-row {{ $errors->has('dias') ? ' has-error' : '' }}">
         <label class="control-label" for="dias">Día(s) a solicitar:<span class="required">*</span></label>
-        <input onkeydown="return false" class="datepicker" data-date-format="dd-mm-yyyy" name="dias" required>
+        <input value="{{ old('dias') }}" onkeydown="return false" class="datepicker" data-date-format="dd-mm-yyyy" name="dias" required>
         @if ($errors->has('dias'))
           <script>
             $(document).ready(function () {

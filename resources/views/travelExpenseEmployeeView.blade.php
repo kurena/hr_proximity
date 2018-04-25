@@ -37,8 +37,7 @@
           <td>{{$expense->descripcion}}</td>
           <td>${{$expense->total}}</td>
           <td>
-            <form action="/viaticos/comprobacion/{{$expense->id}}" method="post">
-              {{ csrf_field() }}
+            <form action="/viaticos/comprobacion/{{$expense->id}}" method="get">
               <button type="submit" class="btn btn-primary">Consultar</button>
             </form>
           </td>

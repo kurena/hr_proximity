@@ -55,7 +55,7 @@
           <td> </td>
           <td> </td>
           <td> </td>
-          <td><strong>Total: ${{$expense->total}}</strong></td>
+          <td><strong>Total: ${{$total->total}}</strong></td>
         <tr>
         <tr>
           <td> </td>
@@ -64,12 +64,12 @@
           <td> </td>
           <td><strong>Reportado: ${{$reported}}</strong></td>
         <tr>
-        <tr class="{{$expense->total - $reported == 0 ? 'success' : 'danger'}}">
+        <tr class="{{$total->total - $reported == 0 ? 'success' : 'danger'}}">
           <td> </td>
           <td> </td>
           <td> </td>
           <td> </td>
-          <td><strong>Diferencia: ${{$expense->total - $reported}}</strong></td>
+          <td><strong>Diferencia: ${{$total->total - $reported}}</strong></td>
         <tr>  
       </tbody>
     </table>
@@ -90,17 +90,50 @@
           <option value="otro">Otro</option>
         </select>
       </div>
-      <div class="form-row">
-        <label for="descripcion">Descripción:<span class="required">*</span></label>
+      <div class="form-row {{ $errors->has('descripcion') ? ' has-error' : '' }}">
+        <label class="control-label" for="descripcion">Descripción:<span class="required">*</span></label>
         <textarea class="formatted" name="descripcion" required></textarea>
+        @if ($errors->has('descripcion'))
+          <script>
+            $(document).ready(function () {
+              //If Collapsed then open
+              openMenu();  
+            });
+          </script>  
+          <span class="help-block formatted">
+              <strong>{{ $errors->first('descripcion') }}</strong>
+          </span>
+        @endif
       </div>
-      <div class="form-row">
-        <label for="fecha">Fecha:<span class="required">*</span></label>
-        <input onkeydown="return false" class="datepicker formatted" data-date-format="dd-mm-yyyy" name="fecha">
+      <div class="form-row {{ $errors->has('fecha') ? ' has-error' : '' }}">
+        <label class="control-label" for="fecha">Fecha:<span class="required">*</span></label>
+        <input onkeydown="return false" class="datepicker formatted" data-date-format="dd-mm-yyyy" name="fecha" required>
+          @if ($errors->has('fecha'))
+            <script>
+              $(document).ready(function () {
+                //If Collapsed then open
+                openMenu();  
+              });
+            </script>  
+            <span class="help-block formatted">
+                <strong>{{ $errors->first('fecha') }}</strong>
+            </span>
+          @endif    
       </div>
-      <div class="form-row">
-        <label for="monto">Monto en $:<span class="required">*</span></label>
-        <input class="formatted" name="monto" type="number" min="0" required>
+      <div class="form-row {{ $errors->has('monto') ? ' has-error' : '' }}">
+        <label class="control-label" for="monto">Monto en $:<span class="required">*</span></label>
+        <input class="formatted" name="monto" type="number" min="1" required>
+        @if ($errors->has('monto'))
+          <script>
+            $(document).ready(function () {
+              //If Collapsed then open
+              openMenu();  
+            });
+          </script>  
+          <span class="help-block formatted">
+              <strong>{{ $errors->first('monto') }}</strong>
+          </span>
+        @endif
       </div>
       <div class="form-row">
         <div class="col-md-20 text-center"> 
@@ -112,6 +145,12 @@
   </div>
 </div>
 <script>
+  function openMenu() {
+    $isCollapsed = $('.panel-heading').hasClass('collapsed');
+    if ($isCollapsed) {
+      $('.panel-heading').trigger('click');
+    }  
+  }
   setTimeout(() => {
     $(document).ready(function () {
       $('.datepicker').datepicker({
@@ -125,11 +164,7 @@
 
     $(".edit-expense").click(function(el){
       $.get("/viaticos/comprobacion/modificar/"+el.target.value, function(result){
-        //If Collapsed then open
-        $isCollapsed = $('.panel-heading').hasClass('collapsed');
-        if ($isCollapsed) {
-          $('.panel-heading').trigger('click');
-        }
+        openMenu();
         $('.panel-heading span').text('Modificar comprobación');
         $('form#show button').text('Modificar');
         $('form#show').attr('action', '/viaticos/comprobacion/modificar/'+ result.calculation.id);  

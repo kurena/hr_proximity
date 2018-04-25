@@ -26,7 +26,7 @@
           <th scope="col"></th>
           <th scope="col">Fecha ingreso</th>
           <th scope="col">Tipo</th>
-          <th scope="col">Empleado</th>
+          <th scope="col">Empleado(a)</th>
           <th scope="col">Monto total</th>
           <th scope="col">Descripción</th>
         </tr>
@@ -35,8 +35,7 @@
         @foreach ($expenses as $expense)
         <tr class="success">
           <td>
-            <form action="/viaticos/comprobacion/{{$expense->id}}" method="post">
-              {{ csrf_field() }}
+            <form action="/viaticos/comprobacion/{{$expense->id}}" method="get">
               <button type="submit" class="btn btn-primary">Comprobación</button>
             </form>
             <br>
@@ -70,20 +69,42 @@
         </select>
       </div>
       <div class="form-row">
-          <label for="selectEmployee">Empleado:<span class="required">*</span></label>
+          <label for="selectEmployee">Empleado(a):<span class="required">*</span></label>
           <select class="form-control formatted" name="selectEmployee">
           @foreach ($employees as $employee)
             <option value="{{$employee->cedula}}">{{ $employee->nombre }} {{ $employee->apellidos }}</option>
           @endforeach
           </select>
       </div>
-      <div class="form-row">
-        <label for="comentarios">Descripción:<span class="required">*</span></label>
+      <div class="form-row {{ $errors->has('descripcion') ? ' has-error' : '' }}">
+        <label class="control-label" for="comentarios">Descripción:<span class="required">*</span></label>
         <textarea class="formatted" name="descripcion" required></textarea>
+        @if ($errors->has('descripcion'))
+          <script>
+            $(document).ready(function () {
+              //If Collapsed then open
+              openMenu();  
+            });
+          </script>  
+          <span class="help-block formatted">
+              <strong>{{ $errors->first('descripcion') }}</strong>
+          </span>
+        @endif
       </div>
-      <div class="form-row">
-        <label for="monto">Monto en $:<span class="required">*</span></label>
-        <input class="formatted" name="monto" type="number" min="0" required>
+      <div class="form-row {{ $errors->has('monto') ? ' has-error' : '' }}">
+        <label class="control-label" for="monto">Monto en $:<span class="required">*</span></label>
+        <input class="formatted" name="monto" type="number" min="1" required>
+        @if ($errors->has('monto'))
+          <script>
+            $(document).ready(function () {
+              //If Collapsed then open
+              openMenu();  
+            });
+          </script>  
+          <span class="help-block formatted">
+              <strong>{{ $errors->first('monto') }}</strong>
+          </span>
+        @endif
       </div>
       <div class="form-row">
         <div class="col-md-20 text-center"> 
@@ -94,17 +115,19 @@
   </div>
 </div>
 <script>
+  function openMenu() {
+    $isCollapsed = $('.panel-heading').hasClass('collapsed');
+    if ($isCollapsed) {
+      $('.panel-heading').trigger('click');
+    }  
+  }
   $(document).ready(function () {
     $(".deleteExpense").on("submit", function(){
       return confirm("¿Desea eliminar este viatico?");
     });
     $(".edit-expense").click(function(el){
       $.get("/viaticos/modificar/"+el.target.value, function(result){
-        //If Collapsed then open
-        $isCollapsed = $('.panel-heading').hasClass('collapsed');
-        if ($isCollapsed) {
-          $('.panel-heading').trigger('click');
-        }
+        openMenu();
         $('.panel-heading span').text('Modificar viatico');
         $('form#show button').text('Modificar');
         $('form#show').attr('action', '/viaticos/modificar/'+ result.expense.id);  

@@ -54,7 +54,7 @@ Route::post('/incapacidades/modificar/{id}', 'IncapacityController@updateIncapac
 Route::get('/viaticos', 'TravelExpenseController@showView');
 Route::get('/viaticos/empleado/{id}', 'TravelExpenseController@showEmployeeView');
 Route::post('/viaticos/ingresar', 'TravelExpenseController@store');
-Route::post('/viaticos/comprobacion/{id}', 'TravelExpenseController@showCalculationView');
+Route::get('/viaticos/comprobacion/{id}', 'TravelExpenseController@showCalculationView');
 Route::post('/viaticos/comprobacion/ingresar', 'TravelExpenseController@storeCalculation');
 Route::delete('/viaticos/eliminar/{id}', 'TravelExpenseController@delete');
 Route::get('/viaticos/modificar/{id}', 'TravelExpenseController@getTravelExpenseInformation');
@@ -68,7 +68,7 @@ Route::get('/viaticos/empleado-todo/{id}', 'TravelExpenseController@getExpenseIn
 //Contratos
 Route::get('/contratos', 'ContractsController@showView');
 Route::post('/contratos/ingresar', 'ContractsController@store');
-Route::post('/contratos/comprobacion/{id}', 'ContractsController@showCalculationView');
+Route::get('/contratos/comprobacion/{id}', 'ContractsController@showCalculationView');
 Route::post('/contratos/comprobacion/ingresar', 'ContractsController@storeCalculation');
 Route::delete('/contratos/eliminar/{id}', 'ContractsController@delete');
 Route::get('/contratos/modificar/{id}', 'ContractsController@getContractInformation');

@@ -19,7 +19,7 @@
     <div class="info-content">
       <h3>Información de contrato</h3>
       <ul class="list-group">
-          <li class="list-group-item list-group-item-info">Empleado asignado: {{$contract->nombre}} {{$contract->apellidos}}</li>
+          <li class="list-group-item list-group-item-info">Empleado(a) asignado: {{$contract->nombre}} {{$contract->apellidos}}</li>
           <li class="list-group-item list-group-item-info">Fecha inicio: {{$contract->fecha_inicio}}</li>
           <li class="list-group-item list-group-item-info">Fecha fin: {{$contract->fecha_fin == null ? 'N/A': $contract->fecha_fin}}</li>
           <li class="list-group-item list-group-item-info">Tipo: {{ucfirst(trans($contract->tipo))}}</li>

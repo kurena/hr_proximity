@@ -36,9 +36,15 @@ class TravelExpenseController extends Controller
         if (Auth::user()) {
             $empleado = $this->getAuthUser()[0];
             $empId = $request->id;
+            if ($empleado->cedula != $empId) {
+                return redirect('/');    
+            }
             $expenses = DB::select("select date_format(v.fecha, '%d-%m-%Y') as fecha, v.id, 
             v.tipo, v.descripcion, v.total from viaticos v inner join empleado e on 
             e.cedula=v.id_empleado where e.cedula=?", [$empId]);
+            if (count($expenses) == 0) {
+                return redirect('/')->with('error','No existen viáticos asignados'); 
+            }
           } else {
             $empleado = [0 => ''];
             return redirect()->route('login');
@@ -50,6 +56,10 @@ class TravelExpenseController extends Controller
         if (Auth::user()) {
             $empleado = $this->getAuthUser()[0];
             $expenseId = $request->id;
+            $total = DB::select("select total from viaticos where id=?",[$expenseId]);
+            if (!$total) {
+                return redirect('/');    
+            }
             $expenses = DB::select("select date_format(v.fecha, '%d-%m-%Y') as fecha, v.tipo, v.descripcion, v.monto, e.total, v.id from viaticos_comprobacion v inner join viaticos e on e.id=v.id_viatico where v.id_viatico=?", [$expenseId]);
         } else {
             $empleado = [0 => ''];
@@ -59,7 +69,7 @@ class TravelExpenseController extends Controller
         foreach($expenses as $expense) {
             $reported += $expense->monto;
         } 
-    	return view('travelExpenseCalculationView', ['reported' => $reported, 'empleado' => $empleado, 'expenses' => $expenses, 'expenseId' => $expenseId]);    
+    	return view('travelExpenseCalculationView', ['total'=>$total[0],'reported' => $reported, 'empleado' => $empleado, 'expenses' => $expenses, 'expenseId' => $expenseId]);    
     }
 
     public function store (Request $request) {

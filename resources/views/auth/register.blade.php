@@ -16,7 +16,7 @@
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('cedula') ? ' has-error' : '' }}">
-                            <label for="cedula" class="col-md-4 control-label">Empleado<span class="required">*</span></label>
+                            <label for="cedula" class="col-md-4 control-label">Empleado(a)<span class="required">*</span></label>
 
                             <div class="col-md-6">
                                 <select class="form-control" name="cedula">
