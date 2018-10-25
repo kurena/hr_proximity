@@ -86,18 +86,7 @@
         <label for="manager">Manager:</label>
         <label name="manager" >{{$empleado->admin_nombre}} {{$empleado->admin_apellidos}}</label>
       </div>
-      <div class="form-row">
-        <label for="copia">Enviar copia a:</label>
-        @foreach ($admins as $admin)
-          @if($admin->cedula != $empleado->id_manager)
-          <div class="checkbox">
-            <label>
-              <input name="copy" class="form-check-input" type="checkbox" value="{{$admin->cedula}}">{{$admin->nombre}} {{$admin->apellidos}}</input>
-            </label>
-          </div>
-          @endif
-        @endforeach
-      </div>
+      
       <div class="form-row">
         <button type="submit" class="btn btn-primary" @if ($availableDays == 0) disabled @endif>Solicitar</button>
       </div>
@@ -105,6 +94,7 @@
       <input name="availableDays" type="hidden" value="{{$availableDays}}">
       <input name="adminName" type="hidden" value="{{$empleado->admin_nombre}} {{$empleado->admin_apellidos}}">
       <input name="adminEmail" type="hidden" value="{{$empleado->admin_email}}">
+      <input name="adminCedula" type="hidden" value="{{$empleado->admin_cedula}}">
       <input name="employeeEmail" type="hidden" value="{{$empleado->email}}">
       <input name="employeeName" type="hidden" value="{{$empleado->nombre}} {{$empleado->apellidos}}">
     </form>

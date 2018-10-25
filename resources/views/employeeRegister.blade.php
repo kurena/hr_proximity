@@ -49,7 +49,7 @@
                 </div>
                 <div class="form-row">
                   <div class="form-group col-md-6 {{ $errors->has('email') ? ' has-error' : '' }}">
-                    <label class="control-label" for="email">Email<span class="required">*</span></label>
+                    <label class="control-label" for="email">Email @if(!$uniqueView) <span class="required">*</span> @endif</label>
                     <input type="email" class="form-control" name="email" placeholder="nombre.apellido@proximitycr.com" required value="{{$editView ? $empleado->email : old('email')}}" @if($uniqueView) disabled @endif>
                     @if ($errors->has('email'))
                       <span class="help-block">
@@ -89,7 +89,7 @@
                 </div>
                 <div class="form-row">
                   <div class="form-group col-md-6 {{ $errors->has('puesto') ? ' has-error' : '' }}">
-                    <label class="control-label" for="puesto">Puesto<span class="required">*</span></label>
+                    <label class="control-label" for="puesto">Puesto @if(!$uniqueView) <span class="required">*</span> @endif</label>
                     <input type="text" class="form-control" name="puesto" placeholder="" required value="{{$editView ? $empleado->puesto : old('puesto')}}" @if($uniqueView) disabled @endif>
                     @if ($errors->has('puesto'))
                       <span class="help-block">
@@ -98,7 +98,7 @@
                     @endif
                   </div>
                   <div class="form-group col-md-6 {{ $errors->has('salario') ? ' has-error' : '' }}">
-                    <label class="control-label" for="salario">Salario<span class="required">*</span></label>
+                    <label class="control-label" for="salario">Salario @if(!$uniqueView) <span class="required">*</span> @endif</label>
                     <input type="number" class="form-control" name="salario" placeholder="" required value="{{$editView ? $empleado->salario : old('salario')}}" @if($uniqueView) disabled @endif>
                     @if ($errors->has('salario'))
                       <span class="help-block">
@@ -109,7 +109,7 @@
                 </div>
                 <div class="form-row">
                   <div class="form-group col-md-6 {{ $errors->has('fecha_ingreso') ? ' has-error' : '' }}">
-                    <label class="control-label" for="fecha_ingreso">Fecha ingreso<span class="required">*</span></label>
+                    <label class="control-label" for="fecha_ingreso">Fecha ingreso @if(!$uniqueView) <span class="required">*</span> @endif</label>
                     <input onkeydown="return false" class=" form-control datepicker" data-date-format="dd-mm-yyyy" name="fecha_ingreso" placeholder="dd-mm-yyyy" value="{{$editView ? $empleado->fecha_ingreso : old('fecha_ingreso')}}" @if($uniqueView) disabled @endif>  
                     @if ($errors->has('fecha_ingreso'))
                       <span class="help-block">
@@ -136,9 +136,13 @@
                       <option value="empleado" {{$editView && $empleado->rol=='empleado' ? 'selected' : ''}}>Empleado</option>
                     </select>
                   @endif
+                  @if ($uniqueView)
+                      <label class="control-label" for="puesto">Nombre usuario @if(!$uniqueView) <span class="required">*</span> @endif</label>
+                      <input type="text" class="form-control" name="usuario" placeholder="nombre.apellido" required value="{{$editView ? $empleado->nombre_usuario : ''}}" @if($uniqueView) disabled @endif>
+                  @endif
                   </div>
                   <div class="form-group col-md-6">
-                    <label for="selectManager">Manager</label>
+                    <label for="selectManager">Manager @if(!$uniqueView) <span class="required">*</span> @endif</label>
                     <select class="form-control" name="selectManager" @if($uniqueView) disabled @endif>
                     @foreach ($admins as $admin)
                       <option value="{{$admin->cedula}}" {{$editView && $admin->cedula == $empleado->id_manager ? 'selected' : ''}}>{{ $admin->nombre }} {{ $admin->apellidos }}</option>
@@ -146,7 +150,7 @@
                     </select>
                   </div>
                 </div>
-                @if ($editView)
+                @if (!$uniqueView)
                 <div class="form-row">
                   <div class="form-group col-md-6 {{ $errors->has('usuario') ? ' has-error' : '' }}">
                     <label class="control-label" for="puesto">Nombre usuario<span class="required">*</span></label>

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use \Datetime;
 use \DateInterval;
 use App\Vacations;
+use App\VacationsCopy;
 use Validator;
 use Mail;
 
@@ -21,7 +22,7 @@ class VacationsController extends Controller
     
     public function getAuthUser () {
         $idEmp = Auth::user()->id_empleado;
-        $empleado = DB::select('select a.email as admin_email, a.nombre as admin_nombre, a.apellidos as admin_apellidos, e.nombre, e.apellidos, e.cedula, e.id_manager, e.fecha_ingreso, e.email  from empleado e inner join empleado a ON e.id_manager=a.cedula where e.cedula = ?', [$idEmp]);
+        $empleado = DB::select('select a.email as admin_email, a.nombre as admin_nombre, a.apellidos as admin_apellidos, a.cedula as admin_cedula, e.nombre, e.apellidos, e.cedula, e.id_manager, e.fecha_ingreso, e.email  from empleado e inner join empleado a ON e.id_manager=a.cedula where e.cedula = ?', [$idEmp]);
         return $empleado;
     }
 
@@ -109,11 +110,16 @@ class VacationsController extends Controller
         }
         foreach ($days as $day) {
             $vacations = new Vacations;
+            $vacationsCopy = new VacationsCopy;
             $date = new DateTime($day);
             $vacations->id_empleado = $request->empleado;
             $vacations->fecha = $date->format('Y-m-d');
             $vacations->estado = 'pendiente';  
-            $vacations->save();  
+            $vacations->save(); 
+            $vacationsCopy->id_vacaciones = $vacations->id;
+            $vacationsCopy->id_vacaciones = $vacations->id;
+            $vacationsCopy->id_empleado = $request->adminCedula;
+            $vacationsCopy->save(); 
             $this->request_email($request->adminName, $request->adminEmail, $request->employeeName, $day);
         } 
         return redirect('/vacaciones')->with('status', 'Vacaciones solicitadas');
